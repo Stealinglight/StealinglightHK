@@ -1,0 +1,62 @@
+[
+  {
+    "id": "penetration-testing",
+    "title": "Penetration Testing",
+    "description": "Comprehensive security assessments to identify vulnerabilities before attackers do. We simulate real-world attacks to test your defenses.",
+    "icon": "🔓",
+    "features": [
+      "Web Application Testing",
+      "Network Penetration Testing",
+      "API Security Assessment",
+      "Mobile Application Testing",
+      "Social Engineering",
+      "Red Team Operations"
+    ],
+    "cta": "Request Assessment"
+  },
+  {
+    "id": "security-consulting",
+    "title": "Security Consulting",
+    "description": "Strategic security guidance to build and improve your security posture. From architecture reviews to compliance readiness.",
+    "icon": "🛡️",
+    "features": [
+      "Security Architecture Review",
+      "Risk Assessment",
+      "Compliance Guidance (SOC2, ISO 27001)",
+      "Security Program Development",
+      "Vendor Security Assessment",
+      "Policy Development"
+    ],
+    "cta": "Schedule Consultation"
+  },
+  {
+    "id": "incident-response",
+    "title": "Incident Response",
+    "description": "Rapid response when security incidents occur. We help contain, investigate, and recover from breaches.",
+    "icon": "🚨",
+    "features": [
+      "24/7 Emergency Response",
+      "Digital Forensics",
+      "Malware Analysis",
+      "Breach Investigation",
+      "Recovery Assistance",
+      "Post-Incident Review"
+    ],
+    "cta": "Get Emergency Help"
+  },
+  {
+    "id": "cloud-security",
+    "title": "Cloud Security",
+    "description": "Secure your cloud infrastructure across AWS, Azure, and GCP. From configuration review to ongoing monitoring.",
+    "icon": "☁️",
+    "features": [
+      "Cloud Configuration Review",
+      "IAM Assessment",
+      "Infrastructure as Code Security",
+      "Container Security",
+      "Kubernetes Security",
+      "Cloud-Native Security Tools"
+    ],
+    "cta": "Secure Your Cloud"
+  }
+]

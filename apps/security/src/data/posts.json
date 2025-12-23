@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "zero-trust-architecture-guide",
+    "title": "A Practical Guide to Zero Trust Architecture",
+    "excerpt": "Learn how to implement zero trust security principles in your organization with this comprehensive guide covering identity verification, network segmentation, and continuous monitoring.",
+    "content": "Zero Trust is a security framework that requires all users, whether inside or outside the organization's network, to be authenticated, authorized, and continuously validated before being granted access to applications and data.\n\n## Core Principles\n\n### 1. Verify Explicitly\nAlways authenticate and authorize based on all available data points, including user identity, location, device health, service or workload, data classification, and anomalies.\n\n### 2. Use Least Privilege Access\nLimit user access with just-in-time and just-enough-access (JIT/JEA), risk-based adaptive policies, and data protection to protect both data and productivity.\n\n### 3. Assume Breach\nMinimize blast radius and segment access. Verify end-to-end encryption and use analytics to get visibility, drive threat detection, and improve defenses.\n\n## Implementation Steps\n\n1. Define your protect surface\n2. Map transaction flows\n3. Build a Zero Trust architecture\n4. Create Zero Trust policy\n5. Monitor and maintain",
+    "date": "2024-01-15",
+    "author": "stealinglight",
+    "category": "Architecture",
+    "tags": ["zero-trust", "security-architecture", "enterprise"],
+    "readTime": 8,
+    "featured": true
+  },
+  {
+    "slug": "cloud-security-best-practices-2024",
+    "title": "Cloud Security Best Practices for 2024",
+    "excerpt": "Stay ahead of emerging threats with these essential cloud security practices covering AWS, Azure, and GCP environments.",
+    "content": "Cloud security continues to evolve as organizations increasingly rely on cloud infrastructure. This guide covers the essential practices for securing your cloud environment in 2024.\n\n## Identity and Access Management\n\nImplement strong IAM policies:\n- Use multi-factor authentication (MFA)\n- Implement principle of least privilege\n- Regular access reviews and audits\n- Use service accounts appropriately\n\n## Data Protection\n\n- Encrypt data at rest and in transit\n- Implement data loss prevention (DLP)\n- Regular backup and recovery testing\n- Classify and tag sensitive data\n\n## Network Security\n\n- Segment your networks\n- Use private endpoints where possible\n- Implement Web Application Firewalls\n- Monitor and log all network traffic",
+    "date": "2024-01-10",
+    "author": "stealinglight",
+    "category": "Cloud Security",
+    "tags": ["cloud", "aws", "azure", "best-practices"],
+    "readTime": 6,
+    "featured": true
+  },
+  {
+    "slug": "penetration-testing-methodology",
+    "title": "Modern Penetration Testing Methodology",
+    "excerpt": "A deep dive into current penetration testing methodologies, tools, and techniques used by security professionals.",
+    "content": "Penetration testing remains a critical component of any security program. This post explores modern methodologies and approaches.\n\n## Phases of Penetration Testing\n\n### 1. Planning and Reconnaissance\n- Define scope and objectives\n- Gather intelligence (OSINT)\n- Identify targets and attack vectors\n\n### 2. Scanning\n- Port scanning and service enumeration\n- Vulnerability scanning\n- Web application analysis\n\n### 3. Gaining Access\n- Exploit vulnerabilities\n- Credential attacks\n- Social engineering\n\n### 4. Maintaining Access\n- Persistence mechanisms\n- Privilege escalation\n- Lateral movement\n\n### 5. Analysis and Reporting\n- Document findings\n- Risk assessment\n- Remediation recommendations",
+    "date": "2024-01-05",
+    "author": "stealinglight",
+    "category": "Penetration Testing",
+    "tags": ["pentest", "methodology", "offensive-security"],
+    "readTime": 10,
+    "featured": false
+  },
+  {
+    "slug": "incident-response-playbook",
+    "title": "Building an Effective Incident Response Playbook",
+    "excerpt": "Create a comprehensive incident response plan that prepares your organization for security incidents.",
+    "content": "An incident response playbook is essential for minimizing damage during security incidents. Here's how to build one.\n\n## Key Components\n\n### 1. Preparation\n- Establish an incident response team\n- Define roles and responsibilities\n- Set up communication channels\n- Deploy necessary tools\n\n### 2. Detection and Analysis\n- Monitor security alerts\n- Analyze indicators of compromise\n- Determine scope and impact\n- Document timeline\n\n### 3. Containment\n- Short-term containment\n- Long-term containment\n- Evidence preservation\n\n### 4. Eradication\n- Remove malware\n- Patch vulnerabilities\n- Reset credentials\n\n### 5. Recovery\n- Restore systems\n- Validate functionality\n- Monitor for recurrence\n\n### 6. Lessons Learned\n- Post-incident review\n- Update playbooks\n- Improve defenses",
+    "date": "2023-12-20",
+    "author": "stealinglight",
+    "category": "Incident Response",
+    "tags": ["incident-response", "playbook", "dfir"],
+    "readTime": 7,
+    "featured": false
+  }
+]
