@@ -1,0 +1,201 @@
+/**
+ * Global styles for Hub App
+ * Imports shared component styles and adds hub-specific styles
+ */
+
+@import '@stealinglight/ui/styles';
+
+/* ===================
+   Base Styles
+   =================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===================
+   App Layout
+   =================== */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+}
+
+/* ===================
+   Hub Home Page
+   =================== */
+
+.home {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl) var(--space-lg);
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    var(--color-background) 0%,
+    var(--color-background-alt) 100%
+  );
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-title {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md);
+  background: linear-gradient(
+    135deg,
+    var(--color-text) 0%,
+    var(--color-accent-muted) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: var(--color-text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Mode Selection Section */
+.mode-selection {
+  flex: 1;
+  padding: var(--space-3xl) var(--space-lg);
+}
+
+.mode-selection .section-title {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  font-size: 1.5rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Mode Cards Grid */
+.mode-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .mode-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mode Card */
+.mode-card {
+  display: block;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: all var(--transition-normal);
+  overflow: hidden;
+}
+
+.mode-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-light);
+}
+
+.mode-card--creative:hover {
+  border-color: var(--color-creative-primary);
+  box-shadow: 0 8px 30px -10px rgba(255, 107, 53, 0.3);
+}
+
+.mode-card--security:hover {
+  border-color: var(--color-security-primary);
+  box-shadow: 0 8px 30px -10px rgba(0, 212, 170, 0.3);
+}
+
+.mode-card-content {
+  padding: var(--space-2xl);
+  text-align: center;
+}
+
+.mode-card-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-lg);
+}
+
+.mode-card-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+}
+
+.mode-card--creative .mode-card-title {
+  color: var(--color-creative-primary);
+}
+
+.mode-card--security .mode-card-title {
+  color: var(--color-security-primary);
+}
+
+.mode-card-description {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+}
+
+/* Ensure button doesn't trigger parent link */
+.mode-card .btn {
+  pointer-events: none;
+}
