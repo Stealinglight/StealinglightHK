@@ -165,7 +165,7 @@ Create `github-actions-deploy-role.json`:
     {
       "Effect": "Allow",
       "Principal": {
-        "Federated": "arn:aws:iam::383579119744:oidc-provider/token.actions.githubusercontent.com"
+        "Federated": "arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com"
       },
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
@@ -173,7 +173,7 @@ Create `github-actions-deploy-role.json`:
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:YOUR_GITHUB_USERNAME/stealinglightHK:*"
+          "token.actions.githubusercontent.com:sub": "repo:Stealinglight/StealinglightHK:*"
         }
       }
     }
@@ -209,7 +209,7 @@ Configure these secrets in your GitHub repository:
 ### 1. Bootstrap CDK
 
 ```bash
-npx cdk bootstrap aws://383579119744/us-west-2
+npx cdk bootstrap aws://<AWS_ACCOUNT_ID>/us-west-2
 ```
 
 ### 2. Deploy Infrastructure
