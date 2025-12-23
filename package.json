@@ -1,0 +1,36 @@
+{
+  "name": "stealinglight-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "infra"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:hub": "npm -w apps/hub run dev",
+    "dev:creative": "npm -w apps/creative run dev",
+    "dev:security": "npm -w apps/security run dev",
+    "build:hub": "npm -w apps/hub run build",
+    "build:creative": "npm -w apps/creative run build",
+    "build:security": "npm -w apps/security run build",
+    "lint": "eslint . --ext .ts,.tsx --ignore-pattern 'dist/*' --ignore-pattern 'cdk.out/*'",
+    "typecheck": "tsc --noEmit",
+    "test": "npm -ws run test --if-present",
+    "cdk:synth": "npm -w infra run cdk:synth",
+    "cdk:diff": "npm -w infra run cdk:diff",
+    "cdk:deploy": "npm -w infra run cdk:deploy"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.3.3"
+  }
+}

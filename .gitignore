@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+cdk.out/
+.cdk.staging/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Lambda build artifacts (but keep source)
+infra/lambda/**/node_modules/
+infra/lambda/**/dist/
+
+# Test coverage
+coverage/
