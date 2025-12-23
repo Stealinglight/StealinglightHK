@@ -18,7 +18,7 @@ export function ProjectDetail() {
             <div className="project-detail not-found">
                 <div className="container">
                     <h1>Project Not Found</h1>
-                    <p>The project you're looking for doesn't exist.</p>
+                    <p>The project you&apos;re looking for doesn&apos;t exist.</p>
                     <Button variant="creative" as="a" href="/projects">
                         View All Projects
                     </Button>

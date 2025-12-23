@@ -209,6 +209,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const fromEmail = process.env.FROM_EMAIL || 'noreply@stealinglight.hk';
 
     if (!toEmail) {
+      // eslint-disable-next-line no-console
       console.error('CONTACT_EMAIL environment variable not set');
       return {
         statusCode: 500,
@@ -245,6 +246,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     await ses.send(sendCommand);
 
     // Don't log PII - only log metadata
+    // eslint-disable-next-line no-console
     console.log(`Contact form submitted successfully from ${formData.source}`);
 
     return {
@@ -257,6 +259,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     };
   } catch (error) {
     // Log error without PII
+    // eslint-disable-next-line no-console
     console.error('Error processing contact form:', error instanceof Error ? error.message : 'Unknown error');
 
     return {
