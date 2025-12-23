@@ -1,0 +1,22 @@
+{
+  "name": "@stealinglight/infra",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cdk:synth": "cdk synth",
+    "cdk:diff": "cdk diff",
+    "cdk:deploy": "cdk deploy --all",
+    "cdk:destroy": "cdk destroy --all",
+    "lint": "eslint lib bin --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.120.0",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "aws-cdk": "^2.120.0"
+  }
+}
