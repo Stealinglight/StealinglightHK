@@ -1,371 +1,243 @@
-# StealingLight.HK
+# Stealinglight HK
 
-Personal portfolio platform with three static SPAs deployed to AWS S3 + CloudFront using CDKv2 TypeScript and GitHub Actions.
+A modern, responsive portfolio website built with React, TypeScript, and Vite, showcasing professional work and services.
 
-## 🌐 Sites
+## Features
 
-| Site     | Domain                    | Description                       |
-| -------- | ------------------------- | --------------------------------- |
-| Hub      | stealinglight.hk          | Landing page with mode selection  |
-| Creative | creative.stealinglight.hk | Video portfolio and creative work |
-| Security | security.stealinglight.hk | Cybersecurity blog and services   |
+- 🎨 Modern, responsive design with Tailwind CSS
+- ⚡ Lightning-fast development with Vite
+- 🔒 Type-safe with TypeScript
+- 🎭 40+ high-quality UI components from shadcn/ui
+- ♿ Accessible components built on Radix UI
+- 📱 Mobile-first responsive design
+- 🎯 Single Page Application architecture
+- 🖼️ Robust image handling with fallbacks
 
-## 📁 Project Structure
+## Tech Stack
 
-```
-stealinglightHK/
-├── apps/
-│   ├── hub/        # Vite React TS - Hub/landing site
-│   ├── creative/   # Vite React TS - Creative portfolio
-│   └── security/   # Vite React TS - Security blog & services
-├── packages/
-│   └── ui/         # Shared React components (Nav, Footer, Button)
-├── infra/          # CDKv2 TypeScript infrastructure
-│   ├── bin/        # CDK app entry point
-│   ├── lib/        # Stack definitions
-│   └── src/lambda/ # Lambda functions
-└── .github/
-    └── workflows/  # GitHub Actions CI/CD
-```
+- **Framework**: React 18
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui + Radix UI
+- **Icons**: Lucide React
+- **Forms**: React Hook Form + Zod
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 20+
-- npm 9+
-- AWS CLI configured (for deployment)
+- Node.js 18 or higher
+- npm or yarn
 
-### Install Dependencies
-
-```bash
-npm ci
-```
-
-### Local Development
+### Installation
 
 ```bash
-# Hub site (port 5173)
-npm run dev:hub
+# Clone the repository
+git clone https://github.com/Stealinglight/StealinglightHK.git
+cd StealinglightHK
 
-# Creative site (port 5174)
-npm run dev:creative
-
-# Security site (port 5175)
-npm run dev:security
+# Install dependencies
+npm install
 ```
 
-### Build
+### Development
 
 ```bash
-# Build all apps
-npm run build:hub
-npm run build:creative
-npm run build:security
-
-# Lint and typecheck
-npm run lint
-npm run typecheck
+# Start development server
+npm run dev
 ```
 
-## 🏗️ Infrastructure
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### AWS Resources (per site)
-
-- **S3 Bucket**: Private bucket for static files
-- **CloudFront Distribution**: CDN with OAC for S3 access
-- **Route53 Records**: A and AAAA alias records
-- **ACM Certificate**: SSL/TLS certificate (us-east-1)
-
-### API Resources
-
-- **Lambda Function**: Contact form handler
-- **API Gateway**: REST API with CORS
-- **SES**: Email delivery
-
-### CDK Commands
+### Building for Production
 
 ```bash
-cd infra
+# Create production build
+npm run build
 
-# Preview changes
-npx cdk diff --context certificateArn=<ARN>
-
-# Deploy all stacks
-npx cdk deploy --all --context certificateArn=<ARN>
-
-# Destroy all stacks
-npx cdk destroy --all
+# Preview production build locally
+npm run preview
 ```
 
-## 🔧 Manual AWS Setup (Phase 9)
+## Project Structure
 
-Before deploying, complete these manual AWS setup steps:
-
-### 1. Route53 Hosted Zone
-
-If not already created:
-```bash
-aws route53 create-hosted-zone \
-  --name stealinglight.hk \
-  --caller-reference $(date +%s)
+```
+stealinglightHK/
+├── src/
+│   ├── main.tsx                  # Application entry point
+│   ├── app/
+│   │   ├── App.tsx              # Main app component
+│   │   └── components/
+│   │       ├── About.tsx        # About section
+│   │       ├── Clients.tsx      # Client showcase
+│   │       ├── Contact.tsx      # Contact section
+│   │       ├── Footer.tsx       # Site footer
+│   │       ├── Hero.tsx         # Hero/landing section
+│   │       ├── Navigation.tsx   # Navigation bar
+│   │       ├── Portfolio.tsx    # Portfolio showcase
+│   │       ├── Services.tsx     # Services section
+│   │       ├── figma/          # Figma utilities
+│   │       └── ui/             # shadcn/ui components
+│   └── styles/
+│       ├── fonts.css           # Custom fonts
+│       ├── index.css           # Main styles
+│       ├── tailwind.css        # Tailwind directives
+│       └── theme.css           # Theme variables
+├── guidelines/                  # Project guidelines
+├── index.html                  # HTML entry point
+├── vite.config.ts             # Vite configuration
+└── package.json               # Dependencies
 ```
 
-Update your domain registrar with the NS records from Route53.
+## Available Scripts
 
-### 2. ACM Certificate (us-east-1)
+| Command           | Description              |
+| ----------------- | ------------------------ |
+| `npm run dev`     | Start development server |
+| `npm run build`   | Build for production     |
+| `npm run preview` | Preview production build |
+| `npm run lint`    | Run ESLint               |
 
-```bash
-aws acm request-certificate \
-  --domain-name stealinglight.hk \
-  --subject-alternative-names "*.stealinglight.hk" \
-  --validation-method DNS \
-  --region us-east-1
-```
+## Component Library
 
-Add the CNAME validation records to Route53, then wait for validation:
-```bash
-aws acm describe-certificate \
-  --certificate-arn <CERTIFICATE_ARN> \
-  --region us-east-1
-```
+The project includes 40+ production-ready components from shadcn/ui:
 
-### 3. SES Email Setup
+### Form Components
+- Button, Input, Textarea, Select, Checkbox, Radio Group
+- Form, Label, Switch, Slider, Input OTP
 
-Verify your domain in SES:
-```bash
-aws ses verify-domain-identity \
-  --domain stealinglight.hk \
-  --region us-west-2
-```
+### Navigation
+- Navigation Menu, Menubar, Breadcrumb, Pagination, Tabs
 
-Add the TXT and MX records to Route53. If in sandbox, also verify the recipient email:
-```bash
-aws ses verify-email-identity \
-  --email-address your-email@example.com
-```
+### Overlay Components
+- Dialog, Sheet, Drawer, Popover, Hover Card, Tooltip
+- Alert Dialog, Command, Context Menu, Dropdown Menu
 
-### 4. GitHub OIDC Provider
+### Data Display
+- Card, Table, Avatar, Badge, Calendar
+- Chart, Progress, Separator, Scroll Area
 
-Create IAM OIDC identity provider for GitHub Actions:
-```bash
-aws iam create-open-id-connect-provider \
-  --url https://token.actions.githubusercontent.com \
-  --client-id-list sts.amazonaws.com \
-  --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
-```
+### Feedback
+- Alert, Toast (Sonner integration)
 
-### 5. GitHub Actions IAM Role
+### Layout
+- Accordion, Carousel, Collapsible, Resizable, Sidebar, Aspect Ratio
 
-Create `github-actions-deploy-role.json`:
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-        },
-        "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:Stealinglight/StealinglightHK:*"
-        }
-      }
-    }
-  ]
-}
-```
+## Development
+
+### Adding UI Components
+
+Use the shadcn CLI to add more components:
 
 ```bash
-aws iam create-role \
-  --role-name github-actions-deploy \
-  --assume-role-policy-document file://github-actions-deploy-role.json
-
-aws iam attach-role-policy \
-  --role-name github-actions-deploy \
-  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+npx shadcn-ui@latest add [component-name]
 ```
 
-### 6. GitHub Repository Secrets
+Components are installed in `src/app/components/ui/` and can be customized directly.
 
-Configure these secrets in your GitHub repository:
+### Code Style
 
-| Secret                     | Description                                  |
-| -------------------------- | -------------------------------------------- |
-| `AWS_DEPLOY_ROLE_ARN`      | ARN of the GitHub Actions IAM role           |
-| `CERTIFICATE_ARN`          | ARN of the ACM certificate                   |
-| `CONTACT_EMAIL`            | Email to receive contact form submissions    |
-| `HUB_DISTRIBUTION_ID`      | CloudFront distribution ID for hub site      |
-| `CREATIVE_DISTRIBUTION_ID` | CloudFront distribution ID for creative site |
-| `SECURITY_DISTRIBUTION_ID` | CloudFront distribution ID for security site |
+- TypeScript strict mode enabled
+- ESLint for code quality
+- Prettier for formatting (configured)
+- Functional components with hooks
+- Tailwind utility classes for styling
 
-## 📦 Initial Deployment (Phase 10)
+### Path Aliases
 
-### 1. Bootstrap CDK
+The project uses the `@` alias for imports:
 
+```typescript
+import { Button } from '@/app/components/ui/button';
+```
+
+## Configuration
+
+### Vite Configuration
+
+Path aliases and React plugin configured in `vite.config.ts`.
+
+### TypeScript Configuration
+
+Strict type checking enabled with modern ES2020 target.
+
+### Tailwind Configuration
+
+Custom theme extensions for consistent design system.
+
+## Browser Support
+
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- ES2020+ features required
+- CSS Grid and Flexbox support required
+
+## Deployment
+
+The application can be deployed to:
+
+- ✅ Vercel (recommended)
+- ✅ Netlify
+- ✅ GitHub Pages
+- ✅ Any static hosting service
+
+Simply run `npm run build` and deploy the `dist/` folder.
+
+### Deployment Examples
+
+**Vercel:**
 ```bash
-npx cdk bootstrap aws://<AWS_ACCOUNT_ID>/us-west-2
+npm install -g vercel
+vercel
 ```
 
-### 2. Deploy Infrastructure
-
+**Netlify:**
 ```bash
-cd infra
-npx cdk deploy --all \
-  --context certificateArn=<YOUR_CERTIFICATE_ARN>
+npm install -g netlify-cli
+netlify deploy
 ```
 
-Note the outputs for:
-- Bucket names (for GitHub Actions)
-- Distribution IDs (for GitHub secrets)
-- API endpoint (for frontend config)
-
-### 3. Build and Deploy Sites
-
-```bash
-# Build all sites
-npm run build:hub
-npm run build:creative
-npm run build:security
-
-# Deploy to S3 (example for hub)
-aws s3 sync apps/hub/dist/ s3://hub-stealinglight-hk/ --delete
-
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation \
-  --distribution-id <DISTRIBUTION_ID> \
-  --paths "/*"
+**GitHub Pages:**
+Add to `vite.config.ts`:
+```typescript
+export default defineConfig({
+  base: '/StealinglightHK/',
+  // ... rest of config
+})
 ```
 
-## ✅ Testing & Validation (Phase 11)
+## Documentation
 
-### Build Tests
+- 📖 [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
+- 📋 [Guidelines](./guidelines/Guidelines.md) - Project guidelines
+- 🙏 [Attributions](./ATTRIBUTIONS.md) - Third-party credits
 
-```bash
-# All apps should build without errors
-npm run build:hub && echo "Hub OK"
-npm run build:creative && echo "Creative OK"
-npm run build:security && echo "Security OK"
+## Development Workflow
 
-# CDK should synth without errors
-cd infra && npx cdk synth
-```
+1. Create a new branch for features: `git checkout -b feature/your-feature`
+2. Make changes and test locally with `npm run dev`
+3. Run linting: `npm run lint`
+4. Build and preview: `npm run build && npm run preview`
+5. Commit changes and create a pull request
 
-### Site Validation Checklist
+## Contributing
 
-For each site (hub, creative, security):
+Contributions are welcome! Please:
 
-- [ ] Site loads over HTTPS
-- [ ] No console errors
-- [ ] Navigation works (all routes accessible)
-- [ ] Mode switch between Creative/Security works
-- [ ] Footer links are correct
-- [ ] Mobile responsive design works
-- [ ] Contact form submits successfully
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with clear commit messages
+4. Test thoroughly
+5. Submit a pull request
 
-### API Validation
+## License
 
-```bash
-# Test contact form endpoint
-curl -X POST https://API_ENDPOINT/v1/contact \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Test User",
-    "email": "test@example.com",
-    "message": "Test message from validation",
-    "source": "creative"
-  }'
-```
+All rights reserved.
 
-### DNS Propagation
+## Contact
 
-```bash
-# Check DNS records
-dig stealinglight.hk
-dig creative.stealinglight.hk
-dig security.stealinglight.hk
-dig www.stealinglight.hk
-```
+For inquiries, please visit the contact section on the website.
 
-## 🔒 Security Considerations
+---
 
-- S3 buckets are private (no public access)
-- CloudFront uses OAC (Origin Access Control) for S3
-- HTTPS only (HTTP redirects to HTTPS)
-- SES sender restricted to noreply@stealinglight.hk
-- Contact form has honeypot spam protection
-- No PII logged in Lambda functions
-- GitHub Actions uses OIDC (no static AWS keys)
-
-## 📝 Content Management
-
-### Adding Blog Posts (Security Site)
-
-Edit `apps/security/src/data/posts.json`:
-```json
-{
-  "id": "your-post-slug",
-  "title": "Your Post Title",
-  "excerpt": "Brief description...",
-  "category": "Cloud Security",
-  "date": "2025-01-15",
-  "readTime": "10 min read",
-  "tags": ["aws", "security"],
-  "content": "# Your Markdown Content\n\nPost body here..."
-}
-```
-
-### Adding Projects (Creative Site)
-
-Edit `apps/creative/src/data/projects.json`:
-```json
-{
-  "id": "project-slug",
-  "title": "Project Title",
-  "category": "commercial",
-  "description": "Brief description...",
-  "fullDescription": "Detailed description...",
-  "thumbnailUrl": "/thumbnails/project.jpg",
-  "videoUrl": "/videos/project.mp4",
-  "client": "Client Name",
-  "year": "2025",
-  "role": "Director",
-  "tags": ["commercial", "drone"]
-}
-```
-
-### Media Files
-
-For production, upload media to S3 and use CloudFront URLs. During development, place files in the `public/` directory of each app.
-
-## 🧹 Maintenance
-
-### Update Dependencies
-
-```bash
-npm update
-npm audit fix
-```
-
-### Clear CloudFront Cache
-
-```bash
-aws cloudfront create-invalidation \
-  --distribution-id <DISTRIBUTION_ID> \
-  --paths "/*"
-```
-
-### View Lambda Logs
-
-```bash
-aws logs tail /aws/lambda/StealingLightApiStack-ContactFormFunction
-```
-
-## 📄 License
-
-Private repository - All rights reserved.
+**Built with** ❤️ **using React + TypeScript + Vite**

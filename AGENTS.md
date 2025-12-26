@@ -1,107 +1,332 @@
-# AGENTS.md
+# AGENTS.md - AI Assistant Context
 
-This repository contains three static SPAs (hub, creative, security) hosted on AWS S3 + CloudFront and deployed with CDKv2 TypeScript and GitHub Actions.
+> This file provides context for AI assistants (Cline, GitHub Copilot, ChatGPT, etc.) working with this codebase.
 
-Codex and other coding agents must read and follow this file before making changes. This file defines commands, structure, conventions, and boundaries. (Codex reads AGENTS.md automatically.) 
+## Project Overview
 
-## Project goals
+**Name**: Stealinglight HK
+**Type**: Portfolio Website / Single Page Application
+**Language**: TypeScript
+**Framework**: React 18 + Vite
+**UI Library**: shadcn/ui + Tailwind CSS
+**Purpose**: Professional portfolio and business showcase website
 
-- Hub site (apex + www) routes users to two “modes”:
-  - Creative: https://creative.stealinglight.hk
-  - Security: https://security.stealinglight.hk
-- Each mode is a separate SPA deployed to its own S3 bucket and CloudFront distribution.
-- Shared top nav includes a mode switch link between Creative and Security.
+## Architecture
 
-## Repo layout
+### Directory Structure
 
-- apps/
-  - hub/        Vite React TS SPA for stealinglight.hk
-  - creative/   Vite React TS SPA for creative.stealinglight.hk
-  - security/   Vite React TS SPA for security.stealinglight.hk (includes markdown blog)
-- packages/
-  - ui/         shared UI components and theme tokens (nav, footer, buttons)
-- infra/        CDKv2 TypeScript app (S3, CloudFront, Route53, ACM, Lambda/API/SES)
+```
+stealinglightHK/
+├── src/
+│   ├── main.tsx              # Application entry point
+│   ├── app/
+│   │   ├── App.tsx           # Main application component
+│   │   └── components/
+│   │       ├── About.tsx     # About section component
+│   │       ├── Clients.tsx   # Client showcase component
+│   │       ├── Contact.tsx   # Contact form/section
+│   │       ├── Footer.tsx    # Site footer
+│   │       ├── Hero.tsx      # Hero/landing section
+│   │       ├── Navigation.tsx # Navigation bar
+│   │       ├── Portfolio.tsx  # Portfolio showcase
+│   │       ├── Services.tsx   # Services section
+│   │       ├── figma/        # Figma-related utilities
+│   │       │   └── ImageWithFallback.tsx
+│   │       └── ui/           # shadcn/ui components (40+ components)
+│   └── styles/
+│       ├── fonts.css         # Custom font definitions
+│       ├── index.css         # Main styles
+│       ├── tailwind.css      # Tailwind base
+│       └── theme.css         # Theme variables
+├── guidelines/
+│   └── Guidelines.md         # Project guidelines
+├── index.html               # HTML entry point
+├── vite.config.ts          # Vite configuration
+├── tsconfig.json           # TypeScript configuration
+└── package.json            # Dependencies and scripts
+```
 
-## Setup
+### Key Components
 
-### Requirements
-- Node.js 20+
-- npm 9+
-- AWS CLI configured for local deploys
-- CDK bootstrap done in target accounts
+1. **Layout Components**
+   - `App.tsx`: Main application shell, orchestrates all sections
+   - `Navigation.tsx`: Site navigation with responsive menu
+   - `Footer.tsx`: Site footer with links and information
 
-### Install
-- From repo root:
-  - `npm ci`
+2. **Content Sections**
+   - `Hero.tsx`: Landing section with primary CTA
+   - `About.tsx`: About/introduction section
+   - `Services.tsx`: Services offered section
+   - `Portfolio.tsx`: Project showcase/gallery
+   - `Clients.tsx`: Client logos/testimonials
+   - `Contact.tsx`: Contact form/information
 
-### Local dev
-- Hub: `npm run dev:hub`
-- Creative: `npm run dev:creative`
-- Security: `npm run dev:security`
+3. **UI Components** (`src/app/components/ui/`)
+   - 40+ shadcn/ui components for consistent design
+   - Includes: buttons, forms, dialogs, cards, navigation, etc.
+   - All components follow shadcn/ui patterns
 
-### Build
-- Hub: `npm run build:hub`
-- Creative: `npm run build:creative`
-- Security: `npm run build:security`
+4. **Utilities**
+   - `ImageWithFallback.tsx`: Robust image loading with fallback handling
 
-### Lint and typecheck
-- `npm run lint`
-- `npm run typecheck`
-- `npm test` (if present)
+## Technology Stack
 
-## Infrastructure
+### Core Technologies
+- **React 18**: UI framework with hooks and modern patterns
+- **TypeScript**: Type-safe JavaScript
+- **Vite**: Build tool and dev server (fast HMR)
 
-### Key constraints
-- S3 buckets must be private.
-- Use CloudFront Origin Access Control (OAC) for S3 origin access.
-- SPA routing must map 403/404 to `/index.html` with 200.
-- Use Route 53 alias records to CloudFront for:
-  - stealinglight.hk
-  - www.stealinglight.hk
-  - creative.stealinglight.hk
-  - security.stealinglight.hk
-- CloudFront requires ACM certificates in us-east-1 for custom domains.
+### UI & Styling
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: High-quality React components
+- **Radix UI**: Accessible component primitives (via shadcn)
+- **Lucide React**: Icon library
 
-### CDK commands
-- In `infra/`:
-  - `npm ci`
-  - `npx cdk synth`
-  - `npx cdk diff`
-  - `npx cdk deploy`
+### State & Forms
+- **React Hook Form**: Form state management
+- **Zod**: Schema validation
 
-## CI/CD
+### Development
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **PostCSS**: CSS processing
 
-- GitHub Actions deploy per app using path filters.
-- Must use OIDC with aws-actions/configure-aws-credentials (no static AWS keys).
-- Deploy sequence:
-  1) Build Vite app to `dist/`
-  2) `aws s3 sync dist/ s3://<bucket>/ --delete`
-  3) CloudFront invalidation
+## Development Patterns
 
-## Code style and conventions
+### Component Structure
+- Functional components with TypeScript
+- Props interfaces defined at component level
+- Hooks for state and side effects
+- Composition over inheritance
 
-- TypeScript everywhere.
-- Prefer simple, readable code over clever abstractions.
-- Keep dependencies minimal.
-- Use React Router for SPA routes.
-- Vite client environment variables must be prefixed with `VITE_`.
+### Styling Approach
+- Tailwind utility classes for styling
+- CSS variables for theming (theme.css)
+- Custom fonts loaded via fonts.css
+- Responsive design with Tailwind breakpoints
 
-## Security boundaries
+### File Naming
+- PascalCase for component files (e.g., `Hero.tsx`)
+- kebab-case for utility/config files
+- Component files include `.tsx` extension
 
-- Do not commit secrets, tokens, or private keys.
-- Do not log PII from contact form submissions.
-- Validate all contact form inputs server-side.
-- Add basic spam prevention (honeypot field + check).
+### Code Style
+- TypeScript strict mode enabled
+- ESLint and Prettier for code quality
+- Functional components preferred
+- Props destructuring common
 
-## Agent workflow expectations
+## Development Workflow
 
-- Make changes in small, reviewable commits.
-- Update README when you change commands or structure.
-- If a task touches multiple areas (apps + infra + CI), create a short plan document (PLANS.md) describing steps and files to change before implementing.
+### Installation
+```bash
+npm install
+```
 
-## Out of scope for v1
+### Development
+```bash
+npm run dev          # Start dev server (default: http://localhost:5173)
+```
 
-- No Amplify.
-- No CMS (use JSON/markdown in repo).
-- No SSR frameworks for now.
-- No real media uploads in git. Use placeholders and document S3 upload steps.
+### Building
+```bash
+npm run build        # Production build
+npm run preview      # Preview production build
+```
+
+### Linting
+```bash
+npm run lint         # Run ESLint
+```
+
+## Configuration Files
+
+### vite.config.ts
+- Aliases configured: `@` → `src/`
+- React plugin enabled
+- Path resolution for TypeScript
+
+### tsconfig.json
+- Strict type checking enabled
+- ES2020 target
+- Path aliases configured
+
+### tailwind.config.js
+- Custom theme extensions
+- Component paths configured
+- shadcn/ui integration
+
+## Common Tasks
+
+### Adding a New Page Section
+1. Create component in `src/app/components/[SectionName].tsx`
+2. Import in `App.tsx`
+3. Add to component composition in App render
+4. Update Navigation if needed
+
+### Adding a UI Component
+1. Use shadcn CLI: `npx shadcn-ui@latest add [component-name]`
+2. Component appears in `src/app/components/ui/`
+3. Import and use in your components
+
+### Styling a Component
+1. Use Tailwind utility classes
+2. Reference theme variables from `theme.css` if needed
+3. Follow existing component patterns for consistency
+
+### Managing Assets
+- Images referenced from public directory
+- Use `ImageWithFallback` component for robust loading
+- Optimize images for web before adding
+
+## Dependencies
+
+### Runtime
+- `react`, `react-dom`: ^18.3.1 - UI framework
+- `@radix-ui/*`: Various versions - Accessible component primitives
+- `lucide-react`: ^0.468.0 - Icons
+- `react-hook-form`: ^7.54.2 - Form management
+- `zod`: ^3.24.1 - Schema validation
+
+### Development
+- `vite`: ^6.0.5 - Build tool
+- `typescript`: ~5.7.2 - Type system
+- `@vitejs/plugin-react`: ^4.3.4 - React support for Vite
+- `tailwindcss`: ^3.4.17 - CSS framework
+- `eslint`: ^9.17.0 - Linting
+- `prettier`: ^3.4.2 - Formatting
+
+### shadcn/ui Components
+The project includes 40+ shadcn/ui components in `src/app/components/ui/`:
+- Form controls: button, input, textarea, select, checkbox, radio, switch
+- Navigation: navigation-menu, menubar, breadcrumb, pagination, tabs
+- Overlays: dialog, sheet, drawer, popover, hover-card, tooltip
+- Feedback: alert, alert-dialog, toast (sonner)
+- Layout: card, separator, scroll-area, resizable, sidebar
+- Data display: table, avatar, badge, calendar, chart, progress
+- And more: accordion, carousel, collapsible, command, context-menu, etc.
+
+## Environment Setup
+
+### Prerequisites
+- Node.js 18+ (for Vite and React 18)
+- npm or yarn package manager
+
+### Local Development
+1. Clone repository
+2. Run `npm install`
+3. Run `npm run dev`
+4. Open http://localhost:5173
+
+### Environment Variables
+Currently no environment variables required for basic operation.
+
+## Project Structure Notes
+
+### Single Page Application
+- This is a SPA with all sections rendered on one page
+- Navigation uses smooth scrolling between sections (if implemented)
+- No routing library needed for current structure
+
+### Component Organization
+- Main sections at `/components` level
+- UI primitives in `/components/ui`
+- Utility components in specialized folders (e.g., `/figma`)
+
+### Styling Organization
+- `index.css`: Main entry point, imports other styles
+- `tailwind.css`: Tailwind directives
+- `theme.css`: CSS custom properties for theming
+- `fonts.css`: Font-face declarations
+
+## Gotchas and Notes
+
+### Vite Path Aliases
+- `@` is aliased to `src/` directory
+- Must update both `vite.config.ts` and `tsconfig.json` for new aliases
+
+### shadcn/ui Components
+- Components are copied into project (not imported from package)
+- Customize components directly in `src/app/components/ui/`
+- Regenerating a component will overwrite customizations
+
+### TypeScript Configuration
+- Strict mode enabled - all types must be defined
+- React JSX transform configured
+- Module resolution set to bundler mode
+
+### Image Handling
+- Use `ImageWithFallback` component for external/unreliable images
+- Provides graceful degradation if images fail to load
+
+### Tailwind CSS
+- Custom theme extends default Tailwind theme
+- Theme variables defined in `theme.css`
+- Use theme values via Tailwind classes (e.g., `bg-primary`)
+
+### Build Output
+- Production builds to `dist/` directory
+- Assets are optimized and hashed for caching
+- Preview build before deploying
+
+## Testing Considerations
+
+Currently no testing framework is configured. Consider adding:
+- Vitest for unit tests
+- Testing Library for component tests
+- Playwright or Cypress for E2E tests
+
+## Deployment
+
+### Build for Production
+```bash
+npm run build
+```
+
+### Preview Production Build
+```bash
+npm run preview
+```
+
+### Deployment Targets
+The application can be deployed to:
+- Vercel (recommended for Vite projects)
+- Netlify
+- GitHub Pages
+- Any static hosting service
+
+Deployment configuration not included in repository - add based on chosen platform.
+
+## Related Files
+
+- [README.md](./README.md) - Project overview and quick start
+- [guidelines/Guidelines.md](./guidelines/Guidelines.md) - Project-specific guidelines
+- [package.json](./package.json) - Dependencies and scripts
+- [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) - Third-party attributions
+
+## AI Assistant Tips
+
+### When Adding Features
+1. Check existing components in `ui/` before creating new ones
+2. Follow TypeScript patterns from existing components
+3. Use Tailwind classes consistently with existing code
+4. Test in dev mode before building
+
+### When Debugging
+1. Check browser console for React errors
+2. Verify imports and path aliases
+3. Check TypeScript errors in IDE
+4. Ensure all dependencies are installed
+
+### When Refactoring
+1. Maintain existing component structure patterns
+2. Update TypeScript types as needed
+3. Test all sections after changes
+4. Keep shadcn/ui components in sync
+
+### Code Generation Best Practices
+- Generate TypeScript, not JavaScript
+- Include proper type definitions
+- Follow existing naming conventions
+- Use functional components with hooks
+- Apply Tailwind classes for styling
