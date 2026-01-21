@@ -4,17 +4,18 @@ A modern, responsive portfolio website built with React, TypeScript, and Vite, s
 
 ## Features
 
-- 🎨 Modern, responsive design with Tailwind CSS
-- ⚡ Lightning-fast development with Vite
-- 🔒 Type-safe with TypeScript
-- 🎭 40+ high-quality UI components from shadcn/ui
-- ♿ Accessible components built on Radix UI
-- 📱 Mobile-first responsive design
-- 🎯 Single Page Application architecture
-- 🖼️ Robust image handling with fallbacks
+- Modern, responsive design with Tailwind CSS
+- Lightning-fast development with Vite + Bun
+- Type-safe with TypeScript
+- 40+ high-quality UI components from shadcn/ui
+- Accessible components built on Radix UI
+- Mobile-first responsive design
+- Single Page Application architecture
+- Robust image handling with fallbacks
 
 ## Tech Stack
 
+- **Runtime**: Bun
 - **Framework**: React 18
 - **Language**: TypeScript
 - **Build Tool**: Vite
@@ -27,8 +28,16 @@ A modern, responsive portfolio website built with React, TypeScript, and Vite, s
 
 ### Prerequisites
 
-- Node.js 18 or higher
-- npm or yarn
+- [Bun](https://bun.sh) (latest version)
+
+**Install Bun:**
+```bash
+# macOS/Linux
+curl -fsSL https://bun.sh/install | bash
+
+# Windows (PowerShell)
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
 
 ### Installation
 
@@ -38,14 +47,14 @@ git clone https://github.com/Stealinglight/StealinglightHK.git
 cd StealinglightHK
 
 # Install dependencies
-npm install
+bun install
 ```
 
 ### Development
 
 ```bash
 # Start development server
-npm run dev
+bun dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -54,10 +63,10 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ```bash
 # Create production build
-npm run build
+bun build
 
 # Preview production build locally
-npm run preview
+bun preview
 ```
 
 ## Project Structure
@@ -87,17 +96,19 @@ stealinglightHK/
 ├── guidelines/                  # Project guidelines
 ├── index.html                  # HTML entry point
 ├── vite.config.ts             # Vite configuration
+├── tsconfig.json              # TypeScript configuration
+├── bun.lockb                  # Bun lockfile
 └── package.json               # Dependencies
 ```
 
 ## Available Scripts
 
-| Command           | Description              |
-| ----------------- | ------------------------ |
-| `npm run dev`     | Start development server |
-| `npm run build`   | Build for production     |
-| `npm run preview` | Preview production build |
-| `npm run lint`    | Run ESLint               |
+| Command       | Description              |
+| ------------- | ------------------------ |
+| `bun dev`     | Start development server |
+| `bun build`   | Build for production     |
+| `bun preview` | Preview production build |
+| `bun lint`    | Run ESLint               |
 
 ## Component Library
 
@@ -131,7 +142,7 @@ The project includes 40+ production-ready components from shadcn/ui:
 Use the shadcn CLI to add more components:
 
 ```bash
-npx shadcn-ui@latest add [component-name]
+bunx shadcn-ui@latest add [component-name]
 ```
 
 Components are installed in `src/app/components/ui/` and can be customized directly.
@@ -160,7 +171,7 @@ Path aliases and React plugin configured in `vite.config.ts`.
 
 ### TypeScript Configuration
 
-Strict type checking enabled with modern ES2020 target.
+Strict type checking enabled with modern ES2022 target.
 
 ### Tailwind Configuration
 
@@ -176,24 +187,24 @@ Custom theme extensions for consistent design system.
 
 The application can be deployed to:
 
-- ✅ Vercel (recommended)
-- ✅ Netlify
-- ✅ GitHub Pages
-- ✅ Any static hosting service
+- Vercel (recommended)
+- Netlify
+- GitHub Pages
+- Any static hosting service
 
-Simply run `npm run build` and deploy the `dist/` folder.
+Simply run `bun build` and deploy the `dist/` folder.
 
 ### Deployment Examples
 
 **Vercel:**
 ```bash
-npm install -g vercel
+bun add -g vercel
 vercel
 ```
 
 **Netlify:**
 ```bash
-npm install -g netlify-cli
+bun add -g netlify-cli
 netlify deploy
 ```
 
@@ -208,16 +219,16 @@ export default defineConfig({
 
 ## Documentation
 
-- 📖 [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
-- 📋 [Guidelines](./guidelines/Guidelines.md) - Project guidelines
-- 🙏 [Attributions](./ATTRIBUTIONS.md) - Third-party credits
+- [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
+- [Guidelines](./guidelines/Guidelines.md) - Project guidelines
+- [Attributions](./ATTRIBUTIONS.md) - Third-party credits
 
 ## Development Workflow
 
 1. Create a new branch for features: `git checkout -b feature/your-feature`
-2. Make changes and test locally with `npm run dev`
-3. Run linting: `npm run lint`
-4. Build and preview: `npm run build && npm run preview`
+2. Make changes and test locally with `bun dev`
+3. Run linting: `bun lint`
+4. Build and preview: `bun build && bun preview`
 5. Commit changes and create a pull request
 
 ## Contributing
@@ -240,4 +251,4 @@ For inquiries, please visit the contact section on the website.
 
 ---
 
-**Built with** ❤️ **using React + TypeScript + Vite**
+**Built with React + TypeScript + Vite, powered by Bun**
