@@ -21,22 +21,21 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build Security app
-        run: npm run build:security
+        run: bun run build:security
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -51,7 +50,7 @@ jobs:
             --cache-control "public,max-age=31536000,immutable" \
             --exclude "index.html" \
             --exclude "*.json"
-          
+
           aws s3 cp apps/security/dist/index.html s3://${{ env.BUCKET_NAME }}/index.html \
             --cache-control "public,max-age=0,must-revalidate"
 

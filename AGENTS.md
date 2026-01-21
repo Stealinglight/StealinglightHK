@@ -7,6 +7,7 @@
 **Name**: Stealinglight HK
 **Type**: Portfolio Website / Single Page Application
 **Language**: TypeScript
+**Runtime**: Bun
 **Framework**: React 18 + Vite
 **UI Library**: shadcn/ui + Tailwind CSS
 **Purpose**: Professional portfolio and business showcase website
@@ -43,6 +44,7 @@ stealinglightHK/
 ├── index.html               # HTML entry point
 ├── vite.config.ts          # Vite configuration
 ├── tsconfig.json           # TypeScript configuration
+├── bun.lockb               # Bun lockfile
 └── package.json            # Dependencies and scripts
 ```
 
@@ -72,6 +74,7 @@ stealinglightHK/
 ## Technology Stack
 
 ### Core Technologies
+- **Bun**: JavaScript runtime and package manager
 - **React 18**: UI framework with hooks and modern patterns
 - **TypeScript**: Type-safe JavaScript
 - **Vite**: Build tool and dev server (fast HMR)
@@ -120,23 +123,23 @@ stealinglightHK/
 
 ### Installation
 ```bash
-npm install
+bun install
 ```
 
 ### Development
 ```bash
-npm run dev          # Start dev server (default: http://localhost:5173)
+bun dev          # Start dev server (default: http://localhost:5173)
 ```
 
 ### Building
 ```bash
-npm run build        # Production build
-npm run preview      # Preview production build
+bun build        # Production build
+bun preview      # Preview production build
 ```
 
 ### Linting
 ```bash
-npm run lint         # Run ESLint
+bun lint         # Run ESLint
 ```
 
 ## Configuration Files
@@ -148,7 +151,7 @@ npm run lint         # Run ESLint
 
 ### tsconfig.json
 - Strict type checking enabled
-- ES2020 target
+- ES2022 target
 - Path aliases configured
 
 ### tailwind.config.js
@@ -165,7 +168,7 @@ npm run lint         # Run ESLint
 4. Update Navigation if needed
 
 ### Adding a UI Component
-1. Use shadcn CLI: `npx shadcn-ui@latest add [component-name]`
+1. Use shadcn CLI: `bunx shadcn-ui@latest add [component-name]`
 2. Component appears in `src/app/components/ui/`
 3. Import and use in your components
 
@@ -209,13 +212,12 @@ The project includes 40+ shadcn/ui components in `src/app/components/ui/`:
 ## Environment Setup
 
 ### Prerequisites
-- Node.js 18+ (for Vite and React 18)
-- npm or yarn package manager
+- Bun (latest version)
 
 ### Local Development
 1. Clone repository
-2. Run `npm install`
-3. Run `npm run dev`
+2. Run `bun install`
+3. Run `bun dev`
 4. Open http://localhost:5173
 
 ### Environment Variables
@@ -280,12 +282,12 @@ Currently no testing framework is configured. Consider adding:
 
 ### Build for Production
 ```bash
-npm run build
+bun build
 ```
 
 ### Preview Production Build
 ```bash
-npm run preview
+bun preview
 ```
 
 ### Deployment Targets
