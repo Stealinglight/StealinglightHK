@@ -47,15 +47,26 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(',');
 
 exports.handler = async (event) => {
   const origin = event.headers?.origin || event.headers?.Origin || '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  
-  const headers = {
-    'Access-Control-Allow-Origin': allowedOrigin,
+  const isAllowedOrigin = origin && ALLOWED_ORIGINS.includes(origin);
+
+  const baseHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json',
   };
 
+  if (!isAllowedOrigin) {
+    return {
+      statusCode: 403,
+      headers: baseHeaders,
+      body: JSON.stringify({ error: 'CORS origin not allowed' }),
+    };
+  }
+
+  const headers = {
+    ...baseHeaders,
+    'Access-Control-Allow-Origin': origin,
+  };
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
