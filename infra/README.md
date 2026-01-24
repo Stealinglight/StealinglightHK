@@ -2,101 +2,103 @@
 
 AWS CDK infrastructure for the stealinglight.hk portfolio site.
 
-## Prerequisites
+## Overview
 
-- AWS CLI configured with profile `stealinglight+website`
-- Node.js 20+
-- Bun (or npm)
+This infrastructure includes:
 
-## Setup
+| Stack | Description |
+|-------|-------------|
+| `stealinglight-amplify` | AWS Amplify hosting with GitHub CI/CD |
+| `stealinglight-contact` | Contact form API (API Gateway + Lambda + SES) |
+
+## Quick Start
 
 ```bash
 cd infra
-bun install
+npm install
+export CONTACT_EMAIL="your-email@example.com"
+cdk deploy --all
 ```
 
-## SES Domain Verification
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-Before deploying, verify your domain in SES so you can send emails from @stealinglight.hk addresses.
+## Architecture
 
-### 1. Start domain verification
+```
+┌─────────────────────────────────────────────────────┐
+│                    GitHub                            │
+│  Stealinglight/stealinglightHK (main branch)        │
+└─────────────────┬───────────────────────────────────┘
+                  │ Auto-deploy on push
+                  ▼
+┌─────────────────────────────────────────────────────┐
+│               AWS Amplify                           │
+│  - Builds frontend (npm ci && npm run build)        │
+│  - Hosts static assets                              │
+│  - SPA routing via rewrite rules                    │
+└─────────────────────────────────────────────────────┘
 
-```bash
-aws ses verify-domain-identity \
-  --domain stealinglight.hk \
-  --profile stealinglight+website \
-  --region us-west-2
+┌─────────────────────────────────────────────────────┐
+│              Contact Form API                       │
+│  API Gateway (REST) → Lambda → SES                  │
+│  POST /contact                                      │
+└─────────────────────────────────────────────────────┘
 ```
 
-This returns a verification token. Add it as a TXT record in your DNS (101domain.com):
+## Stack Details
 
-| Type | Name | Value |
-|------|------|-------|
-| TXT | `_amazonses.stealinglight.hk` | `<verification-token>` |
+### Amplify Hosting Stack
 
-### 2. Check verification status
+- **Build spec**: Uses npm (Amplify default) for reliable builds
+- **SPA routing**: Configured rewrite rules for React Router
+- **GitHub integration**: Connect via Amplify Console after deployment
 
-```bash
-aws ses get-identity-verification-attributes \
-  --identities stealinglight.hk \
-  --profile stealinglight+website \
-  --region us-west-2
-```
+### Contact Form Stack
 
-Wait until status shows `Success`.
-
-### 3. (Optional) Set up DKIM for better deliverability
-
-```bash
-aws ses verify-domain-dkim \
-  --domain stealinglight.hk \
-  --profile stealinglight+website \
-  --region us-west-2
-```
-
-Add the returned CNAME records to your DNS.
-
-## Deploy
-
-```bash
-# Bootstrap CDK (first time only)
-AWS_PROFILE=stealinglight+website cdk bootstrap
-
-# Deploy the stack
-AWS_PROFILE=stealinglight+website cdk deploy
-```
-
-## After Deployment
-
-The deployment outputs the API endpoint URL. Create a `.env` file in the project root:
-
-```bash
-VITE_CONTACT_API_URL=https://xxx.execute-api.us-west-2.amazonaws.com/contact
-```
+- **API Gateway REST API**: With proper CORS (no wildcards)
+- **Lambda (Node.js 20)**: Inline handler for contact form
+- **SES integration**: Sends emails to configured address
+- **Throttling**: 10 req/s rate limit, 20 burst limit
 
 ## Configuration
 
-Contact form submissions:
-- **From**: noreply@stealinglight.hk
-- **To**: stealinglight+website@gmail.com
-- **Reply-To**: The submitter's email
+All configuration is managed via `cdk.json` context:
 
-## Stack Resources
+| Key | Description |
+|-----|-------------|
+| `appName` | Application name (stealinglight) |
+| `domainName` | Domain (stealinglight.hk) |
+| `repositoryOwner` | GitHub owner |
+| `repositoryName` | GitHub repo name |
+| `branch` | Branch to deploy (main) |
+| `environment` | Environment name (production) |
 
-- **Lambda Function**: Handles contact form submissions
-- **API Gateway HTTP API**: Public endpoint with CORS
-- **IAM Role**: SES send email permissions
+## Environment Variables
 
-## Testing
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `CONTACT_EMAIL` | Yes | Email address for contact form submissions |
+| `AWS_PROFILE` | Recommended | AWS CLI profile to use |
+
+## Governance
+
+All resources are tagged with:
+- `Project`: stealinglight
+- `Environment`: production
+- `ManagedBy`: CDK
+- `Repository`: Stealinglight/stealinglightHK
+
+## Testing the Contact Form
 
 ```bash
-curl -X POST https://YOUR_API_URL/contact \
+curl -X POST https://YOUR_API_URL/production/contact \
   -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com","subject":"Test","message":"Hello"}'
+  -H "Origin: http://localhost:5173" \
+  -d '{"name":"Test","email":"test@example.com","message":"Hello"}'
 ```
 
 ## Cleanup
 
 ```bash
-AWS_PROFILE=stealinglight+website cdk destroy
+cdk destroy --all
 ```

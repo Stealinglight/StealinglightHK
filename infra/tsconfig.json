@@ -21,6 +21,6 @@
     "rootDir": ".",
     "skipLibCheck": true
   },
-  "include": ["bin/**/*", "lib/**/*", "lambda/**/*"],
+  "include": ["bin/**/*.ts", "lib/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,147 +1,121 @@
-# Stealinglight Deployment Guide
+# Deployment Guide
 
-## Contact Form Setup
+## Prerequisites
 
-### SES Domain Verification
+- AWS CLI configured with appropriate credentials
+- Node.js 18+ installed
+- AWS CDK CLI installed (`npm install -g aws-cdk`)
 
-**Verification Token:** `aQxdAQJYYk3hVN6OaFMJsgwsaJ6lkbilz9zhdbwtAKg=`
+## Environment Setup
 
-Add this DNS TXT record (in whichever DNS provider manages your nameservers):
-
-| Type | Name | Value |
-|------|------|-------|
-| TXT | `_amazonses.stealinglight.hk` | `aQxdAQJYYk3hVN6OaFMJsgwsaJ6lkbilz9zhdbwtAKg=` |
-
-**Note:** As of Jan 2026, DNS is on Wix nameservers (NS7.WIXDNS.NET, NS6.WIXDNS.NET) with pending changes. Add the TXT record wherever your DNS ends up after propagation.
-
-### Check Verification Status
+1. Set required environment variables:
 
 ```bash
-aws ses get-identity-verification-attributes \
-  --identities stealinglight.hk \
-  --profile stealinglight+website \
-  --region us-west-2
+export CONTACT_EMAIL="your-email@example.com"
+export AWS_PROFILE="stealinglight+website"  # or your AWS profile
+export AWS_REGION="us-west-2"
 ```
 
-Look for `"VerificationStatus": "Success"`.
+2. Verify SES email identity is configured for the contact email address.
 
-### Deploy CDK Stack
+## First-Time Deployment
 
-Once domain is verified:
+### 1. Bootstrap CDK (one-time setup)
 
 ```bash
 cd infra
-
-# Bootstrap (first time only)
-AWS_PROFILE=stealinglight+website cdk bootstrap
-
-# Deploy
-AWS_PROFILE=stealinglight+website cdk deploy
+npm install
+cdk bootstrap
 ```
 
-### Configure Frontend
-
-After deployment, copy the `ContactEndpoint` output URL and create `.env` in project root:
-
-```
-VITE_CONTACT_API_URL=https://xxx.execute-api.us-west-2.amazonaws.com/contact
-```
-
-Then rebuild and deploy the frontend.
-
----
-
-## Static Site Deployment (S3 + CloudFront)
-
-### Create S3 Bucket
+### 2. Deploy Infrastructure
 
 ```bash
-aws s3 mb s3://stealinglight-hk-website \
-  --profile stealinglight+website \
-  --region us-west-2
+cdk deploy --all
 ```
 
-### Configure for Static Hosting
+This creates:
+- **Amplify App** - Ready for GitHub connection
+- **Contact API** - API Gateway + Lambda + SES integration
+
+### 3. Connect GitHub Repository
+
+After deployment, connect your GitHub repository via the AWS Console:
+
+1. Open the Amplify Console URL from the deployment output
+2. Click "Connect branch"
+3. Select "GitHub" and authorize Amplify
+4. Choose the `Stealinglight/stealinglightHK` repository
+5. Select the `main` branch
+6. Review and confirm the build settings (already configured)
+7. Save and deploy
+
+### 4. Update CORS Origins (After First Amplify Build)
+
+Once your Amplify app has a URL (e.g., `main.d1234567.amplifyapp.com`):
+
+1. Add the Amplify domain to `allowedOrigins` in `bin/app.ts`
+2. Redeploy the contact stack: `cdk deploy stealinglight-contact`
+
+## Subsequent Deployments
+
+### Code Changes (Frontend)
+
+Push to GitHub - Amplify auto-deploys on push to `main`.
+
+### Infrastructure Changes
 
 ```bash
-aws s3 website s3://stealinglight-hk-website \
-  --index-document index.html \
-  --error-document index.html \
-  --profile stealinglight+website
-```
-
-### Build and Upload
-
-```bash
-# Build
-bun run build
-
-# Upload
-aws s3 sync dist/ s3://stealinglight-hk-website \
-  --profile stealinglight+website \
-  --delete
-```
-
-### CloudFront Distribution
-
-Create a CloudFront distribution pointing to the S3 bucket with:
-- Origin: S3 bucket
-- Default root object: `index.html`
-- Custom error response: 403/404 → `/index.html` (for SPA routing)
-- SSL certificate for stealinglight.hk (ACM in us-east-1)
-- Alternate domain names: `stealinglight.hk`, `www.stealinglight.hk`
-
-### DNS Records (after nameserver propagation)
-
-Point your domain to CloudFront:
-
-| Type | Name | Value |
-|------|------|-------|
-| A | `stealinglight.hk` | CloudFront distribution (alias) |
-| CNAME | `www.stealinglight.hk` | CloudFront distribution domain |
-
----
-
-## Summary of DNS Records Needed
-
-| Type | Name | Value | Purpose |
-|------|------|-------|---------|
-| TXT | `_amazonses.stealinglight.hk` | `aQxdAQJYYk3hVN6OaFMJsgwsaJ6lkbilz9zhdbwtAKg=` | SES verification |
-| A/ALIAS | `stealinglight.hk` | CloudFront distribution | Website |
-| CNAME | `www.stealinglight.hk` | CloudFront domain | Website www |
-
----
-
-## Contact Form Configuration
-
-- **From:** noreply@stealinglight.hk
-- **To:** stealinglight+website@gmail.com
-- **Reply-To:** Submitter's email address
-
----
-
-## Useful Commands
-
-```bash
-# Check SES verification
-aws ses get-identity-verification-attributes \
-  --identities stealinglight.hk \
-  --profile stealinglight+website \
-  --region us-west-2
-
-# List SES identities
-aws ses list-identities \
-  --profile stealinglight+website \
-  --region us-west-2
-
-# Test contact form
-curl -X POST https://YOUR_API_URL/contact \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com","subject":"Test","message":"Hello"}'
-
-# CDK commands
 cd infra
-AWS_PROFILE=stealinglight+website cdk diff      # Preview changes
-AWS_PROFILE=stealinglight+website cdk deploy    # Deploy
-AWS_PROFILE=stealinglight+website cdk destroy   # Tear down
+cdk diff        # Preview changes
+cdk deploy --all  # Apply changes
 ```
+
+## Stack Outputs
+
+After deployment, note these outputs:
+
+| Output | Description |
+|--------|-------------|
+| `AmplifyAppId` | Amplify application ID |
+| `AmplifyDefaultDomain` | Default Amplify domain |
+| `AmplifyConsoleUrl` | Link to Amplify Console |
+| `ContactApiUrl` | Base URL for contact API |
+| `ContactEndpoint` | Full contact form endpoint |
+
+## Contact Form Integration
+
+Update your frontend to use the contact API:
+
+```typescript
+// src/config.ts or .env
+const CONTACT_API = 'https://xxx.execute-api.us-west-2.amazonaws.com/production/contact';
+
+// Submit form
+const response = await fetch(CONTACT_API, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name, email, message }),
+});
+```
+
+## Troubleshooting
+
+### CORS Errors
+
+If you see CORS errors:
+1. Check that your frontend origin is in `allowedOrigins`
+2. Redeploy the contact stack
+3. Hard refresh your browser
+
+### Contact Form Not Sending
+
+1. Verify CONTACT_EMAIL is set and SES identity is verified
+2. Check CloudWatch Logs for Lambda errors
+3. Ensure SES is out of sandbox mode (or recipient is verified)
+
+### Amplify Build Failures
+
+1. Check Amplify Console build logs
+2. Verify `npm ci` and `npm run build` work locally
+3. Check environment variables are set in Amplify Console
