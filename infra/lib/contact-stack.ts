@@ -45,6 +45,16 @@ const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(',');
 
+// Sanitize user input to prevent HTML injection
+const escapeHtml = (str) => {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
 exports.handler = async (event) => {
   const origin = event.headers?.origin || event.headers?.Origin || '';
   const isAllowedOrigin = origin && ALLOWED_ORIGINS.includes(origin);
@@ -95,19 +105,25 @@ exports.handler = async (event) => {
     const MAX_SUBJECT_LENGTH = 200;
     const MAX_MESSAGE_LENGTH = 5000;
 
-    if (
-      name.length > MAX_NAME_LENGTH ||
-      message.length > MAX_MESSAGE_LENGTH ||
-      (subject && subject.length > MAX_SUBJECT_LENGTH)
-    ) {
+    const lengthErrors = [];
+    if (name.length > MAX_NAME_LENGTH) lengthErrors.push(\`name (max \${MAX_NAME_LENGTH} chars)\`);
+    if (message.length > MAX_MESSAGE_LENGTH) lengthErrors.push(\`message (max \${MAX_MESSAGE_LENGTH} chars)\`);
+    if (subject && subject.length > MAX_SUBJECT_LENGTH) lengthErrors.push(\`subject (max \${MAX_SUBJECT_LENGTH} chars)\`);
+    if (lengthErrors.length > 0) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'One or more fields exceed the maximum allowed length' }),
+        body: JSON.stringify({ error: \`Field(s) exceed maximum length: \${lengthErrors.join(', ')}\` }),
       };
     }
-    const emailSubject = subject || \`Contact Form: \${name}\`;
-    
+    // Sanitize inputs for email subject and HTML body
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message);
+    const safeSubject = subject ? escapeHtml(subject) : null;
+
+    const emailSubject = safeSubject || \`Contact Form: \${safeName}\`;
+
     await ses.send(new SendEmailCommand({
       Source: CONTACT_EMAIL,
       Destination: { ToAddresses: [CONTACT_EMAIL] },
@@ -121,10 +137,10 @@ exports.handler = async (event) => {
           Html: {
             Data: \`
               <h2>New Contact Form Submission</h2>
-              <p><strong>Name:</strong> \${name}</p>
-              <p><strong>Email:</strong> <a href="mailto:\${email}">\${email}</a></p>
+              <p><strong>Name:</strong> \${safeName}</p>
+              <p><strong>Email:</strong> <a href="mailto:\${safeEmail}">\${safeEmail}</a></p>
               <h3>Message:</h3>
-              <p>\${message.replace(/\\n/g, '<br>')}</p>
+              <p>\${safeMessage.replace(/\\n/g, '<br>')}</p>
             \`,
           },
         },
@@ -155,11 +171,14 @@ exports.handler = async (event) => {
       description: 'Contact form handler for stealinglight.hk',
     });
 
-    // Grant SES permissions
+    // Grant SES permissions scoped to verified identities
     contactFunction.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ses:SendEmail', 'ses:SendRawEmail'],
-        resources: ['*'],
+        resources: [
+          `arn:aws:ses:${this.region}:${this.account}:identity/${props.contactEmail}`,
+          `arn:aws:ses:${this.region}:${this.account}:identity/${props.appName}.hk`,
+        ],
       })
     );
 

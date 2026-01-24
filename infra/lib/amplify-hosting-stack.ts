@@ -24,6 +24,10 @@ export class AmplifyHostingStack extends cdk.Stack {
       platform: 'WEB',
       
       // Build specification using npm (Amplify default)
+      // NOTE: Intentionally using npm for Amplify builds for reliability.
+      // Bun is used for local development. Both use the same package.json
+      // and produce identical builds. npm ci ensures reproducible builds
+      // on Amplify's infrastructure.
       buildSpec: `
 version: 1
 frontend:

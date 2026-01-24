@@ -119,3 +119,72 @@ If you see CORS errors:
 1. Check Amplify Console build logs
 2. Verify `npm ci` and `npm run build` work locally
 3. Check environment variables are set in Amplify Console
+
+## SES Setup
+
+Amazon SES (Simple Email Service) requires identity verification before you can send emails.
+
+### Understanding Sandbox Mode
+
+**Important:** New AWS accounts start in SES sandbox mode with these restrictions:
+- You can only send emails to verified email addresses
+- You're limited to 200 emails per 24-hour period
+- You're limited to 1 email per second
+
+To move to production mode, you must request production access via the AWS Console.
+
+### Option 1: Verify Email Identity (Quick Start)
+
+For development/testing, verify individual email addresses:
+
+1. Open AWS Console → SES → Verified identities
+2. Click "Create identity" → Select "Email address"
+3. Enter your `CONTACT_EMAIL` address
+4. Check your inbox and click the verification link
+5. (If in sandbox mode) Also verify any recipient email addresses
+
+### Option 2: Verify Domain Identity (Production)
+
+For production, verify your entire domain:
+
+1. Open AWS Console → SES → Verified identities
+2. Click "Create identity" → Select "Domain"
+3. Enter your domain (e.g., `stealinglight.hk`)
+4. Choose "Easy DKIM" for improved deliverability
+5. Copy the CNAME records provided by SES
+6. Add these DNS records to your domain registrar:
+   - 3 DKIM CNAME records (for email authentication)
+   - 1 optional MX record (if receiving emails)
+7. Wait for verification (can take up to 72 hours)
+
+### Request Production Access
+
+Once your identity is verified and you're ready for production:
+
+1. Open AWS Console → SES → Account dashboard
+2. Click "Request production access"
+3. Fill out the form with:
+   - Use case description
+   - Expected email volume
+   - How you handle bounces and complaints
+4. AWS typically responds within 24 hours
+
+### Verify SES Configuration
+
+```bash
+# List verified identities
+aws ses list-identities --region us-west-2
+
+# Check identity verification status
+aws ses get-identity-verification-attributes \
+  --identities your-email@example.com \
+  --region us-west-2
+
+# Send a test email (only works if both sender and recipient are verified in sandbox)
+aws ses send-email \
+  --from verified-sender@example.com \
+  --to verified-recipient@example.com \
+  --subject "Test Email" \
+  --text "This is a test." \
+  --region us-west-2
+```
