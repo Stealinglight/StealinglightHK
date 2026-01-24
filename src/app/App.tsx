@@ -6,10 +6,11 @@ import { About } from './components/About';
 import { Services } from './components/Services';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { Toaster } from 'sonner';
 
 export default function App() {
   return (
-    <div className="size-full">
+    <div className="size-full bg-cinematic-black">
       <Navigation />
       <Hero />
       <Portfolio />
@@ -18,6 +19,16 @@ export default function App() {
       <Services />
       <Contact />
       <Footer />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: '#141414',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#fafafa',
+          },
+        }}
+      />
     </div>
   );
 }

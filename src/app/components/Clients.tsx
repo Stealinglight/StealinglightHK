@@ -1,18 +1,26 @@
 import { motion } from 'motion/react';
 
 const clients = [
-  'Tencent',
-  'Intel',
-  'Lenovo',
-  'Burton',
-  'Toyota',
-  'Volkswagen',
-  'Audi',
+  { name: 'Tencent', logo: '/logos/tencent.svg' },
+  { name: 'Intel', logo: '/logos/intel.svg' },
+  { name: 'Lenovo', logo: '/logos/lenovo.svg' },
+  { name: 'Burton', logo: '/logos/burton.svg' },
+  { name: 'Toyota', logo: '/logos/toyota.svg' },
+  { name: 'Volkswagen', logo: '/logos/volkswagen.svg' },
+  { name: 'Audi', logo: '/logos/audi.svg' },
+  { name: 'Vogue', logo: '/logos/vogue.svg' },
+  { name: 'Puma', logo: '/logos/puma.svg' },
+  { name: 'Converse', logo: '/logos/converse.svg' },
+  { name: 'Coach', logo: '/logos/coach.svg' },
+  { name: 'Calvin Klein', logo: '/logos/calvin-klein.svg' },
+  { name: 'DJI', logo: '/logos/dji.svg' },
+  { name: 'Aperture', logo: '/logos/aperture.svg' },
+  { name: 'Netflix', logo: '/logos/netflix.svg' },
 ];
 
 export function Clients() {
   return (
-    <section className="py-16 md:py-24 bg-neutral-50 border-y border-neutral-200">
+    <section className="py-16 md:py-24 bg-cinematic-black border-y border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -21,7 +29,7 @@ export function Clients() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h3 className="text-sm tracking-widest text-neutral-500">TRUSTED BY</h3>
+          <h3 className="text-sm tracking-widest text-white/40">TRUSTED BY</h3>
         </motion.div>
 
         <motion.div
@@ -29,20 +37,23 @@ export function Clients() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center"
+          className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 md:gap-x-12 md:gap-y-8"
         >
           {clients.map((client, index) => (
             <motion.div
-              key={client}
-              initial={{ opacity: 0, y: 20 }}
+              key={client.name}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="flex items-center justify-center"
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className="group"
             >
-              <div className="text-neutral-400 hover:text-neutral-600 transition-colors duration-300 text-center">
-                <span className="text-lg md:text-xl tracking-wider">{client}</span>
-              </div>
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="h-8 md:h-10 w-auto text-white/30 opacity-30 group-hover:opacity-60 transition-opacity duration-300"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             </motion.div>
           ))}
         </motion.div>
