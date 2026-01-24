@@ -43,7 +43,7 @@ test.describe('Stealinglight Portfolio', () => {
     
     // Scroll to bottom to ensure lazy-loaded content is loaded
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(500);
+    await page.waitForLoadState('networkidle');
     
     // Contact section should exist somewhere on the page
     const hasContact = await contactSection.count() > 0;
