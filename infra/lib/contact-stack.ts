@@ -72,6 +72,21 @@ exports.handler = async (event) => {
       };
     }
 
+    const MAX_NAME_LENGTH = 200;
+    const MAX_SUBJECT_LENGTH = 200;
+    const MAX_MESSAGE_LENGTH = 5000;
+
+    if (
+      name.length > MAX_NAME_LENGTH ||
+      message.length > MAX_MESSAGE_LENGTH ||
+      (subject && subject.length > MAX_SUBJECT_LENGTH)
+    ) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'One or more fields exceed the maximum allowed length' }),
+      };
+    }
     const emailSubject = subject || \`Contact Form: \${name}\`;
     
     await ses.send(new SendEmailCommand({
