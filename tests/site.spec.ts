@@ -46,8 +46,8 @@ test.describe('Stealinglight Portfolio', () => {
     await page.waitForLoadState('networkidle');
     
     // Contact section should exist somewhere on the page
-    const hasContact = await contactSection.count() > 0;
-    expect(hasContact || true).toBeTruthy(); // Pass if contact exists or if page loads
+    const hasContact = (await contactSection.count()) > 0;
+    expect(hasContact).toBeTruthy(); // Ensure contact section exists
   });
 
   test('no console errors on load', async ({ page }) => {
