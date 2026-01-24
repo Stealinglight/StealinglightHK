@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, type MouseEvent } from 'react';
 
 interface ReelProps {
   videoSrc?: string;
@@ -47,7 +47,7 @@ export function Reel({
     }
   };
 
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleProgressClick = (e: MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
       const rect = e.currentTarget.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
