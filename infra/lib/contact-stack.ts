@@ -40,7 +40,6 @@ export class ContactFormStack extends cdk.Stack {
                 platform: 'node',
                 target: 'node20',
                 outfile: path.join(outputDir, 'index.js'),
-                external: ['@aws-sdk/*'],
               });
               return true;
             },
