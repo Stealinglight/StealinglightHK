@@ -54,7 +54,7 @@ frontend:
       // SPA rewrite rules for React Router
       customRules: [
         {
-          source: '</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|mp4|webm)$)([^.]+$)/>',
+          source: '/^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|mp4|webm)$)([^.]+$)/',
           target: '/index.html',
           status: '200',
         },
