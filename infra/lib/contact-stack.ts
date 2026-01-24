@@ -72,6 +72,14 @@ exports.handler = async (event) => {
       };
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid email format' }),
+      };
+    }
     const MAX_NAME_LENGTH = 200;
     const MAX_SUBJECT_LENGTH = 200;
     const MAX_MESSAGE_LENGTH = 5000;
