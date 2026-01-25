@@ -2,7 +2,7 @@ const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 
 const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(',');
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
 
 // Sanitize user input to prevent HTML injection
 const escapeHtml = (str) => {
@@ -12,6 +12,11 @@ const escapeHtml = (str) => {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+};
+
+// Strip newlines to prevent header injection
+const stripNewlines = (str) => {
+  return str.replace(/[\r\n]/g, '');
 };
 
 exports.handler = async (event) => {
@@ -58,10 +63,11 @@ exports.handler = async (event) => {
       };
     }
 
-    // Simple email validation - intentionally basic for a contact form
-    // More complex validation could reject valid emails; SES will reject invalid addresses at send time
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Email validation: Check format and prevent header injection
+    // Strip any newlines to prevent email header injection attacks
+    const sanitizedEmail = stripNewlines(email.trim());
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(sanitizedEmail)) {
       return {
         statusCode: 400,
         headers,
@@ -86,22 +92,22 @@ exports.handler = async (event) => {
     }
 
     // Sanitize inputs for email subject and HTML body
-    const safeName = escapeHtml(name);
-    const safeEmail = escapeHtml(email);
-    const safeMessage = escapeHtml(message);
-    const safeSubject = subject ? escapeHtml(subject) : null;
+    const safeName = escapeHtml(name.trim());
+    const safeEmail = escapeHtml(sanitizedEmail);
+    const safeMessage = escapeHtml(message.trim());
+    const safeSubject = subject ? stripNewlines(escapeHtml(subject.trim())) : null;
 
     const emailSubject = safeSubject || `Contact Form: ${safeName}`;
 
     await ses.send(new SendEmailCommand({
       Source: CONTACT_EMAIL,
       Destination: { ToAddresses: [CONTACT_EMAIL] },
-      ReplyToAddresses: [email],
+      ReplyToAddresses: [sanitizedEmail],
       Message: {
         Subject: { Data: emailSubject },
         Body: {
           Text: {
-            Data: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+            Data: `Name: ${safeName}\nEmail: ${safeEmail}\n\nMessage:\n${safeMessage}`,
           },
           Html: {
             Data: `
@@ -120,7 +126,7 @@ exports.handler = async (event) => {
     console.log(JSON.stringify({
       event: 'contact_form_submission',
       sourceIp,
-      replyToEmail: email,
+      replyToEmail: sanitizedEmail,
       timestamp: new Date().toISOString(),
     }));
 
