@@ -8,6 +8,7 @@ export interface AmplifyHostingStackProps extends cdk.StackProps {
   repositoryName: string;
   branch: string;
   environment: string;
+  contactApiUrl?: string;
 }
 
 export class AmplifyHostingStack extends cdk.Stack {
@@ -50,12 +51,15 @@ frontend:
       // Environment variables
       environmentVariables: [
         {
-          name: 'VITE_API_URL',
-          value: '', // Will be set after ContactStack deployment
+          name: 'VITE_CONTACT_API_URL',
+          value: props.contactApiUrl || '', // Populated via cross-stack reference
         },
       ],
 
       // SPA rewrite rules for React Router
+      // First rule: Regex matches paths without extensions OR paths with extensions
+      // that are NOT static assets (css, js, images, fonts, etc). These get rewritten
+      // to index.html to enable client-side routing.
       customRules: [
         {
           source: '/^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|mp4|webm)$)([^.]+$)/',

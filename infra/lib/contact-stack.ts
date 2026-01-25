@@ -3,6 +3,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { Construct } from 'constructs';
 
 export interface ContactStackProps extends cdk.StackProps {
@@ -45,6 +46,26 @@ const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(',');
 
+// In-memory rate limiter (resets on cold start, but free)
+const requestCounts = new Map();
+const RATE_LIMIT = 3; // max requests per IP per window
+const WINDOW_MS = 60000; // 1 minute window
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const entry = requestCounts.get(ip);
+
+  if (!entry || now - entry.timestamp > WINDOW_MS) {
+    requestCounts.set(ip, { count: 1, timestamp: now });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) {
+    return false;
+  }
+  entry.count++;
+  return true;
+}
+
 // Sanitize user input to prevent HTML injection
 const escapeHtml = (str) => {
   return str
@@ -58,6 +79,7 @@ const escapeHtml = (str) => {
 exports.handler = async (event) => {
   const origin = event.headers?.origin || event.headers?.Origin || '';
   const isAllowedOrigin = origin && ALLOWED_ORIGINS.includes(origin);
+  const sourceIp = event.requestContext?.identity?.sourceIp || 'unknown';
 
   const baseHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -77,8 +99,23 @@ exports.handler = async (event) => {
     ...baseHeaders,
     'Access-Control-Allow-Origin': origin,
   };
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
+  }
+
+  // Check rate limit
+  if (!checkRateLimit(sourceIp)) {
+    console.log(JSON.stringify({
+      event: 'rate_limit_exceeded',
+      sourceIp,
+      timestamp: new Date().toISOString(),
+    }));
+    return {
+      statusCode: 429,
+      headers,
+      body: JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+    };
   }
 
   try {
@@ -147,6 +184,14 @@ exports.handler = async (event) => {
       },
     }));
 
+    // Log successful submission for monitoring
+    console.log(JSON.stringify({
+      event: 'contact_form_submission',
+      sourceIp,
+      replyToEmail: email,
+      timestamp: new Date().toISOString(),
+    }));
+
     return {
       statusCode: 200,
       headers,
@@ -166,8 +211,8 @@ exports.handler = async (event) => {
         CONTACT_EMAIL: props.contactEmail,
         ALLOWED_ORIGINS: allowedOrigins.join(','),
       },
-      timeout: cdk.Duration.seconds(10),
-      memorySize: 128,
+      timeout: cdk.Duration.seconds(15),
+      memorySize: 256,
       description: 'Contact form handler for stealinglight.hk',
     });
 
@@ -203,6 +248,49 @@ exports.handler = async (event) => {
     contactResource.addMethod('POST', new apigateway.LambdaIntegration(contactFunction));
 
     this.apiUrl = api.url;
+
+    // CloudWatch Alarms for monitoring
+    // Lambda error alarm - triggers if errors occur
+    new cloudwatch.Alarm(this, 'LambdaErrorAlarm', {
+      alarmName: `${props.appName}-contact-lambda-errors`,
+      alarmDescription: 'Contact form Lambda function errors',
+      metric: contactFunction.metricErrors({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Sum',
+      }),
+      threshold: 5,
+      evaluationPeriods: 1,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // API Gateway 5xx alarm - server errors
+    new cloudwatch.Alarm(this, 'ApiGateway5xxAlarm', {
+      alarmName: `${props.appName}-contact-api-5xx`,
+      alarmDescription: 'Contact form API 5xx errors',
+      metric: api.metricServerError({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Sum',
+      }),
+      threshold: 5,
+      evaluationPeriods: 1,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // API Gateway 4xx alarm - client errors (high threshold for abuse detection)
+    new cloudwatch.Alarm(this, 'ApiGateway4xxAlarm', {
+      alarmName: `${props.appName}-contact-api-4xx`,
+      alarmDescription: 'Contact form API 4xx errors (possible abuse)',
+      metric: api.metricClientError({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Sum',
+      }),
+      threshold: 50,
+      evaluationPeriods: 1,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
 
     // Outputs
     new cdk.CfnOutput(this, 'ContactApiUrl', {

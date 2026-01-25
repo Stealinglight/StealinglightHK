@@ -28,17 +28,7 @@ const stackProps: cdk.StackProps = {
   },
 };
 
-// Create Amplify Hosting Stack
-const amplifyStack = new AmplifyHostingStack(app, `${appName}-amplify`, {
-  ...stackProps,
-  appName,
-  repositoryOwner,
-  repositoryName,
-  branch,
-  environment,
-});
-
-// Create Contact Form Stack
+// Create Contact Form Stack first (Amplify depends on its API URL)
 const contactStack = new ContactStack(app, `${appName}-contact`, {
   ...stackProps,
   appName,
@@ -47,6 +37,20 @@ const contactStack = new ContactStack(app, `${appName}-contact`, {
   // Add Amplify default domain to allowed origins after first deployment
   // allowedOrigins: ['http://localhost:5173', 'https://stealinglight.hk', 'https://main.xxx.amplifyapp.com'],
 });
+
+// Create Amplify Hosting Stack with contact API URL
+const amplifyStack = new AmplifyHostingStack(app, `${appName}-amplify`, {
+  ...stackProps,
+  appName,
+  repositoryOwner,
+  repositoryName,
+  branch,
+  environment,
+  contactApiUrl: `${contactStack.apiUrl}contact`,
+});
+
+// Ensure Amplify stack deploys after ContactStack
+amplifyStack.addDependency(contactStack);
 
 // Apply tag compliance to all stacks
 const requiredTags = {
