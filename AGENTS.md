@@ -271,12 +271,28 @@ Currently no environment variables required for basic operation.
 - Assets are optimized and hashed for caching
 - Preview build before deploying
 
-## Testing Considerations
+## Testing
 
-Currently no testing framework is configured. Consider adding:
-- Vitest for unit tests
-- Testing Library for component tests
-- Playwright or Cypress for E2E tests
+### End-to-End Tests (Playwright)
+
+The project uses Playwright for E2E testing:
+
+```bash
+bun test          # Run all tests
+bun test:ui       # Run tests with UI
+```
+
+Tests are located in `tests/` and cover:
+- Page loading and title verification
+- Navigation visibility
+- Responsive design
+- Console error checking
+
+### Test Configuration
+
+- `playwright.config.ts`: Playwright configuration
+- Uses preview server (`bun preview`) for testing
+- Runs in Chromium by default
 
 ## Deployment
 
@@ -290,14 +306,30 @@ bun build
 bun preview
 ```
 
-### Deployment Targets
-The application can be deployed to:
-- Vercel (recommended for Vite projects)
+### AWS Amplify (Production)
+
+The production deployment uses AWS infrastructure managed with CDK:
+
+```bash
+cd infra
+npm install
+export CONTACT_EMAIL="your-email@example.com"
+cdk deploy --all
+```
+
+Infrastructure includes:
+- **Amplify Hosting**: Auto-deploys from GitHub
+- **Contact Form API**: API Gateway + Lambda + SES
+
+See [infra/DEPLOYMENT.md](./infra/DEPLOYMENT.md) for details.
+
+### Alternative Platforms
+
+The application can also be deployed to:
+- Vercel
 - Netlify
 - GitHub Pages
 - Any static hosting service
-
-Deployment configuration not included in repository - add based on chosen platform.
 
 ## Related Files
 

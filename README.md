@@ -109,6 +109,7 @@ stealinglightHK/
 | `bun build`   | Build for production     |
 | `bun preview` | Preview production build |
 | `bun lint`    | Run ESLint               |
+| `bun test`    | Run Playwright tests     |
 
 ## Component Library
 
@@ -185,37 +186,32 @@ Custom theme extensions for consistent design system.
 
 ## Deployment
 
-The application can be deployed to:
+### AWS Amplify (Production)
 
-- Vercel (recommended)
+The application is deployed to AWS Amplify with a contact form backend on API Gateway + Lambda.
+
+See [infra/DEPLOYMENT.md](./infra/DEPLOYMENT.md) for full deployment instructions.
+
+**Quick deploy:**
+```bash
+cd infra
+npm install
+export CONTACT_EMAIL="your-email@example.com"
+cdk deploy --all
+```
+
+Then connect your GitHub repository via the Amplify Console (link provided in deployment output).
+
+### Alternative Platforms
+
+The application can also be deployed to:
+
+- Vercel
 - Netlify
 - GitHub Pages
 - Any static hosting service
 
 Simply run `bun build` and deploy the `dist/` folder.
-
-### Deployment Examples
-
-**Vercel:**
-```bash
-bun add -g vercel
-vercel
-```
-
-**Netlify:**
-```bash
-bun add -g netlify-cli
-netlify deploy
-```
-
-**GitHub Pages:**
-Add to `vite.config.ts`:
-```typescript
-export default defineConfig({
-  base: '/StealinglightHK/',
-  // ... rest of config
-})
-```
 
 ## Documentation
 

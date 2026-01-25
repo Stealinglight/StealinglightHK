@@ -35,5 +35,11 @@ infra/lambda/**/dist/
 
 # Test coverage
 coverage/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Planning & worktrees
 docs/plans/
 .worktrees/
