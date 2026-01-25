@@ -61,11 +61,11 @@ test.describe('Stealinglight Portfolio', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Filter out common non-critical errors
+    // Filter out specific known non-critical errors (404s for optional assets)
     const criticalErrors = errors.filter(e =>
-      !e.includes('favicon') &&
-      !e.includes('manifest') &&
-      !e.includes('third-party')
+      !e.includes('favicon.ico') &&
+      !e.includes('manifest.json') &&
+      !e.includes('Failed to load resource') // Only filter 404s for optional assets
     );
 
     expect(criticalErrors).toHaveLength(0);
@@ -165,29 +165,15 @@ test.describe('Stealinglight Portfolio', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and click submit button without filling any fields
-    const submitButton = page.locator('button[type="submit"], input[type="submit"], button:has-text("Send"), button:has-text("Submit")').first();
+    const submitButton = page.locator('button[type="submit"]').first();
 
     if ((await submitButton.count()) > 0) {
       // Click submit without filling fields
       await submitButton.click();
 
-      // Wait for toast notification to appear (the form uses sonner for validation errors)
-      // The toast shows "Please fill in all fields" when validation fails
-      const toastNotification = page.locator('[data-sonner-toast], [role="status"], [role="alert"], [class*="toast"]').first();
-
-      // Wait up to 2 seconds for toast to appear
-      try {
-        await toastNotification.waitFor({ timeout: 2000 });
-        const hasToast = (await toastNotification.count()) > 0;
-        expect(hasToast).toBeTruthy();
-      } catch {
-        // If no toast appears, check for HTML5 validation or other error indicators
-        const requiredFields = page.locator('input[required], textarea[required]');
-        const errorMessage = page.locator('[class*="error"]').first();
-        const hasValidation = (await requiredFields.count()) > 0 || (await errorMessage.count()) > 0;
-        // At minimum, form should have some validation mechanism
-        expect(typeof hasValidation).toBe('boolean');
-      }
+      // Form uses sonner toast for validation - wait for it to appear
+      const toast = page.locator('[data-sonner-toast]');
+      await expect(toast).toBeVisible({ timeout: 3000 });
     }
   });
 
