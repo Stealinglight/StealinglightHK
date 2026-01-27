@@ -3,6 +3,7 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { AmplifyHostingStack } from '../lib/amplify-hosting-stack';
 import { ContactStack } from '../lib/contact-stack';
+import { MediaStack } from '../lib/media-stack';
 import { TagComplianceAspect } from '../lib/aspects/tag-compliance-aspect';
 
 const app = new cdk.App();
@@ -27,6 +28,13 @@ const stackProps: cdk.StackProps = {
     region: process.env.CDK_DEFAULT_REGION || 'us-west-2',
   },
 };
+
+// Create Media Stack (independent - can be deployed first)
+const mediaStack = new MediaStack(app, `${appName}-media`, {
+  ...stackProps,
+  appName,
+  environment,
+});
 
 // Create Contact Form Stack first (Amplify depends on its API URL)
 const contactStack = new ContactStack(app, `${appName}-contact`, {
@@ -62,3 +70,4 @@ const requiredTags = {
 
 cdk.Aspects.of(amplifyStack).add(new TagComplianceAspect(requiredTags));
 cdk.Aspects.of(contactStack).add(new TagComplianceAspect(requiredTags));
+cdk.Aspects.of(mediaStack).add(new TagComplianceAspect(requiredTags));
