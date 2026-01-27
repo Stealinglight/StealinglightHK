@@ -29,13 +29,14 @@ export class AmplifyHostingStack extends cdk.Stack {
       // Bun is used for local development. Both use the same package.json
       // and produce identical builds. npm ci ensures reproducible builds
       // on Amplify's infrastructure.
+      // --legacy-peer-deps needed for React 19 compatibility with some packages
       buildSpec: `
 version: 1
 frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - npm ci --legacy-peer-deps
     build:
       commands:
         - npm run build
