@@ -7,12 +7,13 @@ import { Services } from './components/Services';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { Toaster } from 'sonner';
+import { heroVideo } from './config/videos';
 
 export default function App() {
   return (
     <div className="size-full bg-cinematic-black">
       <Navigation />
-      <Hero />
+      <Hero videoSrc={heroVideo.src} />
       <Portfolio />
       <Clients />
       <About />

@@ -1,44 +1,22 @@
 import { motion } from 'motion/react';
-import { useState } from 'react';
-import { Play } from 'lucide-react';
-
-const projects = [
-  {
-    id: 1,
-    title: 'Commercial Aerial',
-    category: 'Drone Cinematography',
-    image:
-      'https://images.unsplash.com/photo-1668883738061-e46019b0b9fe?auto=format&fit=crop&w=800&q=80',
-    description: 'High-end aerial cinematography for commercial and documentary productions',
-  },
-  {
-    id: 2,
-    title: 'Dynamic Movement',
-    category: 'Gimbal & Steadycam',
-    image:
-      'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80',
-    description: 'Fluid tracking shots and seamless camera movement for film and commercials',
-  },
-  {
-    id: 3,
-    title: 'Time Freeze',
-    category: 'Bullet Time',
-    image:
-      'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80',
-    description: 'Innovative bullet time techniques for events, commercials, and music videos',
-  },
-  {
-    id: 4,
-    title: 'Immersive 360',
-    category: '360° & VR Content',
-    image:
-      'https://images.unsplash.com/photo-1619677453024-4a667157c568?auto=format&fit=crop&w=800&q=80',
-    description: '360-degree video production and immersive VR experiences',
-  },
-];
+import { useState, useRef } from 'react';
+import { Play, X } from 'lucide-react';
+import { featuredVideo, gridVideos } from '../config/videos';
 
 export function Portfolio() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [activeVideo, setActiveVideo] = useState<typeof featuredVideo | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const openVideo = (video: typeof featuredVideo) => {
+    setActiveVideo(video);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeVideo = () => {
+    setActiveVideo(null);
+    document.body.style.overflow = '';
+  };
 
   return (
     <section id="portfolio" className="py-24 md:py-32 bg-cinematic-dark">
@@ -56,20 +34,28 @@ export function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Featured Video Placeholder */}
+        {/* Featured Video */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
+          onClick={() => openVideo(featuredVideo)}
           className="mb-16 relative overflow-hidden aspect-video group cursor-pointer rounded-lg"
         >
-          <img
-            src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1920&q=80"
-            alt="Featured project"
+          <video
+            src={featuredVideo.videoUrl}
+            muted
+            loop
+            playsInline
+            onMouseEnter={(e) => e.currentTarget.play()}
+            onMouseLeave={(e) => {
+              e.currentTarget.pause();
+              e.currentTarget.currentTime = 0;
+            }}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-cinematic-black/50 group-hover:bg-cinematic-black/60 transition-all duration-300" />
+          <div className="absolute inset-0 bg-cinematic-black/50 group-hover:bg-cinematic-black/40 transition-all duration-300" />
 
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-8">
             <motion.div
@@ -79,16 +65,17 @@ export function Portfolio() {
               <Play className="w-8 h-8 ml-1 text-cinematic-black" fill="currentColor" />
             </motion.div>
             <span className="text-white/60 text-sm tracking-widest mb-3">FEATURED PROJECT</span>
-            <h3 className="text-white mb-3 text-2xl md:text-3xl">Cinematic Showreel</h3>
+            <h3 className="text-white mb-3 text-2xl md:text-3xl">{featuredVideo.title}</h3>
             <p className="text-white/60 max-w-2xl text-sm md:text-base">
-              A compilation of compelling work showcasing visual storytelling across various mediums
+              {featuredVideo.description}
             </p>
+            <span className="text-cinematic-amber text-sm mt-4">{featuredVideo.duration}</span>
           </div>
         </motion.div>
 
         {/* Project Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
+          {gridVideos.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 40 }}
@@ -97,45 +84,91 @@ export function Portfolio() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="group relative overflow-hidden cursor-pointer aspect-[4/3] rounded-lg"
+              onClick={() => openVideo(project)}
+              className="group relative overflow-hidden cursor-pointer aspect-video rounded-lg"
             >
-              <img
-                src={project.image}
-                alt={project.title}
+              <video
+                src={project.videoUrl}
+                muted
+                loop
+                playsInline
+                onMouseEnter={(e) => e.currentTarget.play()}
+                onMouseLeave={(e) => {
+                  e.currentTarget.pause();
+                  e.currentTarget.currentTime = 0;
+                }}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
               {/* Default overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-cinematic-black/80 via-cinematic-black/20 to-transparent" />
 
-              {/* Hover overlay */}
+              {/* Play button on hover */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
-                className="absolute inset-0 bg-cinematic-black/80 flex flex-col items-center justify-center p-8 text-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: hoveredId === project.id ? 1 : 0, scale: hoveredId === project.id ? 1 : 0.8 }}
+                className="absolute inset-0 flex items-center justify-center"
               >
-                <span className="text-cinematic-amber text-sm tracking-widest mb-2">
-                  {project.category}
-                </span>
-                <h3 className="text-white mb-4">{project.title}</h3>
-                <p className="text-white/60 text-sm">{project.description}</p>
+                <div className="w-16 h-16 rounded-full bg-cinematic-amber/90 flex items-center justify-center">
+                  <Play className="w-6 h-6 ml-1 text-cinematic-black" fill="currentColor" />
+                </div>
               </motion.div>
 
-              {/* Bottom info (visible when not hovered) */}
-              <div
-                className={`absolute bottom-0 left-0 right-0 p-6 transition-opacity duration-300 ${
-                  hoveredId === project.id ? 'opacity-0' : 'opacity-100'
-                }`}
-              >
-                <span className="text-cinematic-amber text-xs tracking-widest">
-                  {project.category}
-                </span>
-                <h4 className="text-white text-lg mt-1">{project.title}</h4>
+              {/* Bottom info */}
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-cinematic-amber text-xs tracking-widest">
+                      {project.category}
+                    </span>
+                    <h4 className="text-white text-lg mt-1">{project.title}</h4>
+                  </div>
+                  <span className="text-white/50 text-sm">{project.duration}</span>
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Video Modal */}
+      {activeVideo && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-cinematic-black/95 p-4"
+          onClick={closeVideo}
+        >
+          <button
+            onClick={closeVideo}
+            className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-10"
+            aria-label="Close video"
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-6xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              ref={videoRef}
+              src={activeVideo.videoUrl}
+              controls
+              autoPlay
+              className="w-full aspect-video rounded-lg"
+            />
+            <div className="mt-4 text-center">
+              <h3 className="text-white text-xl">{activeVideo.title}</h3>
+              <p className="text-white/60 mt-2">{activeVideo.description}</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 }
