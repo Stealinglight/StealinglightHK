@@ -13,7 +13,7 @@ export function About() {
             className="relative aspect-[3/4] overflow-hidden rounded-lg"
           >
             <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
+              src="https://d2fc83sck42gx7.cloudfront.net/images/chris-mcmillon-profile.jpg"
               alt="Chris McMillon"
               className="w-full h-full object-cover"
             />
