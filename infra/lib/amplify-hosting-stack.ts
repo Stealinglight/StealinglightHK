@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as amplify from 'aws-cdk-lib/aws-amplify';
+import * as route53 from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
 export interface AmplifyHostingStackProps extends cdk.StackProps {
@@ -9,6 +10,7 @@ export interface AmplifyHostingStackProps extends cdk.StackProps {
   branch: string;
   environment: string;
   contactApiUrl?: string;
+  domainName?: string;
 }
 
 export class AmplifyHostingStack extends cdk.Stack {
@@ -84,6 +86,61 @@ frontend:
 
     // Construct the default domain
     this.defaultDomain = `main.${this.app.attrDefaultDomain}`;
+
+    // Create Amplify branch for proper branch configuration
+    const branch = new amplify.CfnBranch(this, 'MainBranch', {
+      appId: this.app.attrAppId,
+      branchName: props.branch,
+      enableAutoBuild: true,
+      stage: 'PRODUCTION',
+    });
+
+    // Custom domain configuration (only if domainName is provided)
+    if (props.domainName) {
+      // Create Route 53 hosted zone for the custom domain
+      const hostedZone = new route53.PublicHostedZone(this, 'HostedZone', {
+        zoneName: props.domainName,
+      });
+
+      // Create Amplify domain association for custom domain
+      const domain = new amplify.CfnDomain(this, 'CustomDomain', {
+        appId: this.app.attrAppId,
+        domainName: props.domainName,
+        subDomainSettings: [
+          { branchName: props.branch, prefix: '' },      // stealinglight.hk
+          { branchName: props.branch, prefix: 'www' },   // www.stealinglight.hk
+        ],
+        enableAutoSubDomain: false,
+      });
+
+      // Domain depends on branch being created first
+      domain.addDependency(branch);
+
+      // Output Route 53 nameservers
+      new cdk.CfnOutput(this, 'NameServers', {
+        value: cdk.Fn.join(', ', hostedZone.hostedZoneNameServers || []),
+        description: 'Route 53 nameservers - configure these at your domain registrar',
+        exportName: `${props.appName}-nameservers`,
+      });
+
+      // Output hosted zone ID
+      new cdk.CfnOutput(this, 'HostedZoneId', {
+        value: hostedZone.hostedZoneId,
+        description: 'Route 53 Hosted Zone ID',
+        exportName: `${props.appName}-hosted-zone-id`,
+      });
+
+      // Output custom domain URLs
+      new cdk.CfnOutput(this, 'CustomDomainUrl', {
+        value: `https://${props.domainName}`,
+        description: 'Custom domain URL (available after DNS propagation)',
+      });
+
+      new cdk.CfnOutput(this, 'CustomDomainWwwUrl', {
+        value: `https://www.${props.domainName}`,
+        description: 'Custom domain www URL (available after DNS propagation)',
+      });
+    }
 
     // Outputs
     new cdk.CfnOutput(this, 'AmplifyAppId', {

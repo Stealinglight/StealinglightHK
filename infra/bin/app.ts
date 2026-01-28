@@ -14,6 +14,7 @@ const repositoryOwner = app.node.tryGetContext('repositoryOwner') || 'Stealingli
 const repositoryName = app.node.tryGetContext('repositoryName') || 'stealinglightHK';
 const branch = app.node.tryGetContext('branch') || 'main';
 const environment = app.node.tryGetContext('environment') || 'production';
+const domainName = app.node.tryGetContext('domainName');
 
 // Contact email from environment variable
 const contactEmail = process.env.CONTACT_EMAIL;
@@ -55,6 +56,7 @@ const amplifyStack = new AmplifyHostingStack(app, `${appName}-amplify`, {
   branch,
   environment,
   contactApiUrl: `${contactStack.apiUrl}contact`,
+  domainName,
 });
 
 // Ensure Amplify stack deploys after ContactStack
