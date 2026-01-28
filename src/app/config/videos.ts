@@ -160,7 +160,7 @@ export const videoProjects = [
 
 // Hero background video
 export const heroVideo = {
-  src: `${CDN_BASE_URL}/Reels/Company/BLNK_2020-Reel.mp4`,
+  src: `${CDN_BASE_URL}/Reels/Drone/Drone%20Reel%202018_1.mp4`,
 };
 
 // Get featured video for the portfolio section
