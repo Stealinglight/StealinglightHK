@@ -10,6 +10,7 @@ export const videoProjects = [
     description: 'A showcase of recent production work from BLNK Media',
     duration: '2:15',
     videoUrl: `${CDN_BASE_URL}/Reels/Company/BLNK_2020-Reel.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/01-blnk-reel-2020.jpg`,
     featured: true,
   },
   {
@@ -19,6 +20,7 @@ export const videoProjects = [
     description: 'Official trailer for the architectural documentary exploring the work of Swiss architect Mario Botta',
     duration: '2:55',
     videoUrl: `${CDN_BASE_URL}/Documentaries/Mario%20Botta.%20The%20Space%20Beyond.%20Official%20Trailer%20(English.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/02-mario-botta.jpg`,
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ export const videoProjects = [
     description: 'Automotive commercial directed by Olivier Hero Dressen, camera operation by Chris McMillon',
     duration: '1:01',
     videoUrl: `${CDN_BASE_URL}/Commercials/Automotive/BOSCH_DirectorsCut_VIMEO2K.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/03-bosch.jpg`,
   },
   {
     id: 4,
@@ -35,6 +38,7 @@ export const videoProjects = [
     description: 'A House of X production with Chris McMillon as Director of Photography',
     duration: '1:34',
     videoUrl: `${CDN_BASE_URL}/Short_Films/Narrative/THE%20MILLENNIAL%20GENTLEMAN.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/04-millennial-gentleman.jpg`,
   },
   {
     id: 5,
@@ -43,6 +47,7 @@ export const videoProjects = [
     description: 'A narrative documentary following boxer Thun Visuttirattanaporn, shot in Thailand',
     duration: '5:32',
     videoUrl: `${CDN_BASE_URL}/Documentaries/Team%2018%20-%20The%20Fighter_Web.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/05-the-fighter.jpg`,
   },
   {
     id: 6,
@@ -51,6 +56,7 @@ export const videoProjects = [
     description: 'Promotional video coverage of the Shanghai SpinExpo trade show',
     duration: '2:10',
     videoUrl: `${CDN_BASE_URL}/Events/Shanghai%20SpinExpo.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/06-spinexpo.jpg`,
   },
   {
     id: 7,
@@ -59,6 +65,7 @@ export const videoProjects = [
     description: 'Coach Lights Up Shanghai - Pre Fall 2019 collection event coverage',
     duration: '1:30',
     videoUrl: `${CDN_BASE_URL}/Commercials/Fashion/Coach%20Lights%20Up%20Shanghai%20%7C%20Pre%20Fall%202019.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/07-coach.jpg`,
   },
   {
     id: 8,
@@ -67,6 +74,7 @@ export const videoProjects = [
     description: '30-second teaser for Phorm and Wancaoyi Fall 2018 collections, shot in Hangzhou',
     duration: '0:30',
     videoUrl: `${CDN_BASE_URL}/Commercials/Fashion/30_Second_new_new.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/08-phorm-wancaoyi.jpg`,
   },
   {
     id: 9,
@@ -75,6 +83,7 @@ export const videoProjects = [
     description: 'Commercial advertisement for China Citic Bank',
     duration: '1:31',
     videoUrl: `${CDN_BASE_URL}/Commercials/Financial/China%20Citic%20Bank%20Commercial.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/09-citic-bank.jpg`,
   },
   {
     id: 10,
@@ -83,6 +92,7 @@ export const videoProjects = [
     description: 'Trailer for Gin Mare premium gin brand',
     duration: '0:35',
     videoUrl: `${CDN_BASE_URL}/Commercials/Beverage/Gin%20Mare%20-%20Trailer%20HD.mov`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/10-gin-mare.jpg`,
   },
   {
     id: 11,
@@ -91,6 +101,7 @@ export const videoProjects = [
     description: 'Coverage of the CMPC 2019 event',
     duration: '6:59',
     videoUrl: `${CDN_BASE_URL}/Events/CMPC%202019.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/11-cmpc.jpg`,
   },
   {
     id: 12,
@@ -99,6 +110,7 @@ export const videoProjects = [
     description: 'Product launch video for NIU electric scooters NGT and M+ models',
     duration: '3:04',
     videoUrl: `${CDN_BASE_URL}/Commercials/Automotive/NIU%20eScooters%20-%20All%20New%20NGT%20and%20M%2B.mov`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/12-niu.jpg`,
   },
   {
     id: 13,
@@ -107,6 +119,7 @@ export const videoProjects = [
     description: 'Western genre entry for the 2018 Shanghai 48 Hour Film Project',
     duration: '7:45',
     videoUrl: `${CDN_BASE_URL}/Short_Films/48HFP/BLNK_ABULLETABLACKANDAPIGGYBANK_WESTERN.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/13-48hfp-2018.jpg`,
   },
   {
     id: 14,
@@ -115,6 +128,7 @@ export const videoProjects = [
     description: '3rd place winner - Tales From The Penn Vol 37: An Unorthodox Fable',
     duration: '6:33',
     videoUrl: `${CDN_BASE_URL}/Short_Films/48HFP/TALES_FROM_THE_PENN_FINAL_BLNK.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/14-48hfp-2017.jpg`,
   },
   {
     id: 15,
@@ -123,6 +137,7 @@ export const videoProjects = [
     description: 'Teaser trailer for Zhen Ai, shot in Altay',
     duration: '0:51',
     videoUrl: `${CDN_BASE_URL}/Short_Films/Narrative/Zhen%20Ai%20-%20Insta2.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/15-zhen-ai.jpg`,
   },
   {
     id: 16,
@@ -131,6 +146,7 @@ export const videoProjects = [
     description: "Chris McMillon's Director of Photography showreel",
     duration: '2:27',
     videoUrl: `${CDN_BASE_URL}/Reels/Personal/DP%20Reel%202018.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/16-dp-reel.jpg`,
   },
   {
     id: 17,
@@ -139,6 +155,7 @@ export const videoProjects = [
     description: "Chris McMillon's aerial cinematography showreel",
     duration: '2:05',
     videoUrl: `${CDN_BASE_URL}/Reels/Drone/Drone%20Reel%202018_1.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/17-drone-reel.jpg`,
   },
   {
     id: 18,
@@ -147,6 +164,7 @@ export const videoProjects = [
     description: 'Monster Energy commercial featuring NBA player Jimmer Fredette',
     duration: '2:11',
     videoUrl: `${CDN_BASE_URL}/Commercials/Food_Beverage/Jimmer_FinalV2.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/18-jimmer.jpg`,
   },
   {
     id: 19,
@@ -155,12 +173,14 @@ export const videoProjects = [
     description: 'Promotional video for Huawei technology',
     duration: '0:37',
     videoUrl: `${CDN_BASE_URL}/Commercials/Tech/Huawei_See_the_Unseen.mp4`,
+    posterUrl: `${CDN_BASE_URL}/thumbnails/19-huawei.jpg`,
   },
 ] as const;
 
 // Hero background video
 export const heroVideo = {
   src: `${CDN_BASE_URL}/Reels/Drone/Drone%20Reel%202018_1.mp4`,
+  poster: `${CDN_BASE_URL}/thumbnails/17-drone-reel.jpg`,
 };
 
 // Get featured video for the portfolio section

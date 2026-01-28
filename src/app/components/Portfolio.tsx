@@ -45,9 +45,11 @@ export function Portfolio() {
         >
           <video
             src={featuredVideo.videoUrl}
+            poster={featuredVideo.posterUrl}
             muted
             loop
             playsInline
+            preload="none"
             onMouseEnter={(e) => e.currentTarget.play()}
             onMouseLeave={(e) => {
               e.currentTarget.pause();
@@ -89,9 +91,11 @@ export function Portfolio() {
             >
               <video
                 src={project.videoUrl}
+                poster={project.posterUrl}
                 muted
                 loop
                 playsInline
+                preload="none"
                 onMouseEnter={(e) => e.currentTarget.play()}
                 onMouseLeave={(e) => {
                   e.currentTarget.pause();

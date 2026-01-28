@@ -13,7 +13,7 @@ export default function App() {
   return (
     <div className="size-full bg-cinematic-black">
       <Navigation />
-      <Hero videoSrc={heroVideo.src} />
+      <Hero videoSrc={heroVideo.src} posterSrc={heroVideo.poster} />
       <Portfolio />
       <Clients />
       <About />
