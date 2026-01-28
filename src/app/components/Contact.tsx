@@ -115,10 +115,10 @@ export function Contact() {
             </div>
             <h3 className="text-sm tracking-wider text-white/40 mb-2">PHONE</h3>
             <a
-              href="tel:+12023308455"
+              href="tel:+12027098696"
               className="text-white/70 hover:text-cinematic-amber transition-colors"
             >
-              +1 (202) 330-8455
+              +1 (202) 709-8696
             </a>
           </div>
 
