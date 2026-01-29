@@ -226,7 +226,7 @@ GitHub Actions workflows run automatically on pull requests and pushes to `main`
 
 **Security Scan Failures:**
 - Review the Security tab for CodeQL findings
-- Check uploaded audit-results artifacts for dependency vulnerability details
+- Check uploaded `security-audit-results` artifacts for dependency vulnerability details
 - High-severity vulnerabilities will cause the workflow to fail
 - Address vulnerabilities by updating dependencies or reviewing false positives
 
