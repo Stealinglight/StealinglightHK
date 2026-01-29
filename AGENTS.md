@@ -142,6 +142,20 @@ bun preview      # Preview production build
 bun lint         # Run ESLint
 ```
 
+### Infrastructure (CDK)
+```bash
+cd infra
+npm install
+npm run build                    # Compile TypeScript
+npm run synth                    # Generate CloudFormation templates
+CONTACT_EMAIL=x@y.com cdk deploy --all  # Deploy all stacks
+npm test                         # Jest tests
+```
+
+**AWS Profile**: Use `AWS_PROFILE=stealinglight+website` for deployments.
+
+**Package Managers**: Use Bun for frontend development (faster local builds). Use npm for infrastructure/CDK (better CDK compatibility). CI/CD uses npm for infrastructure deployments.
+
 ## Configuration Files
 
 ### vite.config.ts
