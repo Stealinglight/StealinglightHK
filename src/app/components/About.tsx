@@ -81,6 +81,8 @@ export function About() {
                   'Unreal Engine',
                   'Nuke',
                   'Insta360',
+                  'Broadcast',
+                  'LiveStream',
                 ].map((skill) => (
                   <span
                     key={skill}
