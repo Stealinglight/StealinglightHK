@@ -31,26 +31,26 @@ jobs:
 
       - name: Run npm audit (root)
         id: audit-root
-        run: npm audit --audit-level=high || echo "::warning::High-severity vulnerabilities found in root dependencies"
+        run: npm audit --audit-level=high
         continue-on-error: true
 
       - name: Run npm audit (infra)
         id: audit-infra
         working-directory: infra
-        run: npm audit --audit-level=high || echo "::warning::High-severity vulnerabilities found in infra dependencies"
+        run: npm audit --audit-level=high
         continue-on-error: true
 
       - name: Generate audit results (root)
-        if: failure() && steps.audit-root.outcome == 'failure'
+        if: always() && steps.audit-root.outcome == 'failure'
         run: npm audit --json > audit-results-root.json || true
 
       - name: Generate audit results (infra)
-        if: failure() && steps.audit-infra.outcome == 'failure'
+        if: always() && steps.audit-infra.outcome == 'failure'
         working-directory: infra
         run: npm audit --json > audit-results-infra.json || true
 
       - name: Upload audit results
-        if: failure()
+        if: always() && (steps.audit-root.outcome == 'failure' || steps.audit-infra.outcome == 'failure')
         uses: actions/upload-artifact@v4
         with:
           name: security-audit-results
@@ -58,6 +58,12 @@ jobs:
             audit-results-root.json
             infra/audit-results-infra.json
           if-no-files-found: ignore
+
+      - name: Fail job if vulnerabilities found
+        if: steps.audit-root.outcome == 'failure' || steps.audit-infra.outcome == 'failure'
+        run: |
+          echo "::error::High-severity vulnerabilities found. Check audit results for details."
+          exit 1
 
   codeql:
     name: CodeQL Analysis
