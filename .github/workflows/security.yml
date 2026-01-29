@@ -57,6 +57,7 @@ jobs:
           path: |
             audit-results-root.json
             infra/audit-results-infra.json
+          retention-days: 7
           if-no-files-found: ignore
 
       - name: Fail job if vulnerabilities found
