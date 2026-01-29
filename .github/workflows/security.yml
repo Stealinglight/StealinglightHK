@@ -9,6 +9,9 @@ on:
     - cron: '0 0 * * 0'  # Weekly on Sunday
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   dependency-audit:
     name: Dependency Audit
@@ -26,8 +29,7 @@ jobs:
         run: npm ci
 
       - name: Run npm audit (root)
-        run: npm audit --audit-level=high
-        continue-on-error: true
+        run: npm audit --audit-level=high --json > audit-root.json || npm audit --audit-level=high
 
       - name: Install infra dependencies
         working-directory: infra
@@ -35,8 +37,17 @@ jobs:
 
       - name: Run npm audit (infra)
         working-directory: infra
-        run: npm audit --audit-level=high
-        continue-on-error: true
+        run: npm audit --audit-level=high --json > audit-infra.json || npm audit --audit-level=high
+
+      - name: Upload audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: |
+            audit-root.json
+            infra/audit-infra.json
+          retention-days: 30
 
   codeql:
     name: CodeQL Analysis
@@ -59,4 +70,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:javascript-typescript"
+          category: "language:javascript-typescript"

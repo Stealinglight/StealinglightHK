@@ -1,5 +1,8 @@
 # Stealinglight HK
 
+[![E2E Tests](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml)
+[![Security Scan](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml)
+
 A modern, responsive portfolio website built with React, TypeScript, and Vite, showcasing professional work and services.
 
 ## Features
@@ -215,6 +218,19 @@ GitHub Actions workflows run automatically on pull requests and pushes to `main`
 - **Dependency Audit**: Runs `npm audit` on root and infra packages
 - **CodeQL Analysis**: Static analysis for JavaScript/TypeScript security issues
 - Runs on PRs, pushes to main, weekly schedule, and manual dispatch
+
+### Running Locally
+
+```bash
+# Run E2E tests
+npm run test
+
+# Run security audit
+npm audit --audit-level=high
+cd infra && npm audit --audit-level=high
+```
+
+Test reports are uploaded as GitHub Actions artifacts with 7-day retention.
 
 ## Documentation
 
