@@ -1,5 +1,8 @@
 # Stealinglight HK
 
+[![E2E Tests](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml)
+[![Security Scan](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml)
+
 A modern, responsive portfolio website built with React, TypeScript, and Vite, showcasing professional work and services.
 
 ## Features
@@ -202,22 +205,37 @@ cdk deploy --all
 
 Then connect your GitHub repository via the Amplify Console (link provided in deployment output).
 
-### Alternative Platforms
+## CI/CD
 
-The application can also be deployed to:
+GitHub Actions workflows run automatically on pull requests and pushes to `main`:
 
-- Vercel
-- Netlify
-- GitHub Pages
-- Any static hosting service
+### E2E Tests (`test.yml`)
+- Runs Playwright E2E tests against a production build
+- Uploads test reports as artifacts (7-day retention)
+- Triggered on PRs, pushes to main, and manual dispatch
 
-Simply run `bun build` and deploy the `dist/` folder.
+### Security Scanning (`security.yml`)
+- **Dependency Audit**: Runs `npm audit` on root and infra packages
+- **CodeQL Analysis**: Static analysis for JavaScript/TypeScript security issues
+- Runs on PRs, pushes to main, weekly schedule, and manual dispatch
+
+### Running Locally
+
+```bash
+# Run E2E tests
+npm run test
+
+# Run security audit
+npm audit --audit-level=high
+cd infra && npm audit --audit-level=high
+```
+
+Test reports are uploaded as GitHub Actions artifacts with 7-day retention.
 
 ## Documentation
 
 - [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
 - [Guidelines](./guidelines/Guidelines.md) - Project guidelines
-- [Attributions](./ATTRIBUTIONS.md) - Third-party credits
 
 ## Development Workflow
 
@@ -226,16 +244,6 @@ Simply run `bun build` and deploy the `dist/` folder.
 3. Run linting: `bun lint`
 4. Build and preview: `bun build && bun preview`
 5. Commit changes and create a pull request
-
-## Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with clear commit messages
-4. Test thoroughly
-5. Submit a pull request
 
 ## License
 

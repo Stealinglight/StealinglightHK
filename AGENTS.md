@@ -350,7 +350,6 @@ The application can also be deployed to:
 - [README.md](./README.md) - Project overview and quick start
 - [guidelines/Guidelines.md](./guidelines/Guidelines.md) - Project-specific guidelines
 - [package.json](./package.json) - Dependencies and scripts
-- [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) - Third-party attributions
 
 ## AI Assistant Tips
 
