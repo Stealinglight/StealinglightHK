@@ -148,7 +148,7 @@ cd infra
 npm install
 npm run build                    # Compile TypeScript
 npm run synth                    # Generate CloudFormation templates
-CONTACT_EMAIL=x@y.com cdk deploy --all  # Deploy all stacks
+CONTACT_EMAIL=x@y.com npx cdk deploy --all  # Deploy all stacks
 npm test                         # Jest tests
 ```
 
@@ -350,7 +350,6 @@ The application can also be deployed to:
 - [README.md](./README.md) - Project overview and quick start
 - [guidelines/Guidelines.md](./guidelines/Guidelines.md) - Project-specific guidelines
 - [package.json](./package.json) - Dependencies and scripts
-- [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) - Third-party attributions
 
 ## AI Assistant Tips
 
