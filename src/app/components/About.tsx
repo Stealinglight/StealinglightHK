@@ -30,19 +30,19 @@ export function About() {
             <h2 className="text-white mb-6">About Me</h2>
             <div className="space-y-4 text-white/70 leading-relaxed">
               <p>
-                Seattle-based cinematographer and camera operator specializing in aerial and
-                movement-driven storytelling. Third-generation aerial photographer with years of
-                production experience across Asia and the US, spanning branded content, documentary,
-                and commercial work.
+                Third-generation aerial photographer. Over 8 years working as a freelance cinematographer and camera operator across Asia, collaborating with brands like Tencent, Intel, Lenovo, Burton, Toyota, Volkswagen, and Audi.
               </p>
               <p>
-                Experienced operating advanced camera platforms including aerial platforms, cinema drones,
-                gimbals, and specialty rigs. Comfortable leading crews, coordinating
-                logistics and safety, and delivering under tight schedules in demanding environments.
+                My specialization lies in advanced camera platforms | aerial systems, gimbals, and dynamic rigs that capture movement in ways traditional setups can't. CAAC and FAA Part 107 certified pilot with experience in challenging environments, from remote mountain locations to high-pressure studio shoots.
               </p>
               <p>
-                Background includes building and leading a production team and collaborating with
-                global brands. FAA Part 107 certified and safety-forward on set (First Aid / CPR / AED).
+                Co-founded <a href="https://www.blnk.media/" target="_blank" rel="noopener noreferrer" className="text-cinematic-amber hover:text-cinematic-amber-light transition-colors">BLNK Media</a> in Shanghai, serving as Producer / Director of Photography for commercial productions. Also worked as a bullet-time operator with <a href="http://spliceboys.tv/" target="_blank" rel="noopener noreferrer" className="text-cinematic-amber hover:text-cinematic-amber-light transition-colors">Splice Boys</a>, pushing the boundaries of immersive capture.
+              </p>
+              <p>
+                Certified Red Cross First Aid instructor with CPR/AED and crisis management training. Essential credentials for remote adventure shoots and small crew productions in demanding locations.
+              </p>
+              <p>
+                Based in Seattle. Available for commercial, documentary, and adventure projects worldwide.
               </p>
             </div>
 
@@ -50,12 +50,10 @@ export function About() {
               <h3 className="text-sm tracking-widest text-white/40 mb-6">CREDENTIALS</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  'Third-generation aerial photographer',
-                  'FAA Part 107 (UAS)',
-                  'Cinema drone & FPV operator',
-                  'Gimbal & specialty rig operator',
-                  'Crew leadership & production coordination',
-                  'First Aid / CPR / AED',
+                  '8 Years Experience Across Asia',
+                  'CAAC Registered Pilot',
+                  'FAA Part 107 Certified',
+                  'Red Cross First Aid Instructor',
                 ].map((credential) => (
                   <div key={credential} className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-cinematic-amber rounded-full" />
@@ -71,11 +69,13 @@ export function About() {
                 {[
                   'Cinema Drone',
                   'FPV',
-                  'Ronin Gimbal',
-                  'MōVI Pro',
+                  'ShotOver',
+                  'Gimbal',
+                  'Steadycam',
                   'Vehicle Rigs',
                   'Bullet Time',
                   '360° Video',
+                  'VR',
                   'After Effects',
                   'DaVinci Resolve',
                   'Unreal Engine',

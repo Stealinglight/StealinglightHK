@@ -177,9 +177,9 @@ export const videoProjects = [
   },
 ] as const;
 
-// Hero background video
+// Hero background video (trimmed to 1:55 to remove end CTA)
 export const heroVideo = {
-  src: `${CDN_BASE_URL}/Reels/Drone/Drone%20Reel%202018_1.mp4`,
+  src: `${CDN_BASE_URL}/Reels/Drone/Drone_Reel_2018_Hero.mp4`,
   poster: `${CDN_BASE_URL}/thumbnails/17-drone-reel.jpg`,
 };
 

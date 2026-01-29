@@ -8,14 +8,6 @@ const clients = [
   { name: 'Toyota', logo: '/logos/toyota.svg' },
   { name: 'Volkswagen', logo: '/logos/volkswagen.svg' },
   { name: 'Audi', logo: '/logos/audi.svg' },
-  { name: 'Vogue', logo: '/logos/vogue.svg' },
-  { name: 'Puma', logo: '/logos/puma.svg' },
-  { name: 'Converse', logo: '/logos/converse.svg' },
-  { name: 'Coach', logo: '/logos/coach.svg' },
-  { name: 'Calvin Klein', logo: '/logos/calvin-klein.svg' },
-  { name: 'DJI', logo: '/logos/dji.svg' },
-  { name: 'Aperture', logo: '/logos/aperture.svg' },
-  { name: 'Netflix', logo: '/logos/netflix.svg' },
 ];
 
 export function Clients() {

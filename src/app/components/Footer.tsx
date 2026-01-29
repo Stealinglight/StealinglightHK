@@ -1,4 +1,4 @@
-import { Instagram, Film, Facebook, Twitter, ExternalLink } from 'lucide-react';
+import { Instagram, Film, Facebook, ExternalLink } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="text-white font-semibold tracking-wider mb-4">STEALINGLIGHT</h3>
+            <h3 className="text-white font-semibold tracking-wider mb-4">STEALINGLIGHT PRODUCTIONS</h3>
             <p className="text-white/40 text-sm leading-relaxed">
               Cinematographer & Aerial Specialist based in Seattle, Washington.
             </p>
@@ -29,7 +29,7 @@ export function Footer() {
                 <Film className="w-5 h-5" />
               </a>
               <a
-                href="https://instagram.com/stealinglight_productions"
+                href="https://instagram.com/stealinglight_productions/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/40 hover:text-cinematic-amber transition-colors"
@@ -38,22 +38,13 @@ export function Footer() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://facebook.com/stealinglightpro"
+                href="https://facebook.com/stealinglightpro/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/40 hover:text-cinematic-amber transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://twitter.com/stealinglight"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/40 hover:text-cinematic-amber transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -68,11 +59,11 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-white/40 hover:text-cinematic-amber transition-colors text-sm"
               >
-                BLNK Media
+                BLNK Media (Milan)
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a
-                href="https://spliceboys.tv"
+                href="http://spliceboys.tv/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-white/40 hover:text-cinematic-amber transition-colors text-sm"
@@ -103,9 +94,6 @@ export function Footer() {
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-white/30 text-sm">
             © {currentYear} Stealinglight Productions. All Rights Reserved.
-          </div>
-          <div className="text-white/20 text-xs">
-            Seattle, Washington
           </div>
         </div>
       </div>

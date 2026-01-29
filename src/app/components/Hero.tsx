@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ChevronDown, Play } from 'lucide-react';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 interface HeroProps {
   videoSrc?: string;
@@ -11,19 +11,9 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.8; // Slightly slower for cinematic feel
-    }
-  }, []);
-
   const scrollToWork = () => {
     document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  // Fallback image if no video provided
-  const fallbackImage =
-    'https://images.unsplash.com/photo-1658846101216-38e0f3228c3f?auto=format&fit=crop&w=1920&q=80';
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-cinematic-black">
@@ -37,18 +27,17 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
               muted
               loop
               playsInline
-              poster={posterSrc || fallbackImage}
+              poster={posterSrc}
               onLoadedData={() => setVideoLoaded(true)}
-              className={`w-full h-full object-cover transition-opacity duration-1000 ${
-                videoLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
             >
               <source src={videoSrc} type="video/mp4" />
             </video>
             {/* Poster shown while video loads */}
             {!videoLoaded && (
               <img
-                src={posterSrc || fallbackImage}
+                src={posterSrc}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -56,7 +45,7 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
           </>
         ) : (
           <img
-            src={posterSrc || fallbackImage}
+            src={posterSrc}
             alt=""
             className="w-full h-full object-cover"
           />
@@ -88,7 +77,7 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
           {/* Main headline */}
           <h1 className="text-white mb-8">
             <span className="block">Cinematographer</span>
-            <span className="block text-cinematic-amber">&amp; Aerial Specialist</span>
+            <span className="block text-cinematic-amber">· Aerial Specialist</span>
           </h1>
 
           {/* Tagline */}
@@ -98,9 +87,7 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
           >
-            Drone cinematography, gimbal operation, and visual effects
-            <span className="hidden md:inline"> — </span>
-            <span className="block md:inline">based in Seattle</span>
+            Third-generation aerial photographer with more than 8 years of commercial cinematography across Asia. Specialized in aerial platforms, dynamic camera movement, and immersive formats for brands including Intel, Tencent, Toyota, and Volkswagen.
           </motion.p>
 
           {/* CTAs */}

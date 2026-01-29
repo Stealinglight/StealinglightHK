@@ -31,11 +31,10 @@ export function Navigation() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
             ? 'bg-cinematic-black/95 backdrop-blur-md py-4 border-b border-white/5'
             : 'bg-transparent py-6'
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -43,7 +42,7 @@ export function Navigation() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="text-white text-sm font-medium tracking-[0.2em] hover:text-cinematic-amber transition-colors duration-300"
             >
-              STEALINGLIGHT
+              STEALINGLIGHT PRODUCTIONS
             </button>
 
             {/* Desktop Menu */}
