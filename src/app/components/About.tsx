@@ -30,20 +30,19 @@ export function About() {
             <h2 className="text-white mb-6">About Me</h2>
             <div className="space-y-4 text-white/70 leading-relaxed">
               <p>
-                Third-generation aerial photographer, American-born with extensive experience working
-                across Asia as a freelance cinematographer and camera operator. Now based in Seattle,
-                specializing in advanced camera platforms and aerial filming with expertise in drone
-                cinematography, gimbal systems, and innovative creative techniques including bullet
-                time, 360° video, and VFX.
+                Seattle-based cinematographer and camera operator specializing in aerial and
+                movement-driven storytelling. Third-generation aerial photographer with years of
+                production experience across Asia and the US, spanning branded content, documentary,
+                and commercial work.
               </p>
               <p>
-                Accustomed to harsh environments and high-pressure production schedules with experience
-                managing crews of 30+ people. Currently partner at BLNK Media, bullet-time operator
-                with Splice Boys, and member of Troy's Team Action.
+                Experienced operating advanced camera platforms including aerial platforms, cinema drones,
+                gimbals, and specialty rigs. Comfortable leading crews, coordinating
+                logistics and safety, and delivering under tight schedules in demanding environments.
               </p>
               <p>
-                Also certified Red Cross First Aid instructor with CPR/AED and crisis management
-                training, bringing safety and professionalism to every production.
+                Background includes building and leading a production team and collaborating with
+                global brands. FAA Part 107 certified and safety-forward on set (First Aid / CPR / AED).
               </p>
             </div>
 
@@ -51,12 +50,12 @@ export function About() {
               <h3 className="text-sm tracking-widest text-white/40 mb-6">CREDENTIALS</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  '3rd Generation Aerial Photographer',
-                  'FAA Part 107 Certified',
-                  'CAAC Registered Pilot',
-                  'Red Cross First Aid Instructor',
-                  'CPR/AED & Crisis Management',
-                  'Partner at BLNK Media',
+                  'Third-generation aerial photographer',
+                  'FAA Part 107 (UAS)',
+                  'Cinema drone & FPV operator',
+                  'Gimbal & specialty rig operator',
+                  'Crew leadership & production coordination',
+                  'First Aid / CPR / AED',
                 ].map((credential) => (
                   <div key={credential} className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-cinematic-amber rounded-full" />
@@ -70,13 +69,17 @@ export function About() {
               <h3 className="text-sm tracking-widest text-white/40 mb-6">SPECIALTIES & TOOLS</h3>
               <div className="flex flex-wrap gap-2">
                 {[
-                  'DJI Inspire',
+                  'Cinema Drone',
+                  'FPV',
                   'Ronin Gimbal',
                   'MōVI Pro',
+                  'Vehicle Rigs',
+                  'Bullet Time',
+                  '360° Video',
                   'After Effects',
-                  'Nuke',
-                  'Unreal Engine',
                   'DaVinci Resolve',
+                  'Unreal Engine',
+                  'Nuke',
                   'Insta360',
                 ].map((skill) => (
                   <span
