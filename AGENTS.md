@@ -148,7 +148,7 @@ cd infra
 npm install
 npm run build                    # Compile TypeScript
 npm run synth                    # Generate CloudFormation templates
-CONTACT_EMAIL=x@y.com cdk deploy --all  # Deploy all stacks
+CONTACT_EMAIL=x@y.com npx cdk deploy --all  # Deploy all stacks
 npm test                         # Jest tests
 ```
 
