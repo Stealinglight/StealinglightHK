@@ -28,26 +28,46 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run npm audit (root)
-        run: npm audit --audit-level=high --json > audit-root.json || npm audit --audit-level=high
-
       - name: Install infra dependencies
         working-directory: infra
         run: npm ci
 
+      - name: Run npm audit (root)
+        id: audit-root
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
       - name: Run npm audit (infra)
+        id: audit-infra
         working-directory: infra
-        run: npm audit --audit-level=high --json > audit-infra.json || npm audit --audit-level=high
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Generate audit results (root)
+        if: always() && steps.audit-root.outcome == 'failure'
+        run: npm audit --json > audit-results-root.json || true
+
+      - name: Generate audit results (infra)
+        if: always() && steps.audit-infra.outcome == 'failure'
+        working-directory: infra
+        run: npm audit --json > audit-results-infra.json || true
 
       - name: Upload audit results
-        if: always()
+        if: always() && (steps.audit-root.outcome == 'failure' || steps.audit-infra.outcome == 'failure')
         uses: actions/upload-artifact@v4
         with:
-          name: npm-audit-report
+          name: security-audit-results
           path: |
-            audit-root.json
-            infra/audit-infra.json
-          retention-days: 30
+            audit-results-root.json
+            infra/audit-results-infra.json
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Fail job if vulnerabilities found
+        if: steps.audit-root.outcome == 'failure' || steps.audit-infra.outcome == 'failure'
+        run: |
+          echo "::error::High-severity vulnerabilities found. Check audit results for details."
+          exit 1
 
   codeql:
     name: CodeQL Analysis
@@ -63,6 +83,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
+          queries: security-extended,security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
