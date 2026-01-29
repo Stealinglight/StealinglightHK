@@ -29,6 +29,10 @@ jobs:
         run: npm audit --audit-level=high
         continue-on-error: true
 
+      - name: Install infra dependencies
+        working-directory: infra
+        run: npm ci
+
       - name: Run npm audit (infra)
         working-directory: infra
         run: npm audit --audit-level=high
