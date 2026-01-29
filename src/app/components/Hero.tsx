@@ -87,7 +87,7 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
           >
-            Third-generation aerial photographer with more than 8 years of commercial cinematography across Asia. Specialized in aerial platforms, dynamic camera movement, and immersive formats for brands including Intel, Tencent, Toyota, and Volkswagen.
+            Aerial photographer with more than 8 years of commercial cinematography across Asia. Specialized in aerial platforms, dynamic camera movement, and immersive formats for brands including Intel, Tencent, Toyota, and Volkswagen.
           </motion.p>
 
           {/* CTAs */}
