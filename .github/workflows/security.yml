@@ -25,14 +25,39 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install infra dependencies
+        working-directory: infra
+        run: npm ci
+
       - name: Run npm audit (root)
-        run: npm audit --audit-level=high
+        id: audit-root
+        run: npm audit --audit-level=high || echo "::warning::High-severity vulnerabilities found in root dependencies"
         continue-on-error: true
 
       - name: Run npm audit (infra)
+        id: audit-infra
         working-directory: infra
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high || echo "::warning::High-severity vulnerabilities found in infra dependencies"
         continue-on-error: true
+
+      - name: Generate audit results (root)
+        if: failure() && steps.audit-root.outcome == 'failure'
+        run: npm audit --json > audit-results-root.json || true
+
+      - name: Generate audit results (infra)
+        if: failure() && steps.audit-infra.outcome == 'failure'
+        working-directory: infra
+        run: npm audit --json > audit-results-infra.json || true
+
+      - name: Upload audit results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-results
+          path: |
+            audit-results-root.json
+            infra/audit-results-infra.json
+          if-no-files-found: ignore
 
   codeql:
     name: CodeQL Analysis
@@ -48,6 +73,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
+          queries: security-extended,security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3

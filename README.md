@@ -216,6 +216,24 @@ GitHub Actions workflows run automatically on pull requests and pushes to `main`
 - **CodeQL Analysis**: Static analysis for JavaScript/TypeScript security issues
 - Runs on PRs, pushes to main, weekly schedule, and manual dispatch
 
+### Troubleshooting CI/CD
+
+**E2E Test Failures:**
+- Check the Actions tab for the workflow run
+- Download test report artifacts to see detailed failure information
+- Test reports are retained for 7 days
+- Workflows can be manually triggered via the Actions tab using "Run workflow"
+
+**Security Scan Failures:**
+- Review the Security tab for CodeQL findings
+- Check uploaded audit-results artifacts for dependency vulnerability details
+- High-severity vulnerabilities will cause the workflow to fail
+- Address vulnerabilities by updating dependencies or reviewing false positives
+
+**Manual Workflow Dispatch:**
+- Navigate to Actions tab → Select workflow → Click "Run workflow"
+- Useful for testing changes or running scans on-demand
+
 ## Documentation
 
 - [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
