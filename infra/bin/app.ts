@@ -4,6 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { AmplifyHostingStack } from '../lib/amplify-hosting-stack';
 import { ContactStack } from '../lib/contact-stack';
 import { MediaStack } from '../lib/media-stack';
+import { GithubOidcStack } from '../lib/github-oidc-stack';
 import { TagComplianceAspect } from '../lib/aspects/tag-compliance-aspect';
 
 const app = new cdk.App();
@@ -73,3 +74,14 @@ const requiredTags = {
 cdk.Aspects.of(amplifyStack).add(new TagComplianceAspect(requiredTags));
 cdk.Aspects.of(contactStack).add(new TagComplianceAspect(requiredTags));
 cdk.Aspects.of(mediaStack).add(new TagComplianceAspect(requiredTags));
+
+// Create GitHub OIDC Stack for CI/CD authentication
+// This stack is independent and should be deployed first (manually) to bootstrap CI/CD
+const githubOidcStack = new GithubOidcStack(app, `${appName}-github-oidc`, {
+  ...stackProps,
+  repositoryOwner,
+  repositoryName,
+  allowedBranches: ['main'],
+  allowPullRequests: false, // Security: only allow deployments from main branch
+});
+cdk.Aspects.of(githubOidcStack).add(new TagComplianceAspect(requiredTags));
