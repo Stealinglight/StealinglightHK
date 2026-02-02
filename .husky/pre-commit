@@ -13,4 +13,4 @@ if [ -n "$STAGED_FILES" ]; then
 fi
 
 # Run lint-staged
-bunx lint-staged
+npx lint-staged
