@@ -609,7 +609,8 @@ function SidebarMenuSkeleton({
   // Deterministic width based on props to avoid React purity issues with Math.random
   // Uses character codes for better distribution than length alone
   const width = React.useMemo(() => {
-    const hash = (showIcon ? 17 : 31) * 37 + (className?.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) ?? 0);
+    const charCodeSum = className ? [...className].reduce((acc, c) => acc + c.charCodeAt(0), 0) : 0;
+    const hash = (showIcon ? 17 : 31) * 37 + charCodeSum;
     return `${50 + (hash % 41)}%`; // Range: 50-90%
   }, [showIcon, className]);
 
