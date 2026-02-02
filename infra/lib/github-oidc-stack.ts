@@ -25,6 +25,13 @@ export interface GithubOidcStackProps extends cdk.StackProps {
    * @default false
    */
   allowPullRequests?: boolean;
+
+  /**
+   * ARN of an existing GitHub OIDC provider to use instead of creating a new one.
+   * Use this if the provider was already created by another stack or manually.
+   * @default - creates a new OIDC provider
+   */
+  existingOidcProviderArn?: string;
 }
 
 /**
@@ -44,7 +51,7 @@ export class GithubOidcStack extends cdk.Stack {
   /**
    * The OIDC provider for GitHub Actions
    */
-  public readonly oidcProvider: iam.OpenIdConnectProvider;
+  public readonly oidcProvider: iam.IOpenIdConnectProvider;
 
   constructor(scope: Construct, id: string, props: GithubOidcStackProps) {
     super(scope, id, props);
@@ -54,17 +61,29 @@ export class GithubOidcStack extends cdk.Stack {
       repositoryName,
       allowedBranches = ['main'],
       allowPullRequests = false,
+      existingOidcProviderArn,
     } = props;
 
-    // Create OIDC Provider for GitHub Actions
-    // The thumbprint is used to verify the identity of the OIDC provider
-    // GitHub's thumbprint is stable and documented
-    this.oidcProvider = new iam.OpenIdConnectProvider(this, 'GithubOidcProvider', {
-      url: 'https://token.actions.githubusercontent.com',
-      clientIds: ['sts.amazonaws.com'],
-      // GitHub OIDC thumbprints - AWS validates these automatically for GitHub
-      // See: https://github.blog/changelog/2023-06-27-github-actions-update-on-oidc-integration-with-aws/
-    });
+    // Use existing OIDC provider or create a new one
+    // GitHub's OIDC provider is account-wide, so if another stack or manual setup
+    // already created it, we import by ARN instead of creating a duplicate
+    if (existingOidcProviderArn) {
+      this.oidcProvider = iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(
+        this,
+        'GithubOidcProvider',
+        existingOidcProviderArn
+      );
+    } else {
+      // Create OIDC Provider for GitHub Actions
+      // The thumbprint is used to verify the identity of the OIDC provider
+      // GitHub's thumbprint is stable and documented
+      this.oidcProvider = new iam.OpenIdConnectProvider(this, 'GithubOidcProvider', {
+        url: 'https://token.actions.githubusercontent.com',
+        clientIds: ['sts.amazonaws.com'],
+        // GitHub OIDC thumbprints - AWS validates these automatically for GitHub
+        // See: https://github.blog/changelog/2023-06-27-github-actions-update-on-oidc-integration-with-aws/
+      });
+    }
 
     // Build the subject claim conditions for the trust policy
     // Format: repo:OWNER/REPO:ref:refs/heads/BRANCH or repo:OWNER/REPO:pull_request
