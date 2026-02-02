@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Security: Check for potential secrets in staged files
+SECRETS_PATTERN='(AKIA[A-Z0-9]{16}|-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY-----|\b[A-Za-z0-9+/]{40}\b.*secret|password\s*=\s*["\x27][^"\x27]{8,})'
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+if [ -n "$STAGED_FILES" ]; then
+  if echo "$STAGED_FILES" | xargs grep -lE "$SECRETS_PATTERN" 2>/dev/null; then
+    echo "ERROR: Potential secrets detected in staged files!"
+    echo "Please review and remove sensitive data before committing."
+    exit 1
+  fi
+fi
+
+# Run lint-staged
+bunx lint-staged
