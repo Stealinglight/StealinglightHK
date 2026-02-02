@@ -37,14 +37,16 @@ test.describe('Stealinglight Portfolio', () => {
 
   test('contact section exists', async ({ page }) => {
     await page.goto('/');
-    
+
     // Look for contact section or form
     const contactSection = page.locator('[id*="contact"], [class*="contact"], section:has-text("Contact")').first();
-    
+
     // Scroll to bottom to ensure lazy-loaded content is loaded
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
-    
+
+    // Wait for contact section to actually be visible after scroll
+    await expect(contactSection).toBeVisible({ timeout: 5000 });
+
     // Contact section should exist somewhere on the page
     const hasContact = (await contactSection.count()) > 0;
     expect(hasContact).toBeTruthy(); // Ensure contact section exists
@@ -76,16 +78,23 @@ test.describe('Stealinglight Portfolio', () => {
 
     // Scroll to contact section
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
 
     // Check for form input fields
     const emailField = page.locator('input[name="email"], input[type="email"], input[placeholder*="email" i]').first();
     const messageField = page.locator('textarea[name="message"], textarea[placeholder*="message" i], textarea[id*="message" i]').first();
 
-    // At least email and message fields should exist in a contact form
+    // Wait for form fields to be visible after scroll
     const hasEmailField = (await emailField.count()) > 0;
     const hasMessageField = (await messageField.count()) > 0;
 
+    if (hasEmailField) {
+      await expect(emailField).toBeVisible({ timeout: 5000 });
+    }
+    if (hasMessageField) {
+      await expect(messageField).toBeVisible({ timeout: 5000 });
+    }
+
+    // At least email and message fields should exist in a contact form
     expect(hasEmailField || hasMessageField).toBeTruthy();
   });
 
@@ -94,14 +103,13 @@ test.describe('Stealinglight Portfolio', () => {
 
     // Scroll to contact section
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
 
     // Find submit button
     const submitButton = page.locator('button[type="submit"], input[type="submit"], button:has-text("Send"), button:has-text("Submit")').first();
 
-    // If a submit button exists, verify it's visible and enabled
+    // If a submit button exists, wait for it and verify it's visible and enabled
     if ((await submitButton.count()) > 0) {
-      await expect(submitButton).toBeVisible();
+      await expect(submitButton).toBeVisible({ timeout: 5000 });
       await expect(submitButton).toBeEnabled();
     }
   });
@@ -117,8 +125,21 @@ test.describe('Stealinglight Portfolio', () => {
       // Click first anchor link and verify scroll position changes
       await navLinks.first().click();
 
-      // Wait for scroll animation to complete
-      await page.waitForLoadState('domcontentloaded');
+      // Wait for scroll animation to settle (check scroll position stabilizes)
+      await page.waitForFunction(() => {
+        return new Promise<boolean>(resolve => {
+          let lastScrollY = window.scrollY;
+          const checkScroll = () => {
+            if (window.scrollY === lastScrollY) {
+              resolve(true);
+            } else {
+              lastScrollY = window.scrollY;
+              setTimeout(checkScroll, 100);
+            }
+          };
+          setTimeout(checkScroll, 100);
+        });
+      }, { timeout: 3000 });
 
       const newScrollY = await page.evaluate(() => window.scrollY);
 
@@ -160,12 +181,14 @@ test.describe('Stealinglight Portfolio', () => {
 
     // Scroll to contact section
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
 
     // Find and click submit button without filling any fields
     const submitButton = page.locator('button[type="submit"]').first();
 
     if ((await submitButton.count()) > 0) {
+      // Wait for button to be visible after scroll
+      await expect(submitButton).toBeVisible({ timeout: 5000 });
+
       // Click submit without filling fields
       await submitButton.click();
 
@@ -180,7 +203,6 @@ test.describe('Stealinglight Portfolio', () => {
 
     // Scroll to contact section
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
 
     // Find form fields
     const nameField = page.locator('input[name="name"], input[placeholder*="name" i], input[id*="name" i]').first();
@@ -194,6 +216,9 @@ test.describe('Stealinglight Portfolio', () => {
         (await messageField.count()) > 0 &&
         (await submitButton.count()) > 0) {
 
+      // Wait for form to be visible
+      await expect(submitButton).toBeVisible({ timeout: 5000 });
+
       // Fill out form with valid data
       await nameField.fill('Test User');
       await emailField.fill('test@example.com');
@@ -202,8 +227,9 @@ test.describe('Stealinglight Portfolio', () => {
       // Submit form
       await submitButton.click();
 
-      // Wait for response
-      await page.waitForLoadState('domcontentloaded');
+      // Wait for toast response (success or error) instead of generic load state
+      const toast = page.locator('[data-sonner-toast]');
+      await expect(toast).toBeVisible({ timeout: 5000 });
 
       // Form should either show success, error, or remain stable
       // The key assertion is that the page doesn't crash
@@ -221,7 +247,6 @@ test.describe('Stealinglight Portfolio', () => {
 
     // Scroll to contact section
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForLoadState('domcontentloaded');
 
     // Find form fields
     const nameField = page.locator('input[name="name"], input[placeholder*="name" i], input[id*="name" i]').first();
@@ -234,6 +259,9 @@ test.describe('Stealinglight Portfolio', () => {
         (await emailField.count()) > 0 &&
         (await messageField.count()) > 0 &&
         (await submitButton.count()) > 0) {
+
+      // Wait for form to be visible
+      await expect(submitButton).toBeVisible({ timeout: 5000 });
 
       // Fill out form
       await nameField.fill('Test User');
