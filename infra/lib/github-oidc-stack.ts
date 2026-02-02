@@ -100,8 +100,9 @@ export class GithubOidcStack extends cdk.Stack {
     }
 
     // Create IAM Role with trust policy for GitHub Actions
+    // Use lowercase role name to avoid case-sensitivity issues with IAM
     this.deploymentRole = new iam.Role(this, 'GithubActionsDeploymentRole', {
-      roleName: `${repositoryName}-github-actions-deployment`,
+      roleName: `${repositoryName.toLowerCase()}-github-actions-deployment`,
       description: `Deployment role for GitHub Actions CI/CD from ${repositoryOwner}/${repositoryName}`,
       maxSessionDuration: cdk.Duration.hours(1),
       assumedBy: new iam.FederatedPrincipal(
