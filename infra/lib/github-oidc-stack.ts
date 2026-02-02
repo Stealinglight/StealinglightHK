@@ -32,6 +32,13 @@ export interface GithubOidcStackProps extends cdk.StackProps {
    * @default - creates a new OIDC provider
    */
   existingOidcProviderArn?: string;
+
+  /**
+   * GitHub repository name as it appears in GitHub (case-sensitive).
+   * Use this if the GitHub repo name differs in case from the CDK naming convention.
+   * @default - uses repositoryName
+   */
+  githubRepositoryName?: string;
 }
 
 /**
@@ -62,7 +69,12 @@ export class GithubOidcStack extends cdk.Stack {
       allowedBranches = ['main'],
       allowPullRequests = false,
       existingOidcProviderArn,
+      githubRepositoryName,
     } = props;
+
+    // Use githubRepositoryName for trust policy (case-sensitive for GitHub)
+    // Fall back to repositoryName if not specified
+    const trustPolicyRepoName = githubRepositoryName ?? repositoryName;
 
     // Use existing OIDC provider or create a new one
     // GitHub's OIDC provider is account-wide, so if another stack or manual setup
@@ -91,18 +103,17 @@ export class GithubOidcStack extends cdk.Stack {
 
     // Add branch-based claims
     for (const branch of allowedBranches) {
-      subjectClaims.push(`repo:${repositoryOwner}/${repositoryName}:ref:refs/heads/${branch}`);
+      subjectClaims.push(`repo:${repositoryOwner}/${trustPolicyRepoName}:ref:refs/heads/${branch}`);
     }
 
     // Optionally add pull request claim
     if (allowPullRequests) {
-      subjectClaims.push(`repo:${repositoryOwner}/${repositoryName}:pull_request`);
+      subjectClaims.push(`repo:${repositoryOwner}/${trustPolicyRepoName}:pull_request`);
     }
 
     // Create IAM Role with trust policy for GitHub Actions
-    // Use lowercase role name to avoid case-sensitivity issues with IAM
     this.deploymentRole = new iam.Role(this, 'GithubActionsDeploymentRole', {
-      roleName: `${repositoryName.toLowerCase()}-github-actions-deployment`,
+      roleName: `${repositoryName}-github-actions-deployment`,
       description: `Deployment role for GitHub Actions CI/CD from ${repositoryOwner}/${repositoryName}`,
       maxSessionDuration: cdk.Duration.hours(1),
       assumedBy: new iam.FederatedPrincipal(

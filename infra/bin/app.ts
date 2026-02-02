@@ -79,6 +79,8 @@ cdk.Aspects.of(mediaStack).add(new TagComplianceAspect(requiredTags));
 // This stack is independent and should be deployed first (manually) to bootstrap CI/CD
 // Note: If the GitHub OIDC provider already exists in the account, pass its ARN
 const existingOidcProviderArn = app.node.tryGetContext('existingOidcProviderArn');
+// GitHub repo name (case-sensitive) - may differ from CDK naming convention
+const githubRepositoryName = app.node.tryGetContext('githubRepositoryName');
 const githubOidcStack = new GithubOidcStack(app, `${appName}-github-oidc`, {
   ...stackProps,
   repositoryOwner,
@@ -86,5 +88,6 @@ const githubOidcStack = new GithubOidcStack(app, `${appName}-github-oidc`, {
   allowedBranches: ['main'],
   allowPullRequests: false, // Security: only allow deployments from main branch
   existingOidcProviderArn,
+  githubRepositoryName,
 });
 cdk.Aspects.of(githubOidcStack).add(new TagComplianceAspect(requiredTags));
