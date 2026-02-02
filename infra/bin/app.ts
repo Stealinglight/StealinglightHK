@@ -12,7 +12,7 @@ const app = new cdk.App();
 // Get context values
 const appName = app.node.tryGetContext('appName') || 'stealinglight';
 const repositoryOwner = app.node.tryGetContext('repositoryOwner') || 'Stealinglight';
-const repositoryName = app.node.tryGetContext('repositoryName') || 'stealinglightHK';
+const repositoryName = app.node.tryGetContext('repositoryName') || 'StealinglightHK';
 const branch = app.node.tryGetContext('branch') || 'main';
 const environment = app.node.tryGetContext('environment') || 'production';
 const domainName = app.node.tryGetContext('domainName');
