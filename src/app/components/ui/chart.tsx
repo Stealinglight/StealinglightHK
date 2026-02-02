@@ -339,7 +339,7 @@ function getPayloadConfigFromPayload(
   }
 
   return configLabelKey in config
-    ? config[configLabelKey]
+    ? config[configLabelKey] // eslint-disable-line security/detect-object-injection -- Safe: keys derived from chart config
     : config[key as keyof typeof config];
 }
 

@@ -82,9 +82,9 @@ export function Contact() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-white mb-4">Let's Work Together</h2>
+          <h2 className="text-white mb-4">{"Let's"} Work Together</h2>
           <p className="text-white/50 max-w-2xl mx-auto">
-            Have a project in mind? Whether it's a commercial shoot, documentary, or something that requires getting the camera somewhere impossible... let's talk.
+            Have a project in mind? Whether {"it's"} a commercial shoot, documentary, or something that requires getting the camera somewhere impossible... {"let's"} talk.
           </p>
         </motion.div>
 

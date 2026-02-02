@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "ESLINT_USE_FLAT_CONFIG=false eslint .",
+    "lint:fix": "ESLINT_USE_FLAT_CONFIG=false eslint --fix --max-warnings=0",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "prepare": "husky"
@@ -106,7 +107,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "ESLINT_USE_FLAT_CONFIG=false eslint --fix --max-warnings=0"
+      "npm run lint:fix"
     ],
     "*.{json,md,css}": [
       "prettier --write"
