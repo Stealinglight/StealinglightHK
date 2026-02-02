@@ -108,13 +108,8 @@ customHeaders:
     // Construct the default domain
     this.defaultDomain = `main.${this.app.attrDefaultDomain}`;
 
-    // Create Amplify branch for proper branch configuration
-    const branch = new amplify.CfnBranch(this, 'MainBranch', {
-      appId: this.app.attrAppId,
-      branchName: props.branch,
-      enableAutoBuild: true,
-      stage: 'PRODUCTION',
-    });
+    // Note: Branch is created via Amplify Console when connecting GitHub repository.
+    // CDK manages the app configuration but not the branch to avoid conflicts.
 
     // Custom domain configuration (only if domainName is provided)
     if (props.domainName) {
@@ -124,7 +119,7 @@ customHeaders:
       });
 
       // Create Amplify domain association for custom domain
-      const domain = new amplify.CfnDomain(this, 'CustomDomain', {
+      new amplify.CfnDomain(this, 'CustomDomain', {
         appId: this.app.attrAppId,
         domainName: props.domainName,
         subDomainSettings: [
@@ -133,9 +128,6 @@ customHeaders:
         ],
         enableAutoSubDomain: false,
       });
-
-      // Domain depends on branch being created first
-      domain.addDependency(branch);
 
       // Output Route 53 nameservers
       new cdk.CfnOutput(this, 'NameServers', {
