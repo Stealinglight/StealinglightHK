@@ -15,16 +15,16 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "aws-cdk-lib": "^2.175.0",
-    "constructs": "^10.4.2"
+    "aws-cdk-lib": "^2.236.0",
+    "constructs": "^10.4.5"
   },
   "devDependencies": {
-    "@aws-sdk/client-ses": "^3.893.0",
+    "@aws-sdk/client-ses": "^3.980.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.10.10",
-    "aws-cdk": "^2.175.0",
+    "@types/node": "^25.2.0",
+    "aws-cdk": "^2.1104.0",
     "aws-sdk-client-mock": "^4.1.0",
     "jest": "^30.2.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.9.3"
   }
 }
