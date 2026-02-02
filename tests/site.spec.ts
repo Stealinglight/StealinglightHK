@@ -79,7 +79,6 @@ test.describe('Stealinglight Portfolio', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for form input fields
-    const nameField = page.locator('input[name="name"], input[placeholder*="name" i], input[id*="name" i]').first();
     const emailField = page.locator('input[name="email"], input[type="email"], input[placeholder*="email" i]').first();
     const messageField = page.locator('textarea[name="message"], textarea[placeholder*="message" i], textarea[id*="message" i]').first();
 
@@ -116,7 +115,6 @@ test.describe('Stealinglight Portfolio', () => {
 
     if (linkCount > 0) {
       // Click first anchor link and verify scroll position changes
-      const initialScrollY = await page.evaluate(() => window.scrollY);
       await navLinks.first().click();
 
       // Wait for scroll animation to complete

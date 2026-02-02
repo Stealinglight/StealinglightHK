@@ -33,7 +33,7 @@ export function About() {
                 Third-generation aerial photographer. Over 8 years working as a freelance cinematographer and camera operator across Asia, collaborating with brands like Tencent, Intel, Lenovo, Burton, Toyota, Volkswagen, and Audi.
               </p>
               <p>
-                My specialization lies in advanced camera platforms | aerial systems, gimbals, and dynamic rigs that capture movement in ways traditional setups can't. CAAC and FAA Part 107 certified pilot with experience in challenging environments, from remote mountain locations to high-pressure studio shoots.
+                My specialization lies in advanced camera platforms | aerial systems, gimbals, and dynamic rigs that capture movement in ways traditional setups cannot. CAAC and FAA Part 107 certified pilot with experience in challenging environments, from remote mountain locations to high-pressure studio shoots.
               </p>
               <p>
                 Co-founded <a href="https://www.blnk.media/" target="_blank" rel="noopener noreferrer" className="text-cinematic-amber hover:text-cinematic-amber-light transition-colors">BLNK Media</a> in Shanghai, serving as Producer / Director of Photography for commercial productions. Also worked as a bullet-time operator with <a href="http://spliceboys.tv/" target="_blank" rel="noopener noreferrer" className="text-cinematic-amber hover:text-cinematic-amber-light transition-colors">Splice Boys</a>, pushing the boundaries of immersive capture.

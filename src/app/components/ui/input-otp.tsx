@@ -44,6 +44,7 @@ function InputOTPSlot({
   index: number;
 }) {
   const inputOTPContext = React.useContext(OTPInputContext);
+  // eslint-disable-next-line security/detect-object-injection -- Safe: index is a validated number prop
   const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
 
   return (

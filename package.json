@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint .",
+    "lint:fix": "ESLINT_USE_FLAT_CONFIG=false eslint --fix --max-warnings=0",
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -65,11 +67,22 @@
     "vaul": "1.1.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.4.0",
+    "@commitlint/config-conventional": "^20.4.0",
     "@playwright/test": "^1.58.0",
     "@tailwindcss/vite": "4.1.18",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "@vitejs/plugin-react": "5.1.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-security": "^3.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwindcss": "4.1.18",
@@ -91,5 +104,13 @@
     "overrides": {
       "vite": "6.3.5"
     }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run lint:fix"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   }
 }
