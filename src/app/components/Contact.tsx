@@ -110,8 +110,10 @@ export function Contact() {
               </a>
             ) : (
               <button
+                type="button"
                 onClick={() => setShowPhone(true)}
                 className="text-white/70 hover:text-cinematic-amber transition-colors underline underline-offset-2"
+                aria-label="Reveal phone number"
               >
                 Click to reveal
               </button>
