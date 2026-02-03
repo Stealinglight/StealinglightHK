@@ -287,4 +287,48 @@ test.describe('Stealinglight Portfolio', () => {
       expect(typeof hasLoadingState).toBe('boolean');
     }
   });
+
+  test('phone number click-to-reveal protects against scraping', async ({ page }) => {
+    await page.goto('/');
+
+    // Scroll to contact section
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    // Wait for contact section to be visible
+    await page.waitForSelector('#contact', { timeout: 5000 });
+
+    // 1. Verify phone number is NOT visible in initial HTML
+    const pageContent = await page.content();
+    expect(pageContent).not.toContain('+1 (202) 709-8696');
+    expect(pageContent).not.toContain('2027098696');
+
+    // 2. Find the reveal button
+    const revealButton = page.locator('button:has-text("Click to reveal")');
+    await expect(revealButton).toBeVisible({ timeout: 5000 });
+
+    // Verify button has proper accessibility attributes
+    const ariaLabel = await revealButton.getAttribute('aria-label');
+    expect(ariaLabel).toBe('Reveal phone number');
+
+    // Verify button has proper type attribute
+    const buttonType = await revealButton.getAttribute('type');
+    expect(buttonType).toBe('button');
+
+    // 3. Click the reveal button
+    await revealButton.click();
+
+    // 4. Verify phone number appears and is clickable
+    const phoneLink = page.locator('a[href="tel:+12027098696"]');
+    await expect(phoneLink).toBeVisible({ timeout: 2000 });
+
+    // Verify the phone number text is displayed
+    const phoneText = await phoneLink.textContent();
+    expect(phoneText).toBe('+1 (202) 709-8696');
+
+    // Verify the link is clickable
+    await expect(phoneLink).toBeEnabled();
+
+    // 5. Verify reveal button is no longer visible after reveal
+    await expect(revealButton).not.toBeVisible();
+  });
 });
