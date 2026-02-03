@@ -1,0 +1,8 @@
+/* TEAM */
+Cinematographer: Chris McMillon
+Location: Seattle, Washington
+Contact: stealinglight.hk
+
+/* SITE */
+Built with: React, TypeScript, Tailwind CSS
+Hosted on: AWS (S3 + CloudFront via Amplify)
