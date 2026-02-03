@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Phone, MapPin, Loader2 } from 'lucide-react';
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { toast } from 'sonner';
 
@@ -23,6 +23,7 @@ const initialFormData: FormData = {
 export function Contact() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPhone, setShowPhone] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -93,32 +94,28 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
         >
-          <div className="text-center p-6 group">
-            <div className="w-12 h-12 rounded-full bg-cinematic-amber/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-cinematic-amber/20 transition-colors">
-              <Mail className="w-5 h-5 text-cinematic-amber" />
-            </div>
-            <h3 className="text-sm tracking-wider text-white/40 mb-2">EMAIL</h3>
-            <a
-              href="mailto:chris@stealinglight.hk"
-              className="text-white/70 hover:text-cinematic-amber transition-colors"
-            >
-              chris@stealinglight.hk
-            </a>
-          </div>
-
           <div className="text-center p-6 group">
             <div className="w-12 h-12 rounded-full bg-cinematic-amber/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-cinematic-amber/20 transition-colors">
               <Phone className="w-5 h-5 text-cinematic-amber" />
             </div>
             <h3 className="text-sm tracking-wider text-white/40 mb-2">PHONE</h3>
-            <a
-              href="tel:+12027098696"
-              className="text-white/70 hover:text-cinematic-amber transition-colors"
-            >
-              +1 (202) 709-8696
-            </a>
+            {showPhone ? (
+              <a
+                href="tel:+12027098696"
+                className="text-white/70 hover:text-cinematic-amber transition-colors"
+              >
+                +1 (202) 709-8696
+              </a>
+            ) : (
+              <button
+                onClick={() => setShowPhone(true)}
+                className="text-white/70 hover:text-cinematic-amber transition-colors underline underline-offset-2"
+              >
+                Click to reveal
+              </button>
+            )}
           </div>
 
           <div className="text-center p-6 group">
