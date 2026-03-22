@@ -39,7 +39,7 @@ export class ContactStack extends cdk.Stack {
     // Handler code extracted to lambda/contact/index.js for testability and maintainability
     // Rate limiting handled by API Gateway (throttlingRateLimit/throttlingBurstLimit in deployOptions)
     const contactFunction = new lambda.Function(this, 'ContactFunction', {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       handler: 'index.handler',
       logGroup,
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/contact')),
