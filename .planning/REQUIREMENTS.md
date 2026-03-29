@@ -91,41 +91,41 @@ Deferred to future release. Tracked but not in current roadmap.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| INFRA-01    | —     | Pending |
-| INFRA-02    | —     | Pending |
-| INFRA-03    | —     | Pending |
-| INFRA-04    | —     | Pending |
-| INFRA-05    | —     | Pending |
-| INFRA-06    | —     | Pending |
-| CLEAN-01    | —     | Pending |
-| CLEAN-02    | —     | Pending |
-| CLEAN-03    | —     | Pending |
-| CLEAN-04    | —     | Pending |
-| VISL-01     | —     | Pending |
-| VISL-02     | —     | Pending |
-| VISL-03     | —     | Pending |
-| VISL-04     | —     | Pending |
-| VIDO-01     | —     | Pending |
-| VIDO-02     | —     | Pending |
-| VIDO-03     | —     | Pending |
-| VIDO-04     | —     | Pending |
-| PERF-01     | —     | Pending |
-| PERF-02     | —     | Pending |
-| PERF-03     | —     | Pending |
-| PERF-04     | —     | Pending |
-| QUAL-01     | —     | Pending |
-| QUAL-02     | —     | Pending |
-| QUAL-03     | —     | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| INFRA-01    | Phase 1 | Pending |
+| INFRA-02    | Phase 1 | Pending |
+| INFRA-03    | Phase 1 | Pending |
+| INFRA-04    | Phase 1 | Pending |
+| INFRA-05    | Phase 4 | Pending |
+| INFRA-06    | Phase 1 | Pending |
+| CLEAN-01    | Phase 2 | Pending |
+| CLEAN-02    | Phase 2 | Pending |
+| CLEAN-03    | Phase 2 | Pending |
+| CLEAN-04    | Phase 2 | Pending |
+| VISL-01     | Phase 3 | Pending |
+| VISL-02     | Phase 3 | Pending |
+| VISL-03     | Phase 3 | Pending |
+| VISL-04     | Phase 3 | Pending |
+| VIDO-01     | Phase 3 | Pending |
+| VIDO-02     | Phase 3 | Pending |
+| VIDO-03     | Phase 3 | Pending |
+| VIDO-04     | Phase 3 | Pending |
+| PERF-01     | Phase 2 | Pending |
+| PERF-02     | Phase 2 | Pending |
+| PERF-03     | Phase 4 | Pending |
+| PERF-04     | Phase 2 | Pending |
+| QUAL-01     | Phase 3 | Pending |
+| QUAL-02     | Phase 4 | Pending |
+| QUAL-03     | Phase 2 | Pending |
 
 **Coverage:**
 
 - v1 requirements: 25 total
-- Mapped to phases: 0
-- Unmapped: 25
+- Mapped to phases: 25
+- Unmapped: 0
 
 ---
 
 _Requirements defined: 2026-03-29_
-_Last updated: 2026-03-29 after initial definition_
+_Last updated: 2026-03-27 after roadmap creation_
