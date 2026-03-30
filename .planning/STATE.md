@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-30T05:32:30.505Z"
+status: verifying
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-30T06:01:02.140Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 0
+  completed_plans: 2
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 Phase: 01 (infrastructure-safety-net) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-03-30
 
 Progress: [..........] 0%
@@ -53,6 +53,7 @@ Progress: [..........] 0%
 
 _Updated after each plan completion_
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
+| Phase 01 P02 | 2min | 4 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Recent decisions affecting current work:
 - [Phase 01]: Keep index.js as canonical Lambda source -- index.ts was never deployed and had incompatible implementations
 - [Phase 01]: Build CSP as array of directives for readability and maintenance
 - [Phase 01]: unsafe-inline temporary for script-src and style-src -- Phase 2 self-hosts fonts, Phase 4 explores nonces
+- [Phase 01]: Invisible error boundary fallback (return null) for portfolio sections -- hiding broken section is better than showing error UI
+- [Phase 01]: CDK upgraded to 2.245 resolving yaml vuln; remaining brace-expansion is moderate only and bundled in aws-cdk-lib
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T05:32:30.504Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-30T06:01:02.138Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None

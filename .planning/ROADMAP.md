@@ -13,7 +13,7 @@ This roadmap transforms the stealinglight.hk cinematography portfolio from a par
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Infrastructure & Safety Net** - Fix broken systems and add error isolation so development can proceed safely
+- [x] **Phase 1: Infrastructure & Safety Net** - Fix broken systems and add error isolation so development can proceed safely (completed 2026-03-30)
 - [ ] **Phase 2: Cleanup & Architecture** - Strip dead code, build video system and hooks that the visual overhaul consumes
 - [ ] **Phase 3: Visual Overhaul** - Deliver the cinematic experience section by section using Phase 2 infrastructure
 - [ ] **Phase 4: Quality & Protection** - Add accessibility, bot protection, and monitoring to the finished site
@@ -36,8 +36,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 
-- [ ] 01-01-PLAN.md -- Lambda cleanup and CSP fix (delete divergent index.ts, fix Content-Security-Policy for GA/Fonts/CDN)
-- [ ] 01-02-PLAN.md -- Error boundary, assets, and npm audit (react-error-boundary wrapping, favicon/og-image, vulnerability remediation)
+- [x] 01-01-PLAN.md -- Lambda cleanup and CSP fix (delete divergent index.ts, fix Content-Security-Policy for GA/Fonts/CDN)
+- [x] 01-02-PLAN.md -- Error boundary, assets, and npm audit (react-error-boundary wrapping, favicon/og-image, vulnerability remediation)
 
 ### Phase 2: Cleanup & Architecture
 
@@ -103,7 +103,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase                          | Plans Complete | Status      | Completed |
 | ------------------------------ | -------------- | ----------- | --------- |
-| 1. Infrastructure & Safety Net | 0/2            | Not started | -         |
+| 1. Infrastructure & Safety Net | 2/2 | Complete   | 2026-03-30 |
 | 2. Cleanup & Architecture      | 0/3            | Not started | -         |
 | 3. Visual Overhaul             | 0/3            | Not started | -         |
 | 4. Quality & Protection        | 0/1            | Not started | -         |
