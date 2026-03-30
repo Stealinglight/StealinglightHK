@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-30T23:22:25.536Z"
+status: verifying
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-30T23:33:48.198Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 Phase: 02 (cleanup-architecture) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-03-30
 
 Progress: [..........] 0%
@@ -56,6 +56,7 @@ _Updated after each plan completion_
 | Phase 01 P02 | 2min | 4 tasks | 8 files |
 | Phase 02 P01 | 8min | 2 tasks | 56 files |
 | Phase 02 P02 | 4min | 2 tasks | 8 files |
+| Phase 02 P03 | 8min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Fontsource variable packages for self-hosted fonts (JS import in main.tsx for Vite bundling)
 - [Phase 02]: CDN_BASE_URL via VITE_CDN_BASE_URL env var with hardcoded fallback for backward compatibility
 - [Phase 02]: CSP unsafe-inline kept for style-src (Motion element.style); nonce work deferred to Phase 4
+- [Phase 02]: One-shot IntersectionObserver pattern for lazy video rendering (stays mounted after entering view)
+- [Phase 02]: ESLint flat config with multi-environment blocks (TS/TSX, Lambda JS, Jest, config files)
+- [Phase 02]: Lambda console.log allowed in ESLint for structured CloudWatch logging
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T23:22:25.534Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-30T23:33:48.195Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None

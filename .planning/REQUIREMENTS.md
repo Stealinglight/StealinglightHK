@@ -21,7 +21,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 - [x] **CLEAN-01**: All 44 unused shadcn/ui component files removed from src/app/components/ui/
 - [x] **CLEAN-02**: All unused npm packages removed from package.json (MUI, Radix, drag-drop, charts, date pickers, etc.)
 - [x] **CLEAN-03**: Package name updated from @figma/my-make-file to stealinglight-hk, stale pnpm overrides removed
-- [ ] **CLEAN-04**: ESLint migrated from legacy .eslintrc.json to flat config (eslint.config.js), ESLINT_USE_FLAT_CONFIG flag removed
+- [x] **CLEAN-04**: ESLint migrated from legacy .eslintrc.json to flat config (eslint.config.js), ESLINT_USE_FLAT_CONFIG flag removed
 
 ### Visual
 
@@ -40,7 +40,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 ### Performance
 
 - [x] **PERF-01**: Fonts self-hosted via Fontsource (Inter, Space Grotesk) — no render-blocking Google Fonts CDN dependency
-- [ ] **PERF-02**: Off-screen video elements lazy-rendered via IntersectionObserver instead of all 19 mounted simultaneously
+- [x] **PERF-02**: Off-screen video elements lazy-rendered via IntersectionObserver instead of all 19 mounted simultaneously
 - [ ] **PERF-03**: Contact form protected by Cloudflare Turnstile invisible CAPTCHA with server-side verification in Lambda
 - [x] **PERF-04**: CloudFront CDN base URL sourced from VITE_CDN_BASE_URL environment variable instead of hardcoded
 
@@ -102,7 +102,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLEAN-01    | Phase 2 | Complete |
 | CLEAN-02    | Phase 2 | Complete |
 | CLEAN-03    | Phase 2 | Complete |
-| CLEAN-04    | Phase 2 | Pending |
+| CLEAN-04    | Phase 2 | Complete |
 | VISL-01     | Phase 3 | Pending |
 | VISL-02     | Phase 3 | Pending |
 | VISL-03     | Phase 3 | Pending |
@@ -112,7 +112,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIDO-03     | Phase 3 | Pending |
 | VIDO-04     | Phase 3 | Pending |
 | PERF-01     | Phase 2 | Complete |
-| PERF-02     | Phase 2 | Pending |
+| PERF-02     | Phase 2 | Complete |
 | PERF-03     | Phase 4 | Pending |
 | PERF-04     | Phase 2 | Complete |
 | QUAL-01     | Phase 3 | Pending |
