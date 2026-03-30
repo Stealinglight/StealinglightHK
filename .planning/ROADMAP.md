@@ -32,12 +32,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Browser tab shows the stealinglight favicon and shared links on social media display the og-image preview
 4. A deliberate error thrown inside a section component shows a graceful fallback instead of a blank white page
 5. npm audit reports zero high or critical vulnerabilities in both root and infra packages
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Lambda cleanup and CSP fix (delete divergent index.ts, fix Content-Security-Policy for GA/Fonts/CDN)
+- [ ] 01-02-PLAN.md -- Error boundary, assets, and npm audit (react-error-boundary wrapping, favicon/og-image, vulnerability remediation)
 
 ### Phase 2: Cleanup & Architecture
 
