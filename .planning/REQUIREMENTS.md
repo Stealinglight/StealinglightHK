@@ -18,9 +18,9 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Cleanup
 
-- [ ] **CLEAN-01**: All 44 unused shadcn/ui component files removed from src/app/components/ui/
-- [ ] **CLEAN-02**: All unused npm packages removed from package.json (MUI, Radix, drag-drop, charts, date pickers, etc.)
-- [ ] **CLEAN-03**: Package name updated from @figma/my-make-file to stealinglight-hk, stale pnpm overrides removed
+- [x] **CLEAN-01**: All 44 unused shadcn/ui component files removed from src/app/components/ui/
+- [x] **CLEAN-02**: All unused npm packages removed from package.json (MUI, Radix, drag-drop, charts, date pickers, etc.)
+- [x] **CLEAN-03**: Package name updated from @figma/my-make-file to stealinglight-hk, stale pnpm overrides removed
 - [ ] **CLEAN-04**: ESLint migrated from legacy .eslintrc.json to flat config (eslint.config.js), ESLINT_USE_FLAT_CONFIG flag removed
 
 ### Visual
@@ -48,7 +48,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 - [ ] **QUAL-01**: Scroll progress indicator shows position within single-page site (thin accent-color bar)
 - [ ] **QUAL-02**: Site passes basic accessibility audit — skip links, focus management in modal, alt text on images, reduced motion support via useReducedMotion
-- [ ] **QUAL-03**: Unused application components removed (Reel.tsx, ImageWithFallback.tsx) and dead code cleaned up
+- [x] **QUAL-03**: Unused application components removed (Reel.tsx, ImageWithFallback.tsx) and dead code cleaned up
 
 ## v2 Requirements
 
@@ -99,9 +99,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-04    | Phase 1 | Complete |
 | INFRA-05    | Phase 4 | Pending |
 | INFRA-06    | Phase 1 | Complete |
-| CLEAN-01    | Phase 2 | Pending |
-| CLEAN-02    | Phase 2 | Pending |
-| CLEAN-03    | Phase 2 | Pending |
+| CLEAN-01    | Phase 2 | Complete |
+| CLEAN-02    | Phase 2 | Complete |
+| CLEAN-03    | Phase 2 | Complete |
 | CLEAN-04    | Phase 2 | Pending |
 | VISL-01     | Phase 3 | Pending |
 | VISL-02     | Phase 3 | Pending |
@@ -117,7 +117,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-04     | Phase 2 | Pending |
 | QUAL-01     | Phase 3 | Pending |
 | QUAL-02     | Phase 4 | Pending |
-| QUAL-03     | Phase 2 | Pending |
+| QUAL-03     | Phase 2 | Complete |
 
 **Coverage:**
 

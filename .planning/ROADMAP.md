@@ -55,7 +55,7 @@ Plans:
 
 Plans:
 
-- [ ] 02-01-PLAN.md -- Nuclear cleanup (delete 44 shadcn/ui files, dead components, overhaul package.json dependencies)
+- [x] 02-01-PLAN.md -- Nuclear cleanup (delete 44 shadcn/ui files, dead components, overhaul package.json dependencies)
 - [ ] 02-02-PLAN.md -- Font self-hosting + CSP + CDN variable (Fontsource migration, CSP tightening, VITE_CDN_BASE_URL)
 - [ ] 02-03-PLAN.md -- Video lazy-loading + ESLint migration (IntersectionObserver hook, flat config with Lambda linting)
 

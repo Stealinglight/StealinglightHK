@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 2 context gathered
-last_updated: '2026-03-30T22:35:50.927Z'
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-30T23:15:04.928Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 5
+  completed_plans: 3
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-27)
 
 **Core value:** Visitors experience the cinematography work in a contemporary, cinematic, artistically crafted presentation -- and can easily reach out if interested.
-**Current focus:** Phase 01 — infrastructure-safety-net
+**Current focus:** Phase 02 — cleanup-architecture
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 02 (cleanup-architecture) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-03-30
 
 Progress: [..........] 0%
@@ -54,6 +54,7 @@ Progress: [..........] 0%
 _Updated after each plan completion_
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
 | Phase 01 P02 | 2min | 4 tasks | 8 files |
+| Phase 02 P01 | 8min | 2 tasks | 56 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,8 @@ Recent decisions affecting current work:
 - [Phase 01]: unsafe-inline temporary for script-src and style-src -- Phase 2 self-hosts fonts, Phase 4 explores nonces
 - [Phase 01]: Invisible error boundary fallback (return null) for portfolio sections -- hiding broken section is better than showing error UI
 - [Phase 01]: CDK upgraded to 2.245 resolving yaml vuln; remaining brace-expansion is moderate only and bundled in aws-cdk-lib
+- [Phase 02]: Downgraded @eslint/js from ^10.0.1 to ^9.39.2 to match eslint 9.x peer requirement
+- [Phase 02]: Shared utilities relocated to src/lib/ (cn() moved from src/app/components/ui/utils.ts to src/lib/utils.ts)
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T22:35:50.925Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-cleanup-architecture/02-CONTEXT.md
+Last session: 2026-03-30T23:15:04.926Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: None
