@@ -25,24 +25,23 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 - ✓ SEO structured data (JSON-LD: Person, LocalBusiness, WebSite, FAQPage) — existing
 - ✓ Motion scroll-triggered animations — existing
 - ✓ Media CDN via CloudFront + S3 for video assets — existing
-- ✓ Security headers (CSP, HSTS, X-Frame-Options, etc.) — existing (needs fixes)
-- ✓ Google Analytics integration — existing (blocked by CSP)
+- ✓ Security headers (CSP, HSTS, X-Frame-Options, etc.) — existing, CSP fixed in Phase 1
+- ✓ Google Analytics integration — existing, CSP unblocked in Phase 1
+- ✓ Dual Lambda file resolved — index.js is sole source, index.ts deleted. Validated in Phase 1.
+- ✓ CSP allows GA4, Google Fonts, CloudFront CDN — rebuilt as directive array. Validated in Phase 1.
+- ✓ Favicon.svg and og-image.jpg — camera lens icon + cinematic still. Validated in Phase 1.
+- ✓ React error boundary — SectionErrorBoundary wraps 7 sections individually. Validated in Phase 1.
+- ✓ npm audit clean (high/critical) — CDK upgraded to 2.245. Validated in Phase 1.
 
 ### Active
 
-- [ ] Fix contact form end-to-end (resolve dual Lambda files, ensure form submits and emails arrive)
 - [ ] Visual overhaul — contemporary, cinematic aesthetic with artistic flow and character
 - [ ] Fix design inconsistencies across all sections
 - [ ] Remove unused UI components (44 shadcn/ui files, 5,119 lines of dead code)
 - [ ] Remove unused npm dependencies (~20+ packages not imported in app)
-- [ ] Fix CSP blocking Google Analytics and Google Fonts
-- [ ] Add missing favicon.svg and og-image.jpg
 - [ ] Fix package name (currently `@figma/my-make-file`)
 - [ ] Remove stale pnpm overrides
-- [ ] Resolve dual Lambda file issue (index.ts vs index.js divergence)
 - [ ] Migrate ESLint from legacy config to flat config (ESLint 9+)
-- [ ] Fix npm audit vulnerabilities (root + infra)
-- [ ] Add React error boundary
 - [ ] Improve video loading performance (lazy rendering, mobile optimization)
 - [ ] Self-host fonts or optimize font loading (currently render-blocking)
 - [ ] Move hardcoded CDN URL to environment variable
@@ -66,10 +65,10 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 
 - **Origin:** Site was scaffolded from a Figma Make template, partially built, and never fully finished
 - **Media:** Video assets hosted on AWS S3, served via CloudFront CDN (`d2fc83sck42gx7.cloudfront.net`)
-- **Contact form:** Lambda backend exists and is deployed, but the TypeScript source diverges from the deployed JavaScript — different env vars, different API Gateway event formats, different sanitization
+- **Contact form:** Lambda backend uses index.js as sole source (Phase 1 cleaned up divergent index.ts)
 - **Tech debt:** 44 unused shadcn/ui components (5,119 lines), 20+ unused npm packages, dual lockfiles, stale overrides
-- **CSP issue:** Security headers block Google Analytics and Google Fonts in production
-- **Missing assets:** No favicon.svg or og-image.jpg
+- **CSP:** Rebuilt as directive array — allows GA4, Google Fonts, CloudFront CDN (Phase 1)
+- **Assets:** favicon.svg (camera lens) and og-image.jpg (1200x630 cinematic still) in place (Phase 1)
 - **Tests:** 13 Playwright E2E tests exist but contact form test can't hit API in CI
 
 ## Constraints
@@ -88,7 +87,7 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 | ------------------------------------ | ---------------------------------------------------------- | --------- |
 | Keep single-page scroll architecture | Matches portfolio use case, already built                  | — Pending |
 | Remove unused shadcn/ui components   | 5,119 lines of dead code, not imported anywhere            | — Pending |
-| Resolve Lambda to single source (JS) | TypeScript source was never deployed, has different logic  | — Pending |
+| Resolve Lambda to single source (JS) | TypeScript source was never deployed, has different logic  | ✓ Phase 1 |
 | Production-grade finish              | User wants tests, perf, a11y, SEO — not just visual polish | — Pending |
 | Contemporary cinematic aesthetic     | User's creative direction for the visual overhaul          | — Pending |
 
@@ -113,4 +112,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-03-27 after initialization_
+_Last updated: 2026-03-30 after Phase 1 completion_
