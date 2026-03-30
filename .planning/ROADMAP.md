@@ -51,13 +51,13 @@ Plans:
 3. Fonts load from the local bundle (no network request to fonts.googleapis.com visible in DevTools) and package.json shows name "stealinglight-hk"
 4. Video elements below the fold are not present in the DOM until scrolled near (verified via DevTools Elements panel on page load)
 5. ESLint runs without the ESLINT_USE_FLAT_CONFIG flag and uses eslint.config.js
-   **Plans**: TBD
+   **Plans**: 3 plans
 
 Plans:
 
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Nuclear cleanup (delete 44 shadcn/ui files, dead components, overhaul package.json dependencies)
+- [ ] 02-02-PLAN.md -- Font self-hosting + CSP + CDN variable (Fontsource migration, CSP tightening, VITE_CDN_BASE_URL)
+- [ ] 02-03-PLAN.md -- Video lazy-loading + ESLint migration (IntersectionObserver hook, flat config with Lambda linting)
 
 ### Phase 3: Visual Overhaul
 
@@ -101,9 +101,9 @@ Plans:
 **Execution Order:**
 Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
-| Phase                          | Plans Complete | Status      | Completed |
-| ------------------------------ | -------------- | ----------- | --------- |
-| 1. Infrastructure & Safety Net | 2/2 | Complete   | 2026-03-30 |
-| 2. Cleanup & Architecture      | 0/3            | Not started | -         |
-| 3. Visual Overhaul             | 0/3            | Not started | -         |
-| 4. Quality & Protection        | 0/1            | Not started | -         |
+| Phase                          | Plans Complete | Status      | Completed  |
+| ------------------------------ | -------------- | ----------- | ---------- |
+| 1. Infrastructure & Safety Net | 2/2            | Complete    | 2026-03-30 |
+| 2. Cleanup & Architecture      | 0/3            | Planned     | -          |
+| 3. Visual Overhaul             | 0/3            | Not started | -          |
+| 4. Quality & Protection        | 0/1            | Not started | -          |
