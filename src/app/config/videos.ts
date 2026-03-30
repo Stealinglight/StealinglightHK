@@ -1,5 +1,6 @@
-// CloudFront CDN base URL for video assets
-export const CDN_BASE_URL = 'https://d2fc83sck42gx7.cloudfront.net';
+// CloudFront CDN base URL for video assets (configurable via env var, fallback for local dev)
+export const CDN_BASE_URL =
+  import.meta.env.VITE_CDN_BASE_URL || 'https://d2fc83sck42gx7.cloudfront.net';
 
 // Video project data matching the Wix site portfolio
 export const videoProjects = [
