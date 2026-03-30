@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: '2026-03-30T03:52:52.863Z'
-last_activity: 2026-03-27 -- Roadmap created
+status: executing
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-03-30T05:32:30.505Z"
+last_activity: 2026-03-30
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
+  total_plans: 2
   completed_plans: 0
   percent: 0
 ---
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-27)
 
 **Core value:** Visitors experience the cinematography work in a contemporary, cinematic, artistically crafted presentation -- and can easily reach out if interested.
-**Current focus:** Phase 1: Infrastructure & Safety Net
+**Current focus:** Phase 01 — infrastructure-safety-net
 
 ## Current Position
 
-Phase: 1 of 4 (Infrastructure & Safety Net)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-03-27 -- Roadmap created
+Phase: 01 (infrastructure-safety-net) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
+Last activity: 2026-03-30
 
 Progress: [..........] 0%
 
@@ -52,6 +52,7 @@ Progress: [..........] 0%
 - Trend: -
 
 _Updated after each plan completion_
+| Phase 01 P01 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,9 @@ Recent decisions affecting current work:
 
 - [Roadmap]: Sequential phase ordering -- infra fixes before visual work, cleanup before architecture, architecture before visual overhaul
 - [Roadmap]: Coarse granularity -- 4 phases compressing research's 5-phase suggestion by merging Cleanup + Architecture
+- [Phase 01]: Keep index.js as canonical Lambda source -- index.ts was never deployed and had incompatible implementations
+- [Phase 01]: Build CSP as array of directives for readability and maintenance
+- [Phase 01]: unsafe-inline temporary for script-src and style-src -- Phase 2 self-hosts fonts, Phase 4 explores nonces
 
 ### Pending Todos
 
@@ -75,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T03:52:52.861Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-infrastructure-safety-net/01-CONTEXT.md
+Last session: 2026-03-30T05:32:30.504Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None

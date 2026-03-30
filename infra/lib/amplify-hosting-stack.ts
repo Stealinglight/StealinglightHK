@@ -19,6 +19,24 @@ export class AmplifyHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: AmplifyHostingStackProps) {
     super(scope, id, props);
 
+    // Content Security Policy -- built as array for readability and maintenance
+    // Allows: Google Analytics (GA4), Google Fonts, CloudFront CDN for media
+    // Note: 'unsafe-inline' is temporary -- Phase 2 self-hosts fonts, Phase 4 can explore nonces
+    const cspDirectives = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://*.googletagmanager.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "media-src 'self' https://*.cloudfront.net",
+      "connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+      "frame-ancestors 'none'",
+      "form-action 'self'",
+      "base-uri 'self'",
+      'upgrade-insecure-requests',
+    ];
+    const cspValue = cspDirectives.join('; ');
+
     // Create Amplify App
     // Note: GitHub connection must be done via Amplify Console after deployment
     this.app = new amplify.CfnApp(this, 'AmplifyApp', {
@@ -92,7 +110,7 @@ customHeaders:
       - key: Permissions-Policy
         value: 'camera=(), microphone=(), geolocation=(), payment=()'
       - key: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
+        value: "${cspValue}"
 `,
 
       // Tags

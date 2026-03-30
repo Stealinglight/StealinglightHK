@@ -9,8 +9,8 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Contact form submits successfully and delivers email via SES end-to-end (resolve dual Lambda file divergence)
-- [ ] **INFRA-02**: CSP headers allow Google Analytics, Google Fonts, and CloudFront CDN without blocking
+- [x] **INFRA-01**: Contact form submits successfully and delivers email via SES end-to-end (resolve dual Lambda file divergence)
+- [x] **INFRA-02**: CSP headers allow Google Analytics, Google Fonts, and CloudFront CDN without blocking
 - [ ] **INFRA-03**: Site has favicon.svg in browser tab and og-image.jpg for social media sharing previews
 - [ ] **INFRA-04**: React error boundary catches component crashes and displays graceful fallback instead of blank page
 - [ ] **INFRA-05**: CloudWatch alarms notify via SNS when Lambda errors or API 5xx/4xx thresholds are breached
@@ -93,8 +93,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase   | Status  |
 | ----------- | ------- | ------- |
-| INFRA-01    | Phase 1 | Pending |
-| INFRA-02    | Phase 1 | Pending |
+| INFRA-01    | Phase 1 | Complete |
+| INFRA-02    | Phase 1 | Complete |
 | INFRA-03    | Phase 1 | Pending |
 | INFRA-04    | Phase 1 | Pending |
 | INFRA-05    | Phase 4 | Pending |
