@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-30T23:15:04.928Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-30T23:22:25.536Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 02 (cleanup-architecture) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-03-30
 
@@ -55,6 +55,7 @@ _Updated after each plan completion_
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
 | Phase 01 P02 | 2min | 4 tasks | 8 files |
 | Phase 02 P01 | 8min | 2 tasks | 56 files |
+| Phase 02 P02 | 4min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,9 @@ Recent decisions affecting current work:
 - [Phase 01]: CDK upgraded to 2.245 resolving yaml vuln; remaining brace-expansion is moderate only and bundled in aws-cdk-lib
 - [Phase 02]: Downgraded @eslint/js from ^10.0.1 to ^9.39.2 to match eslint 9.x peer requirement
 - [Phase 02]: Shared utilities relocated to src/lib/ (cn() moved from src/app/components/ui/utils.ts to src/lib/utils.ts)
+- [Phase 02]: Fontsource variable packages for self-hosted fonts (JS import in main.tsx for Vite bundling)
+- [Phase 02]: CDN_BASE_URL via VITE_CDN_BASE_URL env var with hardcoded fallback for backward compatibility
+- [Phase 02]: CSP unsafe-inline kept for style-src (Motion element.style); nonce work deferred to Phase 4
 
 ### Pending Todos
 
@@ -85,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T23:15:04.926Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-03-30T23:22:25.534Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

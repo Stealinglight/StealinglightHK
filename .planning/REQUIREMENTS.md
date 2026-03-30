@@ -39,10 +39,10 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Performance
 
-- [ ] **PERF-01**: Fonts self-hosted via Fontsource (Inter, Space Grotesk) — no render-blocking Google Fonts CDN dependency
+- [x] **PERF-01**: Fonts self-hosted via Fontsource (Inter, Space Grotesk) — no render-blocking Google Fonts CDN dependency
 - [ ] **PERF-02**: Off-screen video elements lazy-rendered via IntersectionObserver instead of all 19 mounted simultaneously
 - [ ] **PERF-03**: Contact form protected by Cloudflare Turnstile invisible CAPTCHA with server-side verification in Lambda
-- [ ] **PERF-04**: CloudFront CDN base URL sourced from VITE_CDN_BASE_URL environment variable instead of hardcoded
+- [x] **PERF-04**: CloudFront CDN base URL sourced from VITE_CDN_BASE_URL environment variable instead of hardcoded
 
 ### Quality
 
@@ -111,10 +111,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIDO-02     | Phase 3 | Pending |
 | VIDO-03     | Phase 3 | Pending |
 | VIDO-04     | Phase 3 | Pending |
-| PERF-01     | Phase 2 | Pending |
+| PERF-01     | Phase 2 | Complete |
 | PERF-02     | Phase 2 | Pending |
 | PERF-03     | Phase 4 | Pending |
-| PERF-04     | Phase 2 | Pending |
+| PERF-04     | Phase 2 | Complete |
 | QUAL-01     | Phase 3 | Pending |
 | QUAL-02     | Phase 4 | Pending |
 | QUAL-03     | Phase 2 | Complete |
