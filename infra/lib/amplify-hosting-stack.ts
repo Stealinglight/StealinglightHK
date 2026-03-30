@@ -19,24 +19,6 @@ export class AmplifyHostingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: AmplifyHostingStackProps) {
     super(scope, id, props);
 
-    // Content Security Policy -- built as array for readability and maintenance
-    // Allows: Google Analytics (GA4), Google Fonts, CloudFront CDN for media
-    // Note: 'unsafe-inline' is temporary -- Phase 2 self-hosts fonts, Phase 4 can explore nonces
-    const cspDirectives = [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://*.googletagmanager.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com",
-      "font-src 'self' data: https://fonts.gstatic.com",
-      "media-src 'self' https://*.cloudfront.net",
-      "connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
-      "frame-ancestors 'none'",
-      "form-action 'self'",
-      "base-uri 'self'",
-      'upgrade-insecure-requests',
-    ];
-    const cspValue = cspDirectives.join('; ');
-
     // Create Amplify App
     // Note: GitHub connection must be done via Amplify Console after deployment
     this.app = new amplify.CfnApp(this, 'AmplifyApp', {
@@ -73,6 +55,10 @@ frontend:
           name: 'VITE_CONTACT_API_URL',
           value: props.contactApiUrl || '', // Populated via cross-stack reference
         },
+        {
+          name: 'VITE_CDN_BASE_URL',
+          value: 'https://d2fc83sck42gx7.cloudfront.net',
+        },
       ],
 
       // SPA rewrite rules for React Router
@@ -95,6 +81,11 @@ frontend:
       // Security headers for all pages
       // Applied at CDN level for defense in depth
       // Note: customHeaders must be a YAML string for CfnApp
+      // CSP notes:
+      //   'unsafe-inline' in script-src: needed for GA inline snippet (until Phase 4 nonce work)
+      //   'unsafe-inline' in style-src: needed because Motion (framer-motion) applies animations
+      //     via element.style (GitHub #1727, wontfix). Defer removal to Phase 4 nonce work.
+      //   Fonts self-hosted via Fontsource (no Google Fonts CDN needed)
       customHeaders: `
 customHeaders:
   - pattern: '**/*'
@@ -110,7 +101,7 @@ customHeaders:
       - key: Permissions-Policy
         value: 'camera=(), microphone=(), geolocation=(), payment=()'
       - key: Content-Security-Policy
-        value: "${cspValue}"
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
 `,
 
       // Tags

@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { CDN_BASE_URL } from '../config/videos';
 
 export function About() {
   return (
@@ -13,7 +14,7 @@ export function About() {
             className="relative aspect-[3/4] overflow-hidden rounded-lg"
           >
             <img
-              src="https://d2fc83sck42gx7.cloudfront.net/images/chris-mcmillon-profile.jpg"
+              src={`${CDN_BASE_URL}/images/chris-mcmillon-profile.jpg`}
               alt="Chris McMillon"
               className="w-full h-full object-cover"
             />
