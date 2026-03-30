@@ -339,6 +339,7 @@ describe('Contact Form Lambda Handler', () => {
       // handles undefined gracefully (no crash) by checking it doesn't throw.
       
       expect(() => {
+        // eslint-disable-next-line no-constant-binary-expression -- intentionally testing undefined fallback pattern from handler
         const testOrigins = (undefined || '').split(',').filter(Boolean);
         expect(testOrigins).toEqual([]);
       }).not.toThrow();
