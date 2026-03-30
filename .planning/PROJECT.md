@@ -32,19 +32,20 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 - ✓ Favicon.svg and og-image.jpg — camera lens icon + cinematic still. Validated in Phase 1.
 - ✓ React error boundary — SectionErrorBoundary wraps 7 sections individually. Validated in Phase 1.
 - ✓ npm audit clean (high/critical) — CDK upgraded to 2.245. Validated in Phase 1.
+- ✓ Unused UI components removed — 44 shadcn/ui files (5,119 lines) deleted, ui/ directory removed. Validated in Phase 2.
+- ✓ Unused npm dependencies removed — production deps reduced from 50+ to 10. Validated in Phase 2.
+- ✓ Package name fixed — renamed from @figma/my-make-file to stealinglight-hk. Validated in Phase 2.
+- ✓ Stale pnpm overrides removed — pnpm, peerDependencies, peerDependenciesMeta blocks deleted. Validated in Phase 2.
+- ✓ ESLint migrated to flat config — eslint.config.js, ESLINT_USE_FLAT_CONFIG flag removed, Lambda JS now linted. Validated in Phase 2.
+- ✓ Video lazy loading — IntersectionObserver with 200px root margin, thumbnail-to-video swap for grid videos. Validated in Phase 2.
+- ✓ Fonts self-hosted — Fontsource variable packages (Inter, Space Grotesk), Google Fonts CDN removed. Validated in Phase 2.
+- ✓ CDN URL extracted to environment variable — VITE_CDN_BASE_URL with fallback. Validated in Phase 2.
+- ✓ Dead application components removed — Reel.tsx, figma/ImageWithFallback.tsx deleted. Validated in Phase 2.
 
 ### Active
 
 - [ ] Visual overhaul — contemporary, cinematic aesthetic with artistic flow and character
 - [ ] Fix design inconsistencies across all sections
-- [ ] Remove unused UI components (44 shadcn/ui files, 5,119 lines of dead code)
-- [ ] Remove unused npm dependencies (~20+ packages not imported in app)
-- [ ] Fix package name (currently `@figma/my-make-file`)
-- [ ] Remove stale pnpm overrides
-- [ ] Migrate ESLint from legacy config to flat config (ESLint 9+)
-- [ ] Improve video loading performance (lazy rendering, mobile optimization)
-- [ ] Self-host fonts or optimize font loading (currently render-blocking)
-- [ ] Move hardcoded CDN URL to environment variable
 - [ ] Add honeypot or bot protection to contact form
 - [ ] Add CloudWatch alarm notification target (SNS)
 - [ ] E2E tests passing in CI
@@ -66,8 +67,8 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 - **Origin:** Site was scaffolded from a Figma Make template, partially built, and never fully finished
 - **Media:** Video assets hosted on AWS S3, served via CloudFront CDN (`d2fc83sck42gx7.cloudfront.net`)
 - **Contact form:** Lambda backend uses index.js as sole source (Phase 1 cleaned up divergent index.ts)
-- **Tech debt:** 44 unused shadcn/ui components (5,119 lines), 20+ unused npm packages, dual lockfiles, stale overrides
-- **CSP:** Rebuilt as directive array — allows GA4, Google Fonts, CloudFront CDN (Phase 1)
+- **Tech debt:** Dual lockfiles (bun.lock + package-lock.json) remain; all other tech debt resolved in Phase 2
+- **CSP:** Tightened in Phase 2 — Google Fonts domains removed, unsafe-inline kept for style-src (Motion requires it)
 - **Assets:** favicon.svg (camera lens) and og-image.jpg (1200x630 cinematic still) in place (Phase 1)
 - **Tests:** 13 Playwright E2E tests exist but contact form test can't hit API in CI
 
@@ -112,4 +113,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-03-30 after Phase 1 completion_
+_Last updated: 2026-03-30 after Phase 2 completion_
