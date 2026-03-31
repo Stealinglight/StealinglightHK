@@ -25,7 +25,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Visual
 
-- [ ] **VISL-01**: Hero section has cinematic text reveal animations with refined easing (0.6-1.2s timing, not snappy UI)
+- [x] **VISL-01**: Hero section has cinematic text reveal animations with refined easing (0.6-1.2s timing, not snappy UI)
 - [x] **VISL-02**: All sections have coordinated scroll-triggered animations with staggered reveals and subtle parallax depth
 - [x] **VISL-03**: Client logo section uses animated infinite-scroll marquee instead of static grid
 - [x] **VISL-04**: Typography and spacing are consistent across all sections with self-hosted fonts via Fontsource (no render-blocking CDN)
@@ -46,7 +46,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Quality
 
-- [ ] **QUAL-01**: Scroll progress indicator shows position within single-page site (thin accent-color bar)
+- [x] **QUAL-01**: Scroll progress indicator shows position within single-page site (thin accent-color bar)
 - [ ] **QUAL-02**: Site passes basic accessibility audit — skip links, focus management in modal, alt text on images, reduced motion support via useReducedMotion
 - [x] **QUAL-03**: Unused application components removed (Reel.tsx, ImageWithFallback.tsx) and dead code cleaned up
 
@@ -103,7 +103,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLEAN-02    | Phase 2 | Complete |
 | CLEAN-03    | Phase 2 | Complete |
 | CLEAN-04    | Phase 2 | Complete |
-| VISL-01     | Phase 3 | Pending |
+| VISL-01     | Phase 3 | Complete |
 | VISL-02     | Phase 3 | Complete |
 | VISL-03     | Phase 3 | Complete |
 | VISL-04     | Phase 3 | Complete |
@@ -115,7 +115,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-02     | Phase 2 | Complete |
 | PERF-03     | Phase 4 | Pending |
 | PERF-04     | Phase 2 | Complete |
-| QUAL-01     | Phase 3 | Pending |
+| QUAL-01     | Phase 3 | Complete |
 | QUAL-02     | Phase 4 | Pending |
 | QUAL-03     | Phase 2 | Complete |
 
