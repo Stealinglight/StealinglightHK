@@ -54,29 +54,42 @@ Exceptions:
 
 ## Typography
 
-| Role                      | Size                                  | Weight         | Line Height | Font Family            |
-| ------------------------- | ------------------------------------- | -------------- | ----------- | ---------------------- |
-| Display (h1)              | clamp(2.5rem, 5vw, 4rem) / 40-64px    | 700 (bold)     | 1.1         | Space Grotesk Variable |
-| Heading (h2)              | clamp(1.75rem, 3vw, 2.5rem) / 28-40px | 600 (semibold) | 1.2         | Space Grotesk Variable |
-| Subheading (h3)           | clamp(1.25rem, 2vw, 1.5rem) / 20-24px | 600 (semibold) | 1.3         | Space Grotesk Variable |
-| Body                      | 16px (1rem)                           | 400 (regular)  | 1.7         | Inter Variable         |
-| Label / Small             | 14px (0.875rem)                       | 500 (medium)   | 1.5         | Inter Variable         |
-| Tiny (category, tracking) | 12px (0.75rem)                        | 500 (medium)   | 1.5         | Inter Variable         |
+| Role             | Size                                  | Weight         | Line Height | Font Family            |
+| ---------------- | ------------------------------------- | -------------- | ----------- | ---------------------- |
+| Display (h1)     | clamp(2.5rem, 5vw, 4rem) / 40-64px    | 600 (semibold) | 1.1         | Space Grotesk Variable |
+| Heading (h2, h3) | clamp(1.75rem, 3vw, 2.5rem) / 28-40px | 600 (semibold) | 1.2         | Space Grotesk Variable |
+| Body             | 16px (1rem)                           | 400 (regular)  | 1.7         | Inter Variable         |
+| Label            | 14px (0.875rem)                       | 400 (regular)  | 1.5         | Inter Variable         |
+
+**Allowed weights: 400 (regular) and 600 (semibold) only.** No other weights permitted in this phase.
+
+Weight mapping rationale:
+
+- Display (h1) uses 600 instead of 700 -- the large clamp size (40-64px) creates sufficient visual hierarchy without bold weight
+- Heading (h2, h3) stays 600 -- unchanged from prior spec
+- Body uses 400 -- unchanged
+- Label uses 400 instead of 500 -- at 14px the difference between 400 and 500 is negligible; use 600 only when a label needs active/emphasis state
+
+Size mapping rationale:
+
+- Former "Subheading" (20-24px) is removed -- h3 elements now use the Heading role (28-40px clamp) for visual consistency, or Body (16px) for lower-emphasis sub-labels
+- Former "Tiny" (12px) is removed -- all category labels, section labels, and small text promoted to Label (14px) for readability
+- Former 18px (video card title) is removed -- video card titles use Body (16px) for scale consistency
 
 Additional typographic patterns for this phase:
 
-| Element                                 | Size                       | Weight | Tracking       | Transform |
-| --------------------------------------- | -------------------------- | ------ | -------------- | --------- |
-| Hero name (CHRIS MCMILLON)              | 14px md:16px               | 500    | 0.3em          | uppercase |
-| Filter pill label                       | 14px                       | 500    | normal         | none      |
-| Active filter pill label                | 14px                       | 600    | normal         | none      |
-| Preloader brand text (STEALINGLIGHT)    | clamp(1.5rem, 4vw, 2.5rem) | 700    | 0.3em          | uppercase |
-| "Tap to watch" overlay                  | 14px                       | 500    | 0.05em         | uppercase |
-| Video card category                     | 12px                       | 400    | widest (0.1em) | uppercase |
-| Video card title                        | 18px (text-lg)             | 500    | normal         | none      |
-| Section label (TRUSTED BY, CREDENTIALS) | 14px                       | 400    | widest (0.1em) | uppercase |
+| Element                                 | Role    | Tracking       | Transform | Weight Override |
+| --------------------------------------- | ------- | -------------- | --------- | --------------- |
+| Hero name (CHRIS MCMILLON)              | Label   | 0.3em          | uppercase | 600 (emphasis)  |
+| Filter pill label (inactive)            | Label   | normal         | none      | 400             |
+| Active filter pill label                | Label   | normal         | none      | 600 (emphasis)  |
+| Preloader brand text (STEALINGLIGHT)    | Display | 0.3em          | uppercase | 600             |
+| "Tap to watch" overlay                  | Label   | 0.05em         | uppercase | 400             |
+| Video card category                     | Label   | widest (0.1em) | uppercase | 400             |
+| Video card title                        | Body    | normal         | none      | 600 (emphasis)  |
+| Section label (TRUSTED BY, CREDENTIALS) | Label   | widest (0.1em) | uppercase | 400             |
 
-**Source:** Existing `theme.css` base layer typography rules, component analysis of Hero.tsx, Portfolio.tsx, Clients.tsx, Contact.tsx. Weights constrained to 400 + 500 + 600 + 700 as declared in theme.css `--font-weight-*` variables.
+**Source:** Existing `theme.css` base layer typography rules, component analysis of Hero.tsx, Portfolio.tsx, Clients.tsx, Contact.tsx. Consolidated from 6 sizes to 4 and from 4 weights to 2 per checker feedback.
 
 ---
 
@@ -210,7 +223,7 @@ All use `viewport={{ once: true }}` and cinematic easing `[0.16, 1, 0.3, 1]`. Ex
 
 Detection: CSS `@media (hover: hover)` for hover-capable devices. React state `tappedId` manages which card is in preview mode on touch devices. Use `onClick` (not `onPointerDown`) to avoid scroll-tap conflicts per RESEARCH.md Pitfall 5.
 
-"TAP TO WATCH" overlay styling: 14px, weight 500, tracking 0.05em, uppercase, white text on semi-transparent black pill (`bg-cinematic-black/70 px-4 py-2 rounded-full`).
+"TAP TO WATCH" overlay styling: Label role (14px), weight 400, tracking 0.05em, uppercase, white text on semi-transparent black pill (`bg-cinematic-black/70 px-4 py-2 rounded-full`).
 
 ### Modal Keyboard Navigation (VIDO-04, Claude's Discretion)
 
