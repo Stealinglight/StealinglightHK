@@ -5,9 +5,10 @@ import { useRef, useState } from 'react';
 interface HeroProps {
   videoSrc?: string;
   posterSrc?: string;
+  onVideoReady?: () => void;
 }
 
-export function Hero({ videoSrc, posterSrc }: HeroProps) {
+export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -28,7 +29,10 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
               loop
               playsInline
               poster={posterSrc}
-              onLoadedData={() => setVideoLoaded(true)}
+              onCanPlay={() => {
+                setVideoLoaded(true);
+                onVideoReady?.();
+              }}
               className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
             >
