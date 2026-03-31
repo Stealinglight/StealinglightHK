@@ -71,14 +71,14 @@ Plans:
 3. User can filter portfolio videos by category (Commercial, Documentary, Short Film, Fashion, Event, Personal Reel) and the grid animates between filter states
 4. On a touch device, tapping a video card shows a preview (no hover required) and the video modal supports Escape to close, arrow keys to navigate, and spacebar to play/pause
 5. Typography and spacing are visually consistent across all sections with no jarring transitions, and a thin scroll progress bar indicates position within the page
-   **Plans**: TBD
+   **Plans**: 3 plans
    **UI hint**: yes
 
 Plans:
 
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- Preloader, scroll progress, and hero cinematic reveal (Preloader.tsx, ScrollProgress.tsx, Hero variant-based stagger with blur)
+- [ ] 03-02-PLAN.md -- Portfolio filter pills, touch support, and keyboard navigation (category filtering with AnimatePresence, two-tap touch flow, modal keyboard nav)
+- [ ] 03-03-PLAN.md -- Client marquee, section animation polish, and typography pass (CSS marquee with 15 logos, cinematic easing on all sections, Footer entrance, weight consolidation)
 
 ### Phase 4: Quality & Protection
 
@@ -104,6 +104,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase                          | Plans Complete | Status      | Completed  |
 | ------------------------------ | -------------- | ----------- | ---------- |
 | 1. Infrastructure & Safety Net | 2/2            | Complete    | 2026-03-30 |
-| 2. Cleanup & Architecture      | 0/3            | Planned     | -          |
-| 3. Visual Overhaul             | 0/3            | Not started | -          |
+| 2. Cleanup & Architecture      | 3/3            | Complete    | 2026-03-30 |
+| 3. Visual Overhaul             | 0/3            | Planned     | -          |
 | 4. Quality & Protection        | 0/1            | Not started | -          |
