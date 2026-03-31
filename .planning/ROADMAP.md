@@ -77,7 +77,7 @@ Plans:
 Plans:
 
 - [ ] 03-01-PLAN.md -- Preloader, scroll progress, and hero cinematic reveal (Preloader.tsx, ScrollProgress.tsx, Hero variant-based stagger with blur)
-- [ ] 03-02-PLAN.md -- Portfolio filter pills, touch support, and keyboard navigation (category filtering with AnimatePresence, two-tap touch flow, modal keyboard nav)
+- [x] 03-02-PLAN.md -- Portfolio filter pills, touch support, and keyboard navigation (category filtering with AnimatePresence, two-tap touch flow, modal keyboard nav)
 - [x] 03-03-PLAN.md -- Client marquee, section animation polish, and typography pass (CSS marquee with 15 logos, cinematic easing on all sections, Footer entrance, weight consolidation)
 
 ### Phase 4: Quality & Protection

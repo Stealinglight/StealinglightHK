@@ -32,10 +32,10 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 ### Video
 
-- [ ] **VIDO-01**: Video grid works on touch devices with tap-to-preview fallback (detects hover capability via media query)
-- [ ] **VIDO-02**: User can filter portfolio videos by category (Commercial, Documentary, Short Film, Fashion, Event, Personal Reel)
-- [ ] **VIDO-03**: Branded preloader displays while hero video buffers on initial page load
-- [ ] **VIDO-04**: Video modal supports keyboard navigation (Escape to close, arrow keys between videos, spacebar play/pause)
+- [x] **VIDO-01**: Video grid works on touch devices with tap-to-preview fallback (detects hover capability via media query)
+- [x] **VIDO-02**: User can filter portfolio videos by category (Commercial, Documentary, Short Film, Fashion, Event, Personal Reel)
+- [x] **VIDO-03**: Branded preloader displays while hero video buffers on initial page load
+- [x] **VIDO-04**: Video modal supports keyboard navigation (Escape to close, arrow keys between videos, spacebar play/pause)
 
 ### Performance
 
@@ -107,10 +107,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VISL-02     | Phase 3 | Complete |
 | VISL-03     | Phase 3 | Complete |
 | VISL-04     | Phase 3 | Complete |
-| VIDO-01     | Phase 3 | Pending |
-| VIDO-02     | Phase 3 | Pending |
-| VIDO-03     | Phase 3 | Pending |
-| VIDO-04     | Phase 3 | Pending |
+| VIDO-01     | Phase 3 | Complete |
+| VIDO-02     | Phase 3 | Complete |
+| VIDO-03     | Phase 3 | Complete |
+| VIDO-04     | Phase 3 | Complete |
 | PERF-01     | Phase 2 | Complete |
 | PERF-02     | Phase 2 | Complete |
 | PERF-03     | Phase 4 | Pending |
