@@ -80,7 +80,7 @@ export function Contact() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16"
         >
           <h2 className="text-white mb-4">{"Let's"} Work Together</h2>
@@ -93,7 +93,7 @@ export function Contact() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
         >
           <div className="text-center p-6 group">
@@ -133,7 +133,7 @@ export function Contact() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="bg-cinematic-dark border border-white/5 rounded-lg p-8 md:p-12"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
