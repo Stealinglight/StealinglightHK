@@ -26,9 +26,9 @@ Requirements for the site revamp. Each maps to roadmap phases.
 ### Visual
 
 - [ ] **VISL-01**: Hero section has cinematic text reveal animations with refined easing (0.6-1.2s timing, not snappy UI)
-- [ ] **VISL-02**: All sections have coordinated scroll-triggered animations with staggered reveals and subtle parallax depth
-- [ ] **VISL-03**: Client logo section uses animated infinite-scroll marquee instead of static grid
-- [ ] **VISL-04**: Typography and spacing are consistent across all sections with self-hosted fonts via Fontsource (no render-blocking CDN)
+- [x] **VISL-02**: All sections have coordinated scroll-triggered animations with staggered reveals and subtle parallax depth
+- [x] **VISL-03**: Client logo section uses animated infinite-scroll marquee instead of static grid
+- [x] **VISL-04**: Typography and spacing are consistent across all sections with self-hosted fonts via Fontsource (no render-blocking CDN)
 
 ### Video
 
@@ -104,9 +104,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLEAN-03    | Phase 2 | Complete |
 | CLEAN-04    | Phase 2 | Complete |
 | VISL-01     | Phase 3 | Pending |
-| VISL-02     | Phase 3 | Pending |
-| VISL-03     | Phase 3 | Pending |
-| VISL-04     | Phase 3 | Pending |
+| VISL-02     | Phase 3 | Complete |
+| VISL-03     | Phase 3 | Complete |
+| VISL-04     | Phase 3 | Complete |
 | VIDO-01     | Phase 3 | Pending |
 | VIDO-02     | Phase 3 | Pending |
 | VIDO-03     | Phase 3 | Pending |

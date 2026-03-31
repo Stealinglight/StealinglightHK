@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 3 context gathered
-last_updated: '2026-03-31T01:05:52.177Z'
-last_activity: 2026-03-30
+status: executing
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-03-31T11:50:55.722Z"
+last_activity: 2026-03-31
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 8
+  completed_plans: 6
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-27)
 
 **Core value:** Visitors experience the cinematography work in a contemporary, cinematic, artistically crafted presentation -- and can easily reach out if interested.
-**Current focus:** Phase 02 — cleanup-architecture
+**Current focus:** Phase 03 — visual-overhaul
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase complete — ready for verification
-Last activity: 2026-03-30
+Phase: 03 (visual-overhaul) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
+Last activity: 2026-03-31
 
 Progress: [..........] 0%
 
@@ -57,6 +57,7 @@ _Updated after each plan completion_
 | Phase 02 P01 | 8min | 2 tasks | 56 files |
 | Phase 02 P02 | 4min | 2 tasks | 8 files |
 | Phase 02 P03 | 8min | 2 tasks | 5 files |
+| Phase 03 P03 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,8 @@ Recent decisions affecting current work:
 - [Phase 02]: One-shot IntersectionObserver pattern for lazy video rendering (stays mounted after entering view)
 - [Phase 02]: ESLint flat config with multi-environment blocks (TS/TSX, Lambda JS, Jest, config files)
 - [Phase 02]: Lambda console.log allowed in ESLint for structured CloudWatch logging
+- [Phase 03]: CSS-only marquee over Motion-based for GPU efficiency on infinite linear scroll
+- [Phase 03]: Typography weights consolidated to 400/600 only: --font-weight-medium 500->400, --font-weight-bold 700->600
 
 ### Pending Todos
 
@@ -93,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31T01:05:52.175Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-visual-overhaul/03-CONTEXT.md
+Last session: 2026-03-31T11:50:55.720Z
+Stopped at: Completed 03-03-PLAN.md
+Resume file: None
