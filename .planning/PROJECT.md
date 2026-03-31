@@ -41,11 +41,18 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 - ✓ Fonts self-hosted — Fontsource variable packages (Inter, Space Grotesk), Google Fonts CDN removed. Validated in Phase 2.
 - ✓ CDN URL extracted to environment variable — VITE_CDN_BASE_URL with fallback. Validated in Phase 2.
 - ✓ Dead application components removed — Reel.tsx, figma/ImageWithFallback.tsx deleted. Validated in Phase 2.
+- ✓ Cinematic hero reveal — staggered blur-to-sharp text animation with choreographed D-02 timing (0.3s→2.0s). Validated in Phase 3.
+- ✓ Branded preloader — STEALINGLIGHT amber pulse with progress bar, dual-condition dismissal (canPlay + 800ms min + 4s safety). Validated in Phase 3.
+- ✓ Scroll progress indicator — spring-physics amber bar tracking page position. Validated in Phase 3.
+- ✓ Portfolio category filtering — 7 filter pills, AnimatePresence layout grid, smooth enter/exit transitions. Validated in Phase 3.
+- ✓ Touch device support — CSS media query (hover:hover) detection, two-tap flow with TAP TO WATCH overlay. Validated in Phase 3.
+- ✓ Modal keyboard navigation — Escape close, ArrowLeft/Right navigate, Space toggle play/pause. Validated in Phase 3.
+- ✓ Client logo marquee — 15 logos infinite CSS scroll, pause-on-hover, reduced motion support. Validated in Phase 3.
+- ✓ Cinematic easing throughout — all sections use [0.16, 1, 0.3, 1] curve. Validated in Phase 3.
+- ✓ Typography consolidated — 400/600 weights only, h1 reduced from 700 to 600. Validated in Phase 3.
 
 ### Active
 
-- [ ] Visual overhaul — contemporary, cinematic aesthetic with artistic flow and character
-- [ ] Fix design inconsistencies across all sections
 - [ ] Add honeypot or bot protection to contact form
 - [ ] Add CloudWatch alarm notification target (SNS)
 - [ ] E2E tests passing in CI
@@ -90,7 +97,7 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 | Remove unused shadcn/ui components   | 5,119 lines of dead code, not imported anywhere            | — Pending |
 | Resolve Lambda to single source (JS) | TypeScript source was never deployed, has different logic  | ✓ Phase 1 |
 | Production-grade finish              | User wants tests, perf, a11y, SEO — not just visual polish | — Pending |
-| Contemporary cinematic aesthetic     | User's creative direction for the visual overhaul          | — Pending |
+| Contemporary cinematic aesthetic     | User's creative direction for the visual overhaul          | ✓ Phase 3 |
 
 ## Evolution
 
@@ -113,4 +120,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-03-30 after Phase 2 completion_
+_Last updated: 2026-03-31 after Phase 3 completion_
