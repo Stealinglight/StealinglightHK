@@ -4,6 +4,9 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
+import * as actions from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { Construct } from 'constructs';
 import * as path from 'path';
 
@@ -12,6 +15,8 @@ export interface ContactStackProps extends cdk.StackProps {
   contactEmail: string;
   environment: string;
   allowedOrigins?: string[];
+  notificationEmail?: string;
+  turnstileSecret?: string;
 }
 
 export class ContactStack extends cdk.Stack {
@@ -46,6 +51,7 @@ export class ContactStack extends cdk.Stack {
       environment: {
         CONTACT_EMAIL: props.contactEmail,
         ALLOWED_ORIGINS: allowedOrigins.join(','),
+        TURNSTILE_SECRET: props.turnstileSecret || '',
       },
       timeout: cdk.Duration.seconds(15),
       memorySize: 256,
@@ -87,7 +93,7 @@ export class ContactStack extends cdk.Stack {
 
     // CloudWatch Alarms for monitoring
     // Lambda error alarm - triggers if errors occur
-    new cloudwatch.Alarm(this, 'LambdaErrorAlarm', {
+    const lambdaErrorAlarm = new cloudwatch.Alarm(this, 'LambdaErrorAlarm', {
       alarmName: `${props.appName}-contact-lambda-errors`,
       alarmDescription: 'Contact form Lambda function errors',
       metric: contactFunction.metricErrors({
@@ -101,7 +107,7 @@ export class ContactStack extends cdk.Stack {
     });
 
     // API Gateway 5xx alarm - server errors
-    new cloudwatch.Alarm(this, 'ApiGateway5xxAlarm', {
+    const api5xxAlarm = new cloudwatch.Alarm(this, 'ApiGateway5xxAlarm', {
       alarmName: `${props.appName}-contact-api-5xx`,
       alarmDescription: 'Contact form API 5xx errors',
       metric: api.metricServerError({
@@ -115,7 +121,7 @@ export class ContactStack extends cdk.Stack {
     });
 
     // API Gateway 4xx alarm - client errors (high threshold for abuse detection)
-    new cloudwatch.Alarm(this, 'ApiGateway4xxAlarm', {
+    const api4xxAlarm = new cloudwatch.Alarm(this, 'ApiGateway4xxAlarm', {
       alarmName: `${props.appName}-contact-api-4xx`,
       alarmDescription: 'Contact form API 4xx errors (possible abuse)',
       metric: api.metricClientError({
@@ -127,6 +133,22 @@ export class ContactStack extends cdk.Stack {
       comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
       treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
     });
+
+    // SNS topic for alarm notifications (D-12: single topic for all alarms)
+    const alarmTopic = new sns.Topic(this, 'AlarmNotifications', {
+      topicName: `${props.appName}-alarm-notifications`,
+      displayName: `${props.appName} Alarm Notifications`,
+    });
+
+    // D-13: Email subscription (requires confirmation click after deploy)
+    if (props.notificationEmail) {
+      alarmTopic.addSubscription(new subscriptions.EmailSubscription(props.notificationEmail));
+    }
+
+    // Wire all existing alarms to SNS (D-14: thresholds unchanged)
+    lambdaErrorAlarm.addAlarmAction(new actions.SnsAction(alarmTopic));
+    api5xxAlarm.addAlarmAction(new actions.SnsAction(alarmTopic));
+    api4xxAlarm.addAlarmAction(new actions.SnsAction(alarmTopic));
 
     // Outputs
     new cdk.CfnOutput(this, 'ContactApiUrl', {

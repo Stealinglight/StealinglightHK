@@ -8,6 +8,12 @@ const sesMock = mockClient(SESClient);
 process.env.AWS_REGION = 'us-east-1';
 process.env.CONTACT_EMAIL = 'contact@example.com';
 process.env.ALLOWED_ORIGINS = 'https://example.com,https://www.example.com';
+process.env.TURNSTILE_SECRET = 'test-secret-key';
+
+// Mock global fetch for Turnstile siteverify
+const originalFetch = global.fetch;
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
 
 // Import handler after environment is set up
 const { handler } = require('../index.js');
@@ -16,6 +22,15 @@ describe('Contact Form Lambda Handler', () => {
   beforeEach(() => {
     sesMock.reset();
     sesMock.on(SendEmailCommand).resolves({});
+    mockFetch.mockReset();
+    // Default: Turnstile verification succeeds
+    mockFetch.mockResolvedValue({
+      json: async () => ({ success: true }),
+    });
+  });
+
+  afterAll(() => {
+    global.fetch = originalFetch;
   });
 
   const createEvent = (overrides = {}) => ({
@@ -32,6 +47,7 @@ describe('Contact Form Lambda Handler', () => {
       name: 'Test User',
       email: 'test@example.com',
       message: 'Test message',
+      'cf-turnstile-response': 'test-token',
     }),
     ...overrides,
   });
@@ -73,7 +89,7 @@ describe('Contact Form Lambda Handler', () => {
   describe('Input Validation', () => {
     it('should reject requests with missing required fields', async () => {
       const event = createEvent({
-        body: JSON.stringify({ name: 'Test' }),
+        body: JSON.stringify({ name: 'Test', 'cf-turnstile-response': 'test-token' }),
       });
 
       const response = await handler(event);
@@ -88,6 +104,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test User',
           email: 'invalid-email',
           message: 'Test message',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -103,6 +120,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test User',
           email: 'test@example.com\nBcc:attacker@evil.com',
           message: 'Test message',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -118,6 +136,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'a'.repeat(201),
           email: 'test@example.com',
           message: 'Test message',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -134,6 +153,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test User',
           email: 'test@example.com',
           message: 'a'.repeat(5001),
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -150,6 +170,7 @@ describe('Contact Form Lambda Handler', () => {
           email: 'test@example.com',
           message: 'Test message',
           subject: 'a'.repeat(201),
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -167,6 +188,7 @@ describe('Contact Form Lambda Handler', () => {
           name: '<script>alert("xss")</script>',
           email: 'test@example.com',
           message: '<img src=x onerror=alert(1)>',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -188,6 +210,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test & User',
           email: 'test@example.com',
           message: 'Message with "quotes" and \'apostrophes\'',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -208,6 +231,7 @@ describe('Contact Form Lambda Handler', () => {
           email: 'test@example.com',
           message: 'Test message',
           subject: 'Normal Subject\nBcc: attacker@evil.com',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -244,6 +268,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test User',
           email: '  test@example.com  ',
           message: 'Test message',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -263,6 +288,7 @@ describe('Contact Form Lambda Handler', () => {
           email: 'test@example.com',
           message: 'Test message',
           subject: 'Custom Subject',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -303,6 +329,7 @@ describe('Contact Form Lambda Handler', () => {
           name: 'Test <User>',
           email: 'test@example.com',
           message: 'Test <message>',
+          'cf-turnstile-response': 'test-token',
         }),
       });
 
@@ -376,6 +403,73 @@ describe('Contact Form Lambda Handler', () => {
         'Error sending email:',
         expect.any(Error)
       );
+
+      consoleErrorSpy.mockRestore();
+    });
+  });
+
+  describe('Turnstile Verification', () => {
+    it('should reject requests without Turnstile token', async () => {
+      const event = createEvent({
+        body: JSON.stringify({
+          name: 'Test User',
+          email: 'test@example.com',
+          message: 'Test message',
+          // No cf-turnstile-response
+        }),
+      });
+
+      const response = await handler(event);
+
+      expect(response.statusCode).toBe(403);
+      expect(JSON.parse(response.body).error).toBe('Verification token missing');
+    });
+
+    it('should reject requests with invalid Turnstile token', async () => {
+      mockFetch.mockResolvedValue({
+        json: async () => ({ success: false }),
+      });
+
+      const event = createEvent();
+      const response = await handler(event);
+
+      expect(response.statusCode).toBe(403);
+      expect(JSON.parse(response.body).error).toBe('Verification failed');
+    });
+
+    it('should accept requests with valid Turnstile token', async () => {
+      const event = createEvent();
+      const response = await handler(event);
+
+      expect(response.statusCode).toBe(200);
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        expect.objectContaining({
+          method: 'POST',
+          body: expect.stringContaining('test-token'),
+        })
+      );
+    });
+
+    it('should pass sourceIp to Turnstile verification', async () => {
+      const event = createEvent();
+      await handler(event);
+
+      const fetchCall = mockFetch.mock.calls[0];
+      const fetchBody = JSON.parse(fetchCall[1].body);
+      expect(fetchBody.remoteip).toBe('192.168.1.1');
+      expect(fetchBody.secret).toBe('test-secret-key');
+    });
+
+    it('should handle Turnstile API errors gracefully', async () => {
+      mockFetch.mockRejectedValue(new Error('Network error'));
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
+      const event = createEvent();
+      const response = await handler(event);
+
+      expect(response.statusCode).toBe(403);
+      expect(JSON.parse(response.body).error).toBe('Verification failed');
 
       consoleErrorSpy.mockRestore();
     });

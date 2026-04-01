@@ -3,6 +3,8 @@ const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 // Sanitize user input to prevent HTML injection
 const escapeHtml = (str) => {
@@ -17,6 +19,26 @@ const escapeHtml = (str) => {
 // Strip newlines to prevent header injection
 const stripNewlines = (str) => {
   return str.replace(/[\r\n]/g, '');
+};
+
+// Verify Cloudflare Turnstile token server-side (D-04)
+const verifyTurnstileToken = async (token, remoteIp) => {
+  try {
+    const response = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: TURNSTILE_SECRET,
+        response: token,
+        remoteip: remoteIp,
+      }),
+    });
+    const result = await response.json();
+    return result.success === true;
+  } catch (error) {
+    console.error('Turnstile verification error:', error);
+    return false;
+  }
 };
 
 exports.handler = async (event) => {
@@ -53,6 +75,29 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || '{}');
+
+    // Verify Turnstile token before processing (D-04)
+    // Skip verification if TURNSTILE_SECRET is not configured (development/staging)
+    if (TURNSTILE_SECRET) {
+      const turnstileToken = body['cf-turnstile-response'];
+      if (!turnstileToken) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification token missing' }),
+        };
+      }
+
+      const isHuman = await verifyTurnstileToken(turnstileToken, sourceIp);
+      if (!isHuman) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification failed' }),
+        };
+      }
+    }
+
     const { name, email, message, subject } = body;
 
     if (!name || !email || !message) {

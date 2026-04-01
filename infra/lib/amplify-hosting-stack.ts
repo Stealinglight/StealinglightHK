@@ -59,6 +59,10 @@ frontend:
           name: 'VITE_CDN_BASE_URL',
           value: 'https://d2fc83sck42gx7.cloudfront.net',
         },
+        {
+          name: 'VITE_TURNSTILE_SITE_KEY',
+          value: '', // Set in Amplify Console or via CDK context after Turnstile widget creation
+        },
       ],
 
       // SPA rewrite rules for React Router
@@ -82,10 +86,10 @@ frontend:
       // Applied at CDN level for defense in depth
       // Note: customHeaders must be a YAML string for CfnApp
       // CSP notes:
-      //   'unsafe-inline' in script-src: needed for GA inline snippet (until Phase 4 nonce work)
-      //   'unsafe-inline' in style-src: needed because Motion (framer-motion) applies animations
-      //     via element.style (GitHub #1727, wontfix). Defer removal to Phase 4 nonce work.
+      //   'unsafe-inline' in script-src: needed for GA inline snippet (permanently accepted per D-16)
+      //   'unsafe-inline' in style-src: needed because Motion applies animations via element.style (permanently accepted per D-15)
       //   Fonts self-hosted via Fontsource (no Google Fonts CDN needed)
+      //   challenges.cloudflare.com: needed for Turnstile bot protection script and iframe (D-05)
       customHeaders: `
 customHeaders:
   - pattern: '**/*'
@@ -101,7 +105,7 @@ customHeaders:
       - key: Permissions-Policy
         value: 'camera=(), microphone=(), geolocation=(), payment=()'
       - key: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
 `,
 
       // Tags
