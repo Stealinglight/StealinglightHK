@@ -96,7 +96,7 @@ Plans:
 
 - [x] 04-01-PLAN.md -- CDK infrastructure: SNS alarm notifications, Turnstile Lambda verification, CSP update
 - [x] 04-02-PLAN.md -- Frontend: Turnstile widget in contact form, skip link, modal focus trap, alt text audit
-- [ ] 04-03-PLAN.md -- Gap closure: add useReducedMotion guards to 8 animated section components (QUAL-02)
+- [x] 04-03-PLAN.md -- Gap closure: add useReducedMotion guards to 8 animated section components (QUAL-02)
 
 ## Progress
 
