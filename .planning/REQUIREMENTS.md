@@ -13,7 +13,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 - [x] **INFRA-02**: CSP headers allow Google Analytics, Google Fonts, and CloudFront CDN without blocking
 - [x] **INFRA-03**: Site has favicon.svg in browser tab and og-image.jpg for social media sharing previews
 - [x] **INFRA-04**: React error boundary catches component crashes and displays graceful fallback instead of blank page
-- [ ] **INFRA-05**: CloudWatch alarms notify via SNS when Lambda errors or API 5xx/4xx thresholds are breached
+- [x] **INFRA-05**: CloudWatch alarms notify via SNS when Lambda errors or API 5xx/4xx thresholds are breached
 - [x] **INFRA-06**: npm audit shows zero high/critical vulnerabilities in both root and infra packages
 
 ### Cleanup
@@ -41,7 +41,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 
 - [x] **PERF-01**: Fonts self-hosted via Fontsource (Inter, Space Grotesk) — no render-blocking Google Fonts CDN dependency
 - [x] **PERF-02**: Off-screen video elements lazy-rendered via IntersectionObserver instead of all 19 mounted simultaneously
-- [ ] **PERF-03**: Contact form protected by Cloudflare Turnstile invisible CAPTCHA with server-side verification in Lambda
+- [x] **PERF-03**: Contact form protected by Cloudflare Turnstile invisible CAPTCHA with server-side verification in Lambda
 - [x] **PERF-04**: CloudFront CDN base URL sourced from VITE_CDN_BASE_URL environment variable instead of hardcoded
 
 ### Quality
@@ -97,7 +97,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-02    | Phase 1 | Complete |
 | INFRA-03    | Phase 1 | Complete |
 | INFRA-04    | Phase 1 | Complete |
-| INFRA-05    | Phase 4 | Pending |
+| INFRA-05    | Phase 4 | Complete |
 | INFRA-06    | Phase 1 | Complete |
 | CLEAN-01    | Phase 2 | Complete |
 | CLEAN-02    | Phase 2 | Complete |
@@ -113,7 +113,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIDO-04     | Phase 3 | Complete |
 | PERF-01     | Phase 2 | Complete |
 | PERF-02     | Phase 2 | Complete |
-| PERF-03     | Phase 4 | Pending |
+| PERF-03     | Phase 4 | Complete |
 | PERF-04     | Phase 2 | Complete |
 | QUAL-01     | Phase 3 | Complete |
 | QUAL-02     | Phase 4 | Pending |

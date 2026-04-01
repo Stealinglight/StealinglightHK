@@ -94,7 +94,7 @@ Plans:
 
 Plans:
 
-- [ ] 04-01-PLAN.md -- CDK infrastructure: SNS alarm notifications, Turnstile Lambda verification, CSP update
+- [x] 04-01-PLAN.md -- CDK infrastructure: SNS alarm notifications, Turnstile Lambda verification, CSP update
 - [ ] 04-02-PLAN.md -- Frontend: Turnstile widget in contact form, skip link, modal focus trap, alt text audit
 
 ## Progress
