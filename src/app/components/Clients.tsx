@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 const clients = [
   { name: 'Tencent', logo: '/logos/tencent.svg' },
@@ -21,15 +21,17 @@ const clients = [
 const marqueeLogos = [...clients, ...clients];
 
 export function Clients() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="py-16 md:py-24 bg-cinematic-black border-y border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading with cinematic easing */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-12"
         >
           <h3 className="text-sm tracking-widest text-white/40">TRUSTED BY</h3>
@@ -37,10 +39,10 @@ export function Clients() {
 
         {/* Marquee container */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="overflow-hidden"
         >
           <div

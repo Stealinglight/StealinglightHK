@@ -1,17 +1,18 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Instagram, Film, Facebook, ExternalLink } from 'lucide-react';
 
 export function Footer() {
+  const shouldReduceMotion = useReducedMotion();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-cinematic-dark py-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12"
         >
           {/* Brand */}
@@ -99,10 +100,10 @@ export function Footer() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <div className="text-white/30 text-sm">

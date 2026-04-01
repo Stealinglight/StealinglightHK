@@ -1,16 +1,18 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { CDN_BASE_URL } from '../config/videos';
 
 export function About() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="about" className="py-24 md:py-32 bg-cinematic-gray">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={shouldReduceMotion ? undefined : { opacity: 0, x: -40 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative aspect-[3/4] overflow-hidden rounded-lg"
           >
             <img
@@ -23,10 +25,10 @@ export function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={shouldReduceMotion ? undefined : { opacity: 0, x: 40 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <h2 className="text-white mb-6">About Me</h2>
             <div className="space-y-4 text-white/70 leading-relaxed">

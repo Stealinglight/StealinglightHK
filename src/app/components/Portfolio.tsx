@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { featuredVideo, gridVideos } from '../config/videos';
@@ -151,6 +151,7 @@ function LazyVideo({
 }
 
 export function Portfolio() {
+  const shouldReduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [tappedId, setTappedId] = useState<number | null>(null);
@@ -256,10 +257,10 @@ export function Portfolio() {
     <section id="portfolio" className="py-24 md:py-32 bg-cinematic-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: EASE_CINEMATIC }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
           className="mb-16 text-center"
         >
           <h2 className="text-white mb-4">Selected Work</h2>
@@ -270,10 +271,10 @@ export function Portfolio() {
 
         {/* Featured Video - always visible regardless of filter */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: EASE_CINEMATIC }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
           onClick={() => openVideo(featuredVideo)}
           className="mb-16 relative overflow-hidden aspect-video group cursor-pointer rounded-lg"
         >

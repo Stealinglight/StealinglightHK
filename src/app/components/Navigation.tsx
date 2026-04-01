@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 
 export function Navigation() {
+  const shouldReduceMotion = useReducedMotion();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -29,9 +30,9 @@ export function Navigation() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={shouldReduceMotion ? undefined : { y: -100 }}
+        animate={shouldReduceMotion ? undefined : { y: 0 }}
+        transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
             ? 'bg-cinematic-black/95 backdrop-blur-md py-4 border-b border-white/5'
             : 'bg-transparent py-6'
@@ -75,19 +76,19 @@ export function Navigation() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
+          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-40 bg-cinematic-black/98 backdrop-blur-lg md:hidden"
         >
           <div className="flex flex-col items-center justify-center h-full gap-8">
             {navItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={shouldReduceMotion ? undefined : { delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => scrollToSection(item.id)}
                 className="text-white/80 text-2xl tracking-wide hover:text-cinematic-amber transition-colors duration-300"
               >

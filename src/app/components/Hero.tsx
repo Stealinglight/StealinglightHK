@@ -1,4 +1,4 @@
-import { motion, type Variants } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { ChevronDown, Play } from 'lucide-react';
 import { useRef, useState } from 'react';
 
@@ -50,6 +50,7 @@ interface HeroProps {
 }
 
 export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
+  const shouldReduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -101,9 +102,9 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
         {/* Name - 0.3s delay */}
         <motion.p
-          variants={trackingFade}
-          initial="hidden"
-          animate="visible"
+          variants={shouldReduceMotion ? undefined : trackingFade}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
           className="text-sm md:text-base font-semibold text-white/70 mb-6 tracking-[0.3em]"
         >
           CHRIS MCMILLON
@@ -111,9 +112,9 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
 
         {/* Headline - 0.6s delay */}
         <motion.h1
-          variants={fadeUpBlur(0.6)}
-          initial="hidden"
-          animate="visible"
+          variants={shouldReduceMotion ? undefined : fadeUpBlur(0.6)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
           className="text-white mb-8"
           style={{ willChange: 'filter' }}
         >
@@ -123,9 +124,9 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
 
         {/* Subtitle - 0.9s delay */}
         <motion.p
-          variants={fadeUpBlur(0.9)}
-          initial="hidden"
-          animate="visible"
+          variants={shouldReduceMotion ? undefined : fadeUpBlur(0.9)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
           className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ willChange: 'filter' }}
         >
@@ -136,9 +137,9 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
 
         {/* CTAs - 1.6s delay */}
         <motion.div
-          variants={fadeUp(1.6)}
-          initial="hidden"
-          animate="visible"
+          variants={shouldReduceMotion ? undefined : fadeUp(1.6)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           {/* Watch Reel button - amber filled */}
@@ -167,15 +168,15 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
       {/* Scroll indicator - 2.0s delay */}
       <motion.button
         onClick={scrollToWork}
-        variants={fadeIn(2.0)}
-        initial="hidden"
-        animate="visible"
+        variants={shouldReduceMotion ? undefined : fadeIn(2.0)}
+        initial={shouldReduceMotion ? undefined : 'hidden'}
+        animate={shouldReduceMotion ? undefined : 'visible'}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 hover:text-white/80 transition-colors z-10"
         aria-label="Scroll to content"
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={shouldReduceMotion ? undefined : { y: [0, 8, 0] }}
+          transition={shouldReduceMotion ? undefined : { duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ChevronDown className="w-8 h-8" />
         </motion.div>
