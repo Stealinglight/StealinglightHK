@@ -51,12 +51,15 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 - ✓ Cinematic easing throughout — all sections use [0.16, 1, 0.3, 1] curve. Validated in Phase 3.
 - ✓ Typography consolidated — 400/600 weights only, h1 reduced from 700 to 600. Validated in Phase 3.
 
+- ✓ Cloudflare Turnstile bot protection — invisible CAPTCHA with lazy script loading, server-side Lambda verification, CSP updated. Validated in Phase 4.
+- ✓ CloudWatch alarm SNS notifications — SNS topic wired to all 3 alarms (Lambda errors, API 5xx, 4xx), email subscription. Validated in Phase 4.
+- ✓ Accessibility: skip link, focus trap, ARIA attributes — skip link to #portfolio, useFocusTrap in video modal, role=dialog, aria-modal, focus restore. Validated in Phase 4.
+- ✓ Reduced motion support — useReducedMotion() guards on all 8 animated section components, entrance animations bypassed when OS prefers-reduced-motion. Validated in Phase 4.
+- ✓ Turnstile TypeScript declarations — window.turnstile API types in src/types/turnstile.d.ts. Validated in Phase 4.
+
 ### Active
 
-- [ ] Add honeypot or bot protection to contact form
-- [ ] Add CloudWatch alarm notification target (SNS)
 - [ ] E2E tests passing in CI
-- [ ] Accessibility audit and fixes
 - [ ] Performance optimization (Core Web Vitals)
 
 ### Out of Scope
@@ -98,6 +101,8 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 | Resolve Lambda to single source (JS) | TypeScript source was never deployed, has different logic  | ✓ Phase 1 |
 | Production-grade finish              | User wants tests, perf, a11y, SEO — not just visual polish | — Pending |
 | Contemporary cinematic aesthetic     | User's creative direction for the visual overhaul          | ✓ Phase 3 |
+| Cloudflare Turnstile over reCAPTCHA  | Invisible, privacy-first, no user friction                 | ✓ Phase 4 |
+| unsafe-inline permanent (CSP)        | GA inline snippet + Motion element.style — nonces not viable | ✓ Phase 4 |
 
 ## Evolution
 
