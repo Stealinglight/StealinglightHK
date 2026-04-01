@@ -90,11 +90,12 @@ Plans:
 1. Contact form is protected by Cloudflare Turnstile invisible CAPTCHA and the Lambda verifies the token server-side before sending email
 2. Site passes automated accessibility checks -- skip links exist, modal traps focus correctly, images have alt text, and animations respect prefers-reduced-motion
 3. CloudWatch alarms fire an SNS notification when Lambda error rate or API Gateway 5xx/4xx counts exceed configured thresholds
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md -- CDK infrastructure: SNS alarm notifications, Turnstile Lambda verification, CSP update
+- [ ] 04-02-PLAN.md -- Frontend: Turnstile widget in contact form, skip link, modal focus trap, alt text audit
 
 ## Progress
 
@@ -106,4 +107,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Infrastructure & Safety Net | 2/2            | Complete    | 2026-03-30 |
 | 2. Cleanup & Architecture      | 3/3            | Complete    | 2026-03-30 |
 | 3. Visual Overhaul             | 0/3            | Planned     | -          |
-| 4. Quality & Protection        | 0/1            | Not started | -          |
+| 4. Quality & Protection        | 0/2            | Not started | -          |
