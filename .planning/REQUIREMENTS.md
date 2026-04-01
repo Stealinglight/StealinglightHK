@@ -47,7 +47,7 @@ Requirements for the site revamp. Each maps to roadmap phases.
 ### Quality
 
 - [x] **QUAL-01**: Scroll progress indicator shows position within single-page site (thin accent-color bar)
-- [ ] **QUAL-02**: Site passes basic accessibility audit — skip links, focus management in modal, alt text on images, reduced motion support via useReducedMotion
+- [x] **QUAL-02**: Site passes basic accessibility audit — skip links, focus management in modal, alt text on images, reduced motion support via useReducedMotion
 - [x] **QUAL-03**: Unused application components removed (Reel.tsx, ImageWithFallback.tsx) and dead code cleaned up
 
 ## v2 Requirements
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-03     | Phase 4 | Complete |
 | PERF-04     | Phase 2 | Complete |
 | QUAL-01     | Phase 3 | Complete |
-| QUAL-02     | Phase 4 | Pending |
+| QUAL-02     | Phase 4 | Complete |
 | QUAL-03     | Phase 2 | Complete |
 
 **Coverage:**
