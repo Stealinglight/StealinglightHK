@@ -14,6 +14,17 @@ import { ScrollProgress } from './components/ScrollProgress';
 import { Toaster } from 'sonner';
 import { heroVideo } from './config/videos';
 
+function SkipLink() {
+  return (
+    <a
+      href="#portfolio"
+      className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-cinematic-amber focus:text-cinematic-black focus:font-semibold focus:rounded focus:outline-none"
+    >
+      Skip to content
+    </a>
+  );
+}
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const videoReadyRef = useRef(false);
@@ -47,6 +58,7 @@ export default function App() {
 
   return (
     <div className="size-full bg-cinematic-black">
+      <SkipLink />
       <AnimatePresence>
         {isLoading && <Preloader key="preloader" onDismiss={() => setIsLoading(false)} />}
       </AnimatePresence>

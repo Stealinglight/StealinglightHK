@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { featuredVideo, gridVideos } from '../config/videos';
 import { useInView } from '../../hooks/useInView';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { cn } from '../../lib/utils';
 
 // D-01: Smooth deceleration easing for all cinematic animations
@@ -158,6 +159,9 @@ export function Portfolio() {
   >(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  useFocusTrap(modalRef, activeVideo !== null);
 
   const filteredVideos =
     activeCategory === 'All'
@@ -165,6 +169,7 @@ export function Portfolio() {
       : gridVideos.filter((v) => v.category === activeCategory);
 
   const openVideo = (video: typeof featuredVideo | (typeof gridVideos)[number]) => {
+    triggerRef.current = document.activeElement as HTMLElement;
     setActiveVideo(video);
     document.body.style.overflow = 'hidden';
   };
@@ -173,6 +178,11 @@ export function Portfolio() {
     setActiveVideo(null);
     setTappedId(null);
     document.body.style.overflow = '';
+    // D-08: Return focus to the element that opened the modal
+    requestAnimationFrame(() => {
+      triggerRef.current?.focus();
+      triggerRef.current = null;
+    });
   };
 
   const handleTap = (project: (typeof gridVideos)[number]) => {
@@ -358,6 +368,9 @@ export function Portfolio() {
           <motion.div
             ref={modalRef}
             tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-video-title"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -413,7 +426,9 @@ export function Portfolio() {
                 className="w-full aspect-video rounded-lg"
               />
               <div className="mt-4 text-center">
-                <h3 className="text-white text-xl">{activeVideo.title}</h3>
+                <h3 id="modal-video-title" className="text-white text-xl">
+                  {activeVideo.title}
+                </h3>
                 <p className="text-white/60 mt-2">{activeVideo.description}</p>
               </div>
             </motion.div>
