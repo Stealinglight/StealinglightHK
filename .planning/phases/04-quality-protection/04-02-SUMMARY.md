@@ -3,6 +3,7 @@ phase: 04-quality-protection
 plan: 02
 subsystem: ui
 tags: [cloudflare-turnstile, accessibility, focus-trap, skip-link, aria, react]
+requirements_completed: [PERF-03, QUAL-02]
 
 # Dependency graph
 requires:

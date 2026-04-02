@@ -3,6 +3,7 @@ phase: 03-visual-overhaul
 plan: 01
 subsystem: ui
 tags: [motion, animation, preloader, scroll-progress, hero, variants, blur-filter]
+requirements_completed: [VISL-01, VIDO-03, QUAL-01]
 
 # Dependency graph
 requires:

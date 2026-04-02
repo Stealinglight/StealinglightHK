@@ -3,6 +3,7 @@ phase: 01-infrastructure-safety-net
 plan: 01
 subsystem: infra
 tags: [lambda, csp, security-headers, google-analytics, google-fonts, cloudfront, aws-cdk]
+requirements_completed: [INFRA-01, INFRA-02]
 
 # Dependency graph
 requires: []

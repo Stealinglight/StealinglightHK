@@ -3,6 +3,7 @@ phase: 02-cleanup-architecture
 plan: 02
 subsystem: infra, ui
 tags: [fontsource, self-hosted-fonts, csp, environment-variables, cloudfront, vite]
+requirements_completed: [PERF-01, PERF-04]
 
 # Dependency graph
 requires:

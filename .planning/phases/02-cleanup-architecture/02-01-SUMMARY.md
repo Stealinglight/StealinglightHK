@@ -3,6 +3,7 @@ phase: 02-cleanup-architecture
 plan: 01
 subsystem: cleanup
 tags: [dead-code, dependencies, package-json, eslint, fontsource]
+requirements_completed: [CLEAN-01, CLEAN-02, CLEAN-03, QUAL-03]
 
 # Dependency graph
 requires:

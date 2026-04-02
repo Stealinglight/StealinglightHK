@@ -3,6 +3,7 @@ phase: 02-cleanup-architecture
 plan: 03
 subsystem: ui, infra, tooling
 tags: [intersection-observer, lazy-loading, eslint-flat-config, react, lambda, performance]
+requirements_completed: [CLEAN-04, PERF-02]
 
 # Dependency graph
 requires:

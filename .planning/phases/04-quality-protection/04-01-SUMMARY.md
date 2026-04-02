@@ -3,6 +3,7 @@ phase: 04-quality-protection
 plan: 01
 subsystem: infra
 tags: [aws-cdk, sns, cloudwatch, cloudflare-turnstile, lambda, csp, bot-protection]
+requirements_completed: [INFRA-05]
 
 # Dependency graph
 requires:

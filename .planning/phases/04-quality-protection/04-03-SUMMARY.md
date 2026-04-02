@@ -3,6 +3,7 @@ phase: 04-quality-protection
 plan: 03
 subsystem: ui
 tags: [accessibility, reduced-motion, motion, react, a11y]
+requirements_completed: [QUAL-02]
 
 # Dependency graph
 requires:

@@ -3,6 +3,7 @@ phase: 03-visual-overhaul
 plan: 03
 subsystem: ui
 tags: [css-marquee, motion, animation, easing, typography, tailwind]
+requirements_completed: [VISL-02, VISL-03, VISL-04]
 
 # Dependency graph
 requires:

@@ -3,6 +3,7 @@ phase: 01-infrastructure-safety-net
 plan: 02
 subsystem: infra
 tags: [react-error-boundary, favicon, og-image, npm-audit, aws-cdk, security]
+requirements_completed: [INFRA-03, INFRA-04, INFRA-06]
 
 # Dependency graph
 requires:
