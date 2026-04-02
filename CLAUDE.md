@@ -332,7 +332,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Depends on: React, Motion (framer-motion), Tailwind CSS, Radix UI, lucide-react
 - Used by: End users via browser
 - Purpose: Handles contact form submissions
-- Location: `infra/lambda/contact/index.ts`
+- Location: `infra/lambda/contact/index.js`
 - Contains: Lambda handler with input validation, sanitization, CORS handling, SES email dispatch
 - Depends on: `@aws-sdk/client-ses`, AWS Lambda runtime
 - Used by: Contact form component via `fetch()` POST
@@ -385,7 +385,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Location: `infra/bin/app.ts`
 - Triggers: `cdk synth`, `cdk deploy`, `cdk diff` commands
 - Responsibilities: Instantiates all CDK stacks, configures cross-stack dependencies (`amplifyStack.addDependency(contactStack)`), applies `TagComplianceAspect` to all stacks, reads context values and environment variables
-- Location: `infra/lambda/contact/index.ts`
+- Location: `infra/lambda/contact/index.js`
 - Triggers: API Gateway POST to `/contact` endpoint
 - Responsibilities: CORS preflight handling, request validation, input sanitization, SES email dispatch
 
@@ -408,7 +408,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Lambda: `console.error` for SES failures, captured by CloudWatch Logs (1-week retention set in `infra/lib/contact-stack.ts`)
 - No structured logging framework on either side
 - Frontend: Basic presence check before API call (`src/app/components/Contact.tsx`)
-- Lambda: Field presence, email regex, input sanitization (strips `<>` tags), length limits (name: 100, email: 254, subject: 200, message: 5000) in `infra/lambda/contact/index.ts`
+- Lambda: Field presence, email regex, input sanitization (strips `<>` tags), length limits (name: 200, email: 254, subject: 200, message: 5000) in `infra/lambda/contact/index.js`
 - No user authentication (public portfolio site)
 - Contact form protected by CORS origin allowlist (configured per-environment)
 - API Gateway rate limiting: 10 requests/sec, burst limit 20
