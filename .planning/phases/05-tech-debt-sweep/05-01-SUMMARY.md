@@ -3,6 +3,7 @@ phase: 05-tech-debt-sweep
 plan: 01
 subsystem: ui
 tags: [typescript, react-error-boundary, motion, AnimatePresence]
+requirements_completed: []
 
 # Dependency graph
 requires:
