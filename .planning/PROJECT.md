@@ -99,7 +99,7 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 | Keep single-page scroll architecture | Matches portfolio use case, already built                  | — Pending |
 | Remove unused shadcn/ui components   | 5,119 lines of dead code, not imported anywhere            | — Pending |
 | Resolve Lambda to single source (JS) | TypeScript source was never deployed, has different logic  | ✓ Phase 1 |
-| Production-grade finish              | User wants tests, perf, a11y, SEO — not just visual polish | — Pending |
+| Production-grade finish              | User wants tests, perf, a11y, SEO — not just visual polish | ✓ Phase 4 |
 | Contemporary cinematic aesthetic     | User's creative direction for the visual overhaul          | ✓ Phase 3 |
 | Cloudflare Turnstile over reCAPTCHA  | Invisible, privacy-first, no user friction                 | ✓ Phase 4 |
 | unsafe-inline permanent (CSP)        | GA inline snippet + Motion element.style — nonces not viable | ✓ Phase 4 |
@@ -125,4 +125,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-03-31 after Phase 3 completion_
+_Last updated: 2026-04-02 after Phase 5 (Tech Debt Sweep) completion — all v1.0 phases complete_
