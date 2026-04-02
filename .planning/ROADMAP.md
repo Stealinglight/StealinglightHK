@@ -14,10 +14,10 @@ This roadmap transforms the stealinglight.hk cinematography portfolio from a par
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Infrastructure & Safety Net** - Fix broken systems and add error isolation so development can proceed safely (completed 2026-03-30)
-- [ ] **Phase 2: Cleanup & Architecture** - Strip dead code, build video system and hooks that the visual overhaul consumes
-- [ ] **Phase 3: Visual Overhaul** - Deliver the cinematic experience section by section using Phase 2 infrastructure
-- [ ] **Phase 4: Quality & Protection** - Add accessibility, bot protection, and monitoring to the finished site
-- [ ] **Phase 5: Tech Debt Sweep** - Close audit gaps: fix tsc errors, dead code, broken animation, stale docs
+- [x] **Phase 2: Cleanup & Architecture** - Strip dead code, build video system and hooks that the visual overhaul consumes (completed 2026-03-30)
+- [x] **Phase 3: Visual Overhaul** - Deliver the cinematic experience section by section using Phase 2 infrastructure (completed 2026-03-31)
+- [x] **Phase 4: Quality & Protection** - Add accessibility, bot protection, and monitoring to the finished site (completed 2026-04-01)
+- [x] **Phase 5: Tech Debt Sweep** - Close audit gaps: fix tsc errors, dead code, broken animation, stale docs (completed 2026-04-02)
 
 ## Phase Details
 
@@ -133,4 +133,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Cleanup & Architecture      | 3/3            | Complete | 2026-03-30 |
 | 3. Visual Overhaul             | 3/3            | Complete | 2026-03-31 |
 | 4. Quality & Protection        | 3/3            | Complete | 2026-04-01 |
-| 5. Tech Debt Sweep             | 0/2            | Planned  | -          |
+| 5. Tech Debt Sweep             | 2/2            | Complete | 2026-04-02 |
