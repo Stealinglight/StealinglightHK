@@ -8,8 +8,12 @@ function SectionFallback(_props: FallbackProps) {
 }
 
 // Log errors to console for developer debugging
-function handleSectionError(error: Error, info: { componentStack?: string | null }) {
-  console.error('[SectionError]', error.message, info.componentStack);
+function handleSectionError(error: unknown, info: { componentStack?: string | null | undefined }) {
+  console.error(
+    '[SectionError]',
+    error instanceof Error ? error.message : String(error),
+    info.componentStack
+  );
 }
 
 export function SectionErrorBoundary({ children }: { children: ReactNode }) {
