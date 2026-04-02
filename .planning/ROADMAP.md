@@ -120,7 +120,7 @@ Plans:
 Plans:
 
 - [ ] 05-01-PLAN.md -- Code fixes: tsc type errors, Navigation AnimatePresence, Preloader dead prop removal
-- [ ] 05-02-PLAN.md -- Documentation fixes: .env.example, CLAUDE.md, SUMMARY.md frontmatter population
+- [x] 05-02-PLAN.md -- Documentation fixes: .env.example, CLAUDE.md, SUMMARY.md frontmatter population
 
 ## Progress
 
