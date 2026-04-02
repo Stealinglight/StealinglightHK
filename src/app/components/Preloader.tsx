@@ -1,10 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react';
 
-interface PreloaderProps {
-  onDismiss: () => void;
-}
-
-export function Preloader({ onDismiss: _onDismiss }: PreloaderProps) {
+export function Preloader() {
   const shouldReduceMotion = useReducedMotion();
 
   return (

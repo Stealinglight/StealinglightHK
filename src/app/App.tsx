@@ -60,7 +60,7 @@ export default function App() {
     <div className="size-full bg-cinematic-black">
       <SkipLink />
       <AnimatePresence>
-        {isLoading && <Preloader key="preloader" onDismiss={() => setIsLoading(false)} />}
+        {isLoading && <Preloader key="preloader" />}
       </AnimatePresence>
       <ScrollProgress />
       <Navigation />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 
 export function Navigation() {
@@ -74,30 +74,40 @@ export function Navigation() {
       </motion.nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1 }}
-          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-40 bg-cinematic-black/98 backdrop-blur-lg md:hidden"
-        >
-          <div className="flex flex-col items-center justify-center h-full gap-8">
-            {navItems.map((item, index) => (
-              <motion.button
-                key={item.id}
-                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-                transition={shouldReduceMotion ? undefined : { delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                onClick={() => scrollToSection(item.id)}
-                className="text-white/80 text-2xl tracking-wide hover:text-cinematic-amber transition-colors duration-300"
-              >
-                {item.label}
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
+            transition={
+              shouldReduceMotion
+                ? { duration: 0 }
+                : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
+            }
+            className="fixed inset-0 z-40 bg-cinematic-black/98 backdrop-blur-lg md:hidden"
+          >
+            <div className="flex flex-col items-center justify-center h-full gap-8">
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item.id}
+                  initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                  animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                  transition={
+                    shouldReduceMotion
+                      ? undefined
+                      : { delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }
+                  }
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-white/80 text-2xl tracking-wide hover:text-cinematic-amber transition-colors duration-300"
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
