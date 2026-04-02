@@ -115,12 +115,17 @@ Plans:
 6. ROADMAP.md progress table reflects actual state (all 4 phases complete)
 7. All SUMMARY.md files have populated `requirements_completed` frontmatter fields
 
-Plans: TBD
+**Plans**: 2 plans
+
+Plans:
+
+- [ ] 05-01-PLAN.md -- Code fixes: tsc type errors, Navigation AnimatePresence, Preloader dead prop removal
+- [ ] 05-02-PLAN.md -- Documentation fixes: .env.example, CLAUDE.md, SUMMARY.md frontmatter population
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase                          | Plans Complete | Status   | Completed  |
 | ------------------------------ | -------------- | -------- | ---------- |
@@ -128,4 +133,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 2. Cleanup & Architecture      | 3/3            | Complete | 2026-03-30 |
 | 3. Visual Overhaul             | 3/3            | Complete | 2026-03-31 |
 | 4. Quality & Protection        | 3/3            | Complete | 2026-04-01 |
-| 5. Tech Debt Sweep             | 0/0            | Planned  | -          |
+| 5. Tech Debt Sweep             | 0/2            | Planned  | -          |
