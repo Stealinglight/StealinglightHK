@@ -17,6 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Cleanup & Architecture** - Strip dead code, build video system and hooks that the visual overhaul consumes
 - [ ] **Phase 3: Visual Overhaul** - Deliver the cinematic experience section by section using Phase 2 infrastructure
 - [ ] **Phase 4: Quality & Protection** - Add accessibility, bot protection, and monitoring to the finished site
+- [ ] **Phase 5: Tech Debt Sweep** - Close audit gaps: fix tsc errors, dead code, broken animation, stale docs
 
 ## Phase Details
 
@@ -76,7 +77,7 @@ Plans:
 
 Plans:
 
-- [ ] 03-01-PLAN.md -- Preloader, scroll progress, and hero cinematic reveal (Preloader.tsx, ScrollProgress.tsx, Hero variant-based stagger with blur)
+- [x] 03-01-PLAN.md -- Preloader, scroll progress, and hero cinematic reveal (Preloader.tsx, ScrollProgress.tsx, Hero variant-based stagger with blur)
 - [x] 03-02-PLAN.md -- Portfolio filter pills, touch support, and keyboard navigation (category filtering with AnimatePresence, two-tap touch flow, modal keyboard nav)
 - [x] 03-03-PLAN.md -- Client marquee, section animation polish, and typography pass (CSS marquee with 15 logos, cinematic easing on all sections, Footer entrance, weight consolidation)
 
@@ -98,14 +99,33 @@ Plans:
 - [x] 04-02-PLAN.md -- Frontend: Turnstile widget in contact form, skip link, modal focus trap, alt text audit
 - [x] 04-03-PLAN.md -- Gap closure: add useReducedMotion guards to 8 animated section components (QUAL-02)
 
+### Phase 5: Tech Debt Sweep
+
+**Goal**: Close all actionable tech debt identified by the v1.0 milestone audit — fix type errors, remove dead code, repair broken animation, and correct stale documentation
+**Depends on**: Phase 4
+**Requirements**: None (all 25/25 satisfied; this phase addresses code quality and documentation)
+**Gap Closure:** Closes integration gap PRELOADER_ONDISMISS and 7 tech debt items from v1.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+
+1. `npx tsc --noEmit` reports zero errors (SectionErrorBoundary.tsx and videos.ts fixed)
+2. Navigation.tsx mobile menu exit animation plays correctly (AnimatePresence wrapper added)
+3. Preloader.tsx no longer accepts an `onDismiss` prop (dead interface removed)
+4. `.env.example` includes `VITE_TURNSTILE_SITE_KEY` placeholder
+5. CLAUDE.md documents contact name max length as 200 (matching Lambda's `MAX_NAME_LENGTH`)
+6. ROADMAP.md progress table reflects actual state (all 4 phases complete)
+7. All SUMMARY.md files have populated `requirements_completed` frontmatter fields
+
+Plans: TBD
+
 ## Progress
 
 **Execution Order:**
 Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
-| Phase                          | Plans Complete | Status      | Completed  |
-| ------------------------------ | -------------- | ----------- | ---------- |
-| 1. Infrastructure & Safety Net | 2/2            | Complete    | 2026-03-30 |
-| 2. Cleanup & Architecture      | 3/3            | Complete    | 2026-03-30 |
-| 3. Visual Overhaul             | 0/3            | Planned     | -          |
-| 4. Quality & Protection        | 2/3            | Gap closure | -          |
+| Phase                          | Plans Complete | Status   | Completed  |
+| ------------------------------ | -------------- | -------- | ---------- |
+| 1. Infrastructure & Safety Net | 2/2            | Complete | 2026-03-30 |
+| 2. Cleanup & Architecture      | 3/3            | Complete | 2026-03-30 |
+| 3. Visual Overhaul             | 3/3            | Complete | 2026-03-31 |
+| 4. Quality & Protection        | 3/3            | Complete | 2026-04-01 |
+| 5. Tech Debt Sweep             | 0/0            | Planned  | -          |
