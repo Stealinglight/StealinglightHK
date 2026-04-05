@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { CDN_BASE_URL } from '../config/videos';
+import { EASE_CINEMATIC } from '../constants/motion';
 
 export function About() {
   const shouldReduceMotion = useReducedMotion();
@@ -12,7 +13,7 @@ export function About() {
             initial={shouldReduceMotion ? undefined : { opacity: 0, x: -40 }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
             className="relative aspect-[3/4] overflow-hidden rounded-lg"
           >
             <img
@@ -28,7 +29,7 @@ export function About() {
             initial={shouldReduceMotion ? undefined : { opacity: 0, x: 40 }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
           >
             <h2 className="text-white mb-6">About Me</h2>
             <div className="space-y-4 text-white/70 leading-relaxed">

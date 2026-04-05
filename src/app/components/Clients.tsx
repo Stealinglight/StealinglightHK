@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
+import { EASE_CINEMATIC } from '../constants/motion';
 
 const clients = [
   { name: 'Tencent', logo: '/logos/tencent.svg' },
@@ -31,7 +32,7 @@ export function Clients() {
           initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: EASE_CINEMATIC }}
           className="text-center mb-12"
         >
           <h3 className="text-sm tracking-widest text-white/40">TRUSTED BY</h3>
@@ -42,7 +43,7 @@ export function Clients() {
           initial={shouldReduceMotion ? undefined : { opacity: 0 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
           viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.2, ease: EASE_CINEMATIC }}
           className="overflow-hidden"
         >
           <div

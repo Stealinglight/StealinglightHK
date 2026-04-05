@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-export function useInView(options?: IntersectionObserverInit) {
+export function useInView(rootMargin?: string) {
   const ref = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -8,16 +8,19 @@ export function useInView(options?: IntersectionObserverInit) {
     const element = ref.current;
     if (!element) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        observer.unobserve(element); // Once visible, stop observing (one-shot)
-      }
-    }, options);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(element);
+        }
+      },
+      rootMargin ? { rootMargin } : undefined
+    );
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [options]);
+  }, [rootMargin]);
 
   return { ref, isInView };
 }

@@ -1,9 +1,7 @@
 import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { ChevronDown, Play } from 'lucide-react';
 import { useRef, useState } from 'react';
-
-// Cinematic easing: smooth deceleration curve (D-01)
-const EASE_CINEMATIC: [number, number, number, number] = [0.16, 1, 0.3, 1];
+import { EASE_CINEMATIC } from '../constants/motion';
 
 // Variant definitions with explicit per-element delays (D-02 non-uniform timeline)
 
@@ -70,7 +68,6 @@ export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
               muted
               loop
               playsInline
-              poster={posterSrc}
               onCanPlay={() => {
                 setVideoLoaded(true);
                 onVideoReady?.();

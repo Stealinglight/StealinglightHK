@@ -1,13 +1,11 @@
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { featuredVideo, gridVideos } from '../config/videos';
 import { useInView } from '../../hooks/useInView';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { cn } from '../../lib/utils';
-
-// D-01: Smooth deceleration easing for all cinematic animations
-const EASE_CINEMATIC: [number, number, number, number] = [0.16, 1, 0.3, 1];
+import { EASE_CINEMATIC } from '../constants/motion';
 
 // D-05: Derive categories from video data, "All" first
 const CATEGORIES = ['All', ...new Set(gridVideos.map((v) => v.category))] as const;
@@ -26,7 +24,6 @@ function LazyVideo({
   onLeave,
   onTap,
   onClick,
-  index: _index,
 }: {
   project: (typeof gridVideos)[number];
   isHovered: boolean;
@@ -35,9 +32,8 @@ function LazyVideo({
   onLeave: () => void;
   onTap: () => void;
   onClick: () => void;
-  index: number;
 }) {
-  const { ref, isInView } = useInView({ rootMargin: '200px' });
+  const { ref, isInView } = useInView('200px');
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const isPreviewActive = isHovered || isTapped;
@@ -164,10 +160,20 @@ export function Portfolio() {
 
   useFocusTrap(modalRef, activeVideo !== null);
 
-  const filteredVideos =
-    activeCategory === 'All'
-      ? gridVideos
-      : gridVideos.filter((v) => v.category === activeCategory);
+  // Ensure body scroll is restored if component unmounts while modal is open
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  const filteredVideos = useMemo(
+    () =>
+      activeCategory === 'All'
+        ? gridVideos
+        : gridVideos.filter((v) => v.category === activeCategory),
+    [activeCategory]
+  );
 
   const openVideo = (video: typeof featuredVideo | (typeof gridVideos)[number]) => {
     triggerRef.current = document.activeElement as HTMLElement;
@@ -334,7 +340,7 @@ export function Portfolio() {
         {/* Project Grid with layout animation - D-04 */}
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6">
           <AnimatePresence mode="popLayout">
-            {filteredVideos.map((project, index) => (
+            {filteredVideos.map((project) => (
               <motion.div
                 key={project.id}
                 layout
@@ -355,7 +361,6 @@ export function Portfolio() {
                   onLeave={() => setHoveredId(null)}
                   onTap={() => handleTap(project)}
                   onClick={() => openVideo(project)}
-                  index={index}
                 />
               </motion.div>
             ))}

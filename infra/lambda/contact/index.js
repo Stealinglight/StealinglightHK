@@ -75,31 +75,9 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || '{}');
-
-    // Verify Turnstile token before processing (D-04)
-    // Skip verification if TURNSTILE_SECRET is not configured (development/staging)
-    if (TURNSTILE_SECRET) {
-      const turnstileToken = body['cf-turnstile-response'];
-      if (!turnstileToken) {
-        return {
-          statusCode: 403,
-          headers,
-          body: JSON.stringify({ error: 'Verification token missing' }),
-        };
-      }
-
-      const isHuman = await verifyTurnstileToken(turnstileToken, sourceIp);
-      if (!isHuman) {
-        return {
-          statusCode: 403,
-          headers,
-          body: JSON.stringify({ error: 'Verification failed' }),
-        };
-      }
-    }
-
     const { name, email, message, subject } = body;
 
+    // Cheap validation first — reject malformed requests before any network calls
     if (!name || !email || !message) {
       return {
         statusCode: 400,
@@ -109,7 +87,6 @@ exports.handler = async (event) => {
     }
 
     // Email validation: Check format and prevent header injection
-    // Strip any newlines to prevent email header injection attacks
     const sanitizedEmail = stripNewlines(email.trim());
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(sanitizedEmail)) {
@@ -136,13 +113,38 @@ exports.handler = async (event) => {
       };
     }
 
-    // Sanitize inputs for email subject and HTML body
-    const safeName = escapeHtml(name.trim());
-    const safeEmail = escapeHtml(sanitizedEmail);
-    const safeMessage = escapeHtml(message.trim());
-    const safeSubject = subject ? stripNewlines(escapeHtml(subject.trim())) : null;
+    // Verify Turnstile token after cheap validation (D-04)
+    // Skip verification if TURNSTILE_SECRET is not configured (development/staging)
+    if (TURNSTILE_SECRET) {
+      const turnstileToken = body['cf-turnstile-response'];
+      if (!turnstileToken) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification token missing' }),
+        };
+      }
 
-    const emailSubject = safeSubject || `Contact Form: ${safeName}`;
+      const isHuman = await verifyTurnstileToken(turnstileToken, sourceIp);
+      if (!isHuman) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification failed' }),
+        };
+      }
+    }
+
+    // Sanitize inputs — HTML-escape for email body only, plain text for subject
+    const trimmedName = name.trim();
+    const trimmedMessage = message.trim();
+    const safeName = escapeHtml(trimmedName);
+    const safeEmail = escapeHtml(sanitizedEmail);
+    const safeMessage = escapeHtml(trimmedMessage);
+
+    // Email subjects are plain text — use newline-stripped values, not HTML-escaped
+    const plainSubject = subject ? stripNewlines(subject.trim()) : null;
+    const emailSubject = plainSubject || `Contact Form: ${stripNewlines(trimmedName)}`;
 
     await ses.send(new SendEmailCommand({
       Source: CONTACT_EMAIL,
