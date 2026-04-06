@@ -1,4 +1,5 @@
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
+const { createHash } = require('node:crypto');
 
 const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
@@ -172,11 +173,10 @@ exports.handler = async (event) => {
     }));
 
     // Log successful submission for monitoring (no PII — hash email for correlation)
-    const crypto = require('crypto');
     console.log(JSON.stringify({
       event: 'contact_form_submission',
       sourceIp,
-      emailHash: crypto.createHash('sha256').update(sanitizedEmail).digest('hex').slice(0, 12),
+      emailHash: createHash('sha256').update(sanitizedEmail).digest('hex').slice(0, 12),
       timestamp: new Date().toISOString(),
     }));
 

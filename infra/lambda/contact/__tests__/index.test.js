@@ -476,3 +476,50 @@ describe('Contact Form Lambda Handler', () => {
     });
   });
 });
+
+describe('Turnstile Dev Bypass', () => {
+  let devHandler;
+  let devSesMock;
+  let devFetch;
+
+  beforeAll(() => {
+    // Clear module cache and set up env without TURNSTILE_SECRET
+    jest.resetModules();
+    const savedSecret = process.env.TURNSTILE_SECRET;
+    delete process.env.TURNSTILE_SECRET;
+
+    devSesMock = require('aws-sdk-client-mock').mockClient(
+      require('@aws-sdk/client-ses').SESClient
+    );
+    devSesMock.on(require('@aws-sdk/client-ses').SendEmailCommand).resolves({});
+    devFetch = jest.fn();
+    global.fetch = devFetch;
+
+    devHandler = require('../index').handler;
+
+    // Restore for other test files
+    process.env.TURNSTILE_SECRET = savedSecret;
+  });
+
+  afterAll(() => {
+    global.fetch = originalFetch;
+  });
+
+  it('should skip Turnstile verification when TURNSTILE_SECRET is not set', async () => {
+    const event = {
+      httpMethod: 'POST',
+      headers: { origin: 'https://example.com' },
+      requestContext: { identity: { sourceIp: '192.168.1.1' } },
+      body: JSON.stringify({
+        name: 'Test User',
+        email: 'test@example.com',
+        subject: 'Test',
+        message: 'Hello',
+      }),
+    };
+
+    const response = await devHandler(event);
+    expect(response.statusCode).toBe(200);
+    expect(devFetch).not.toHaveBeenCalled();
+  });
+});

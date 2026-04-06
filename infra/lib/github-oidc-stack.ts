@@ -312,13 +312,24 @@ export class GithubOidcStack extends cdk.Stack {
       })
     );
 
-    // IAM service-linked roles - required by some AWS services during CDK deployment
+    // IAM service-linked roles - scoped to known services used by this project
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'IAMServiceLinkedRole',
         effect: iam.Effect.ALLOW,
         actions: ['iam:CreateServiceLinkedRole'],
         resources: ['*'],
+        conditions: {
+          StringLike: {
+            'iam:AWSServiceName': [
+              'lambda.amazonaws.com',
+              'amplify.amazonaws.com',
+              'cloudfront.amazonaws.com',
+              'apigateway.amazonaws.com',
+              'logs.amazonaws.com',
+            ],
+          },
+        },
       })
     );
 
