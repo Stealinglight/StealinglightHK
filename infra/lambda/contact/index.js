@@ -83,7 +83,7 @@ exports.handler = async (event) => {
     const { name, email, message, subject } = body;
 
     // Cheap validation first — reject malformed requests before any network calls
-    if (!name || !email || !message) {
+    if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return {
         statusCode: 400,
         headers,

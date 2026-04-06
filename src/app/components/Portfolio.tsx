@@ -69,7 +69,7 @@ function LazyVideo({
       data-video-card
       role="button"
       tabIndex={0}
-      aria-label={`Preview ${project.title}`}
+      aria-label={IS_HOVER_DEVICE || isTapped ? `Watch ${project.title}` : `Preview ${project.title}`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       onClick={handleCardClick}
@@ -403,29 +403,31 @@ export function Portfolio() {
               <X className="w-8 h-8" />
             </button>
 
-            {/* Previous button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateVideo(-1);
-              }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10"
-              aria-label="Previous video"
-            >
-              <ChevronLeft className="w-10 h-10" />
-            </button>
-
-            {/* Next button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateVideo(1);
-              }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10"
-              aria-label="Next video"
-            >
-              <ChevronRight className="w-10 h-10" />
-            </button>
+            {/* Previous/Next buttons — hidden when active video is not in filtered list (e.g., featured or category changed) */}
+            {filteredVideos.some((v) => v.id === activeVideo.id) && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateVideo(-1);
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10"
+                  aria-label="Previous video"
+                >
+                  <ChevronLeft className="w-10 h-10" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateVideo(1);
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10"
+                  aria-label="Next video"
+                >
+                  <ChevronRight className="w-10 h-10" />
+                </button>
+              </>
+            )}
 
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}

@@ -274,6 +274,9 @@ export class GithubOidcStack extends cdk.Stack {
 
     // IAM CDK bootstrap role access - read-only plus managed policy attachment
     // No PutRolePolicy to prevent inline policy injection on privileged bootstrap roles
+    // Accepted risk: AttachRolePolicy on cdk-* is required for CDK deploy to attach execution
+    // policies to bootstrap roles. CDK synth/deploy fails without it. Mitigated by OIDC trust
+    // policy restricting assumption to a single GitHub repo/branch with short-lived tokens.
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'IAMCdkRoleReadAndAttach',
