@@ -1,75 +1,122 @@
-# [Stealinglight Productions](https://stealinglight.hk)
+# stealinglight.hk
 
 [![E2E Tests](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml)
 [![Security Scan](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml/badge.svg)](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml)
 
-A modern, responsive portfolio website built with React, TypeScript, and Vite, showcasing professional work and services.
+![React](https://img.shields.io/badge/React_19-d4a853?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-d4a853?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite_7-d4a853?style=flat-square&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-d4a853?style=flat-square&logo=tailwindcss&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-d4a853?style=flat-square&logo=amazonwebservices&logoColor=white)
+
+![stealinglight.hk](docs/screenshots/hero.png)
+
+A cinematography portfolio website for [stealinglight.hk](https://stealinglight.hk) — a single-page React app showcasing 19 film and video projects across commercial, documentary, fashion, and short film work. Built with cinematic scroll animations, video filtering, and a serverless contact form on AWS.
 
 ## Features
 
-- Modern, responsive design with Tailwind CSS
-- Lightning-fast development with Vite + Bun
-- Type-safe with TypeScript
-- 40+ high-quality UI components from shadcn/ui
-- Accessible components built on Radix UI
-- Mobile-first responsive design
-- Single Page Application architecture
-- Robust image handling with fallbacks
+### Video Portfolio
+
+![Portfolio](docs/screenshots/portfolio.png)
+
+- **19 video projects** across 7 categories — Commercial, Documentary, Short Film, Fashion, Event, Personal Reel, Company Reel
+- **Category filtering** with animated grid transitions
+- **Cinematic video modal** with keyboard navigation (Escape to close, arrow keys between videos, spacebar play/pause)
+- **Touch-friendly** — tap-to-preview on mobile devices with hover detection
+
+### Cinematic Experience
+
+- **Hero section** with drone footage background video and staggered text reveal animations
+- **Scroll-triggered animations** on every section with coordinated entrance timing
+- **Infinite-scroll client marquee** with 15 brand logos
+- **Scroll progress indicator** — thin amber accent bar showing page position
+- **Branded preloader** displayed while hero video buffers
+
+### Contact
+
+![Contact Form](docs/screenshots/contact.png)
+
+- **Serverless contact form** powered by AWS Lambda + SES
+- **Cloudflare Turnstile** invisible CAPTCHA protection with server-side verification
+- **Click-to-reveal phone number** to prevent scraping
+- **Rate-limited API** — 10 req/sec with burst limit of 20
+
+## Architecture
+
+```mermaid
+graph TD
+    subgraph Browser
+        SPA[React SPA<br/>Vite + Tailwind CSS]
+    end
+
+    subgraph AWS
+        AMP[Amplify Hosting]
+        APIGW[API Gateway<br/>Rate Limited]
+        LAM[Lambda<br/>Node.js 22]
+        SES[SES<br/>Email Delivery]
+    end
+
+    subgraph Media CDN
+        CF[CloudFront]
+        S3[S3 Bucket<br/>Videos + Thumbnails]
+    end
+
+    SPA -->|Static Assets| AMP
+    SPA -->|POST /contact| APIGW
+    APIGW --> LAM
+    LAM --> SES
+    SPA -->|Video + Images| CF
+    CF --> S3
+```
 
 ## Tech Stack
 
-- **Runtime**: Bun
-- **Framework**: React 18
-- **Language**: TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui + Radix UI
-- **Icons**: Lucide React
-- **Forms**: React Hook Form + Zod
+| Layer     | Technology                                                  |
+| --------- | ----------------------------------------------------------- |
+| Framework | React 19, TypeScript, Vite 7                                |
+| Styling   | Tailwind CSS 4, custom cinematic theme                      |
+| Animation | Motion (framer-motion), CSS animations                      |
+| Forms     | Controlled inputs with useState, Sonner toast notifications |
+| Testing   | Playwright E2E, Jest (infrastructure)                       |
+| Hosting   | AWS Amplify                                                 |
+| Backend   | AWS Lambda, API Gateway, SES                                |
+| Media     | AWS CloudFront CDN, S3                                      |
+| CI/CD     | GitHub Actions (E2E tests, security scanning)               |
+| IaC       | AWS CDK (TypeScript)                                        |
 
-## Quick Start
+## Getting Started
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) (latest version)
-
-**Install Bun:**
-```bash
-# macOS/Linux
-curl -fsSL https://bun.sh/install | bash
-
-# Windows (PowerShell)
-powershell -c "irm bun.sh/install.ps1 | iex"
-```
+- [Node.js 22](https://nodejs.org/) (LTS)
+- [Bun](https://bun.sh) (local development) or npm (CI-compatible)
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/Stealinglight/StealinglightHK.git
 cd StealinglightHK
-
-# Install dependencies
-bun install
+bun install    # or: npm install
 ```
 
 ### Development
 
 ```bash
-# Start development server
-bun dev
+bun dev        # Start dev server at http://localhost:5173
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Building for Production
+### Build & Preview
 
 ```bash
-# Create production build
-bun build
+bun run build     # Production build
+bun run preview   # Preview at http://localhost:4173
+```
 
-# Preview production build locally
-bun preview
+### Testing
+
+```bash
+bun run test      # Run Playwright E2E tests
+bun run test:ui   # Interactive test UI
 ```
 
 ## Project Structure
@@ -77,200 +124,68 @@ bun preview
 ```
 stealinglightHK/
 ├── src/
-│   ├── main.tsx                  # Application entry point
+│   ├── main.tsx                    # Entry point
 │   ├── app/
-│   │   ├── App.tsx              # Main app component
-│   │   └── components/
-│   │       ├── About.tsx        # About section
-│   │       ├── Clients.tsx      # Client showcase
-│   │       ├── Contact.tsx      # Contact section
-│   │       ├── Footer.tsx       # Site footer
-│   │       ├── Hero.tsx         # Hero/landing section
-│   │       ├── Navigation.tsx   # Navigation bar
-│   │       ├── Portfolio.tsx    # Portfolio showcase
-│   │       ├── Services.tsx     # Services section
-│   │       ├── figma/          # Figma utilities
-│   │       └── ui/             # shadcn/ui components
+│   │   ├── App.tsx                 # Root component (section composition)
+│   │   ├── components/
+│   │   │   ├── Hero.tsx            # Hero with drone video background
+│   │   │   ├── Portfolio.tsx       # Video grid with category filtering
+│   │   │   ├── Clients.tsx         # Infinite-scroll brand marquee
+│   │   │   ├── About.tsx           # Bio section
+│   │   │   ├── Services.tsx        # Services overview
+│   │   │   ├── Contact.tsx         # Contact form + Turnstile
+│   │   │   ├── Navigation.tsx      # Sticky nav with scroll tracking
+│   │   │   ├── Footer.tsx          # Site footer
+│   │   │   ├── Preloader.tsx       # Branded loading screen
+│   │   │   └── ScrollProgress.tsx  # Scroll position indicator
+│   │   └── config/
+│   │       └── videos.ts           # Video metadata (19 projects)
 │   └── styles/
-│       ├── fonts.css           # Custom fonts
-│       ├── index.css           # Main styles
-│       ├── tailwind.css        # Tailwind directives
-│       └── theme.css           # Theme variables
-├── guidelines/                  # Project guidelines
-├── index.html                  # HTML entry point
-├── vite.config.ts             # Vite configuration
-├── tsconfig.json              # TypeScript configuration
-├── bun.lockb                  # Bun lockfile
-└── package.json               # Dependencies
+│       ├── index.css               # Global styles
+│       ├── tailwind.css            # Tailwind directives
+│       ├── theme.css               # Cinematic color theme
+│       └── fonts.css               # Self-hosted font config
+├── infra/                          # AWS CDK infrastructure
+│   ├── lib/                        # CDK stack definitions
+│   ├── lambda/                     # Lambda function source
+│   └── DEPLOYMENT.md               # Deployment guide
+├── tests/                          # Playwright E2E tests
+├── scripts/                        # Utility scripts
+│   └── capture-screenshots.ts      # Screenshot automation
+└── docs/
+    └── screenshots/                # README screenshots
 ```
 
-## Available Scripts
+## Scripts
 
-| Command       | Description              |
-| ------------- | ------------------------ |
-| `bun dev`     | Start development server |
-| `bun build`   | Build for production     |
-| `bun preview` | Preview production build |
-| `bun lint`    | Run ESLint               |
-| `bun test`    | Run Playwright tests     |
-
-## Component Library
-
-The project includes 40+ production-ready components from shadcn/ui:
-
-### Form Components
-- Button, Input, Textarea, Select, Checkbox, Radio Group
-- Form, Label, Switch, Slider, Input OTP
-
-### Navigation
-- Navigation Menu, Menubar, Breadcrumb, Pagination, Tabs
-
-### Overlay Components
-- Dialog, Sheet, Drawer, Popover, Hover Card, Tooltip
-- Alert Dialog, Command, Context Menu, Dropdown Menu
-
-### Data Display
-- Card, Table, Avatar, Badge, Calendar
-- Chart, Progress, Separator, Scroll Area
-
-### Feedback
-- Alert, Toast (Sonner integration)
-
-### Layout
-- Accordion, Carousel, Collapsible, Resizable, Sidebar, Aspect Ratio
-
-## Development
-
-### Adding UI Components
-
-Use the shadcn CLI to add more components:
-
-```bash
-bunx shadcn-ui@latest add [component-name]
-```
-
-Components are installed in `src/app/components/ui/` and can be customized directly.
-
-### Code Style
-
-- TypeScript strict mode enabled
-- ESLint for code quality
-- Prettier for formatting (configured)
-- Functional components with hooks
-- Tailwind utility classes for styling
-
-### Path Aliases
-
-The project uses the `@` alias for imports:
-
-```typescript
-import { Button } from '@/app/components/ui/button';
-```
-
-## Configuration
-
-### Vite Configuration
-
-Path aliases and React plugin configured in `vite.config.ts`.
-
-### TypeScript Configuration
-
-Strict type checking enabled with modern ES2022 target.
-
-### Tailwind Configuration
-
-Custom theme extensions for consistent design system.
-
-## Browser Support
-
-- Modern browsers (Chrome, Firefox, Safari, Edge)
-- ES2020+ features required
-- CSS Grid and Flexbox support required
+| Command               | Description                                   |
+| --------------------- | --------------------------------------------- |
+| `bun dev`             | Start development server (port 5173)          |
+| `bun run build`       | Production build via Vite                     |
+| `bun run preview`     | Preview production build (port 4173)          |
+| `bun run lint`        | Run ESLint                                    |
+| `bun run lint:fix`    | Auto-fix lint issues (zero warnings enforced) |
+| `bun run test`        | Run Playwright E2E tests                      |
+| `bun run test:ui`     | Interactive Playwright test UI                |
+| `npm run screenshots` | Capture site screenshots for README           |
 
 ## Deployment
 
-### AWS Amplify (Production)
+The site is deployed on [AWS Amplify](https://aws.amazon.com/amplify/) with GitHub integration for automatic builds on push to `main`.
 
-The application is deployed to AWS Amplify with a contact form backend on API Gateway + Lambda.
-
-See [infra/DEPLOYMENT.md](./infra/DEPLOYMENT.md) for full deployment instructions.
-
-**Quick deploy:**
-```bash
-cd infra
-npm install
-export CONTACT_EMAIL="your-email@example.com"
-cdk deploy --all
-```
-
-Then connect your GitHub repository via the Amplify Console (link provided in deployment output).
+Infrastructure is managed with AWS CDK. See [infra/DEPLOYMENT.md](./infra/DEPLOYMENT.md) for full deployment instructions.
 
 ## CI/CD
 
-GitHub Actions workflows run automatically on pull requests and pushes to `main`:
-
-### E2E Tests (`test.yml`)
-- Runs Playwright E2E tests against a production build
-- Uploads test reports as artifacts (7-day retention)
-- Triggered on PRs, pushes to main, and manual dispatch
-
-### Security Scanning (`security.yml`)
-- **Dependency Audit**: Runs `npm audit` on root and infra packages
-- **CodeQL Analysis**: Static analysis for JavaScript/TypeScript security issues
-- Runs on PRs, pushes to main, weekly schedule, and manual dispatch
-
-### Troubleshooting CI/CD
-
-**E2E Test Failures:**
-- Check the Actions tab for the workflow run
-- Download test report artifacts to see detailed failure information
-- Test reports are retained for 7 days
-- Workflows can be manually triggered via the Actions tab using "Run workflow"
-
-**Security Scan Failures:**
-- Review the Security tab for CodeQL findings
-- Check uploaded `security-audit-results` artifacts for dependency vulnerability details
-- High-severity vulnerabilities will cause the workflow to fail
-- Address vulnerabilities by updating dependencies or reviewing false positives
-
-**Manual Workflow Dispatch:**
-- Navigate to Actions tab → Select workflow → Click "Run workflow"
-- Useful for testing changes or running scans on-demand
-
-### Running Locally
-
-```bash
-# Run E2E tests
-npm run test
-
-# Run security audit
-npm audit --audit-level=high
-cd infra && npm audit --audit-level=high
-```
-
-Test reports are uploaded as GitHub Actions artifacts with 7-day retention.
-
-## Documentation
-
-- [AGENTS.md](./AGENTS.md) - Detailed context for AI assistants
-- [Guidelines](./guidelines/Guidelines.md) - Project guidelines
-
-## Development Workflow
-
-1. Create a new branch for features: `git checkout -b feature/your-feature`
-2. Make changes and test locally with `bun dev`
-3. Run linting: `bun lint`
-4. Build and preview: `bun build && bun preview`
-5. Commit changes and create a pull request
+| Workflow                                                                                         | Trigger                  | What it does                              |
+| ------------------------------------------------------------------------------------------------ | ------------------------ | ----------------------------------------- |
+| [E2E Tests](https://github.com/Stealinglight/StealinglightHK/actions/workflows/test.yml)         | PR, push to main         | Playwright tests against production build |
+| [Security Scan](https://github.com/Stealinglight/StealinglightHK/actions/workflows/security.yml) | PR, push to main, weekly | npm audit + CodeQL static analysis        |
 
 ## License
 
 All rights reserved.
 
-## Contact
-
-For inquiries, please visit the contact section on the website.
-
 ---
 
-**Built with React + TypeScript + Vite, powered by Bun**
+**[stealinglight.hk](https://stealinglight.hk)** — Cinematography by Chris McMillon

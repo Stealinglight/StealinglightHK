@@ -4,5 +4,14 @@ Location: Seattle, Washington
 Contact: stealinglight.hk
 
 /* SITE */
-Built with: React, TypeScript, Tailwind CSS
-Hosted on: AWS (S3 + CloudFront via Amplify)
+Built with: React 19, TypeScript, Vite 7, Tailwind CSS 4
+Animations: Motion (Framer Motion)
+Hosting: AWS Amplify
+Backend: AWS Lambda, API Gateway, SES
+Media CDN: AWS CloudFront + S3
+Infrastructure: AWS CDK (TypeScript)
+Last updated: 2026-04-05
+
+/* STANDARDS */
+HTML5, CSS3, ES2022
+Accessibility: Skip links, focus management, reduced motion support

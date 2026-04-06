@@ -44,10 +44,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - React 19.2.4 - UI framework (`devDependencies` + `peerDependencies`)
 - Vite 7.3.1 - Build tool and dev server; config at `vite.config.ts`
 - Tailwind CSS 4.1.18 - Utility-first CSS via `@tailwindcss/vite` plugin
-- Radix UI - Headless primitive components (accordion, dialog, dropdown-menu, tabs, tooltip, etc.) - 26 packages
-- MUI 7.3.7 - Material UI components and icons (`@mui/material`, `@mui/icons-material`)
-- Emotion 11.14.x - CSS-in-JS runtime required by MUI (`@emotion/react`, `@emotion/styled`)
-- shadcn/ui pattern - `class-variance-authority` 0.7.1, `clsx` 2.1.1, `tailwind-merge` 3.4.0, `lucide-react` 0.563.0
+- shadcn/ui utilities - `class-variance-authority` 0.7.1, `clsx` 2.1.1, `tailwind-merge` 3.4.0, `lucide-react` 0.563.0
 - Motion 12.29.2 - Animation library (framer-motion successor)
 - tw-animate-css 1.4.0 - Tailwind CSS animation utilities
 - Playwright 1.58.1 - E2E browser testing; config at `playwright.config.ts`
@@ -63,25 +60,16 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 
 - `react` 19.2.4 + `react-dom` 19.2.4 - Core rendering
 - `motion` 12.29.2 - Page transitions and scroll animations
-- `react-hook-form` 7.71.1 - Contact form state management
+- `react-error-boundary` ^6.1.1 - Error boundary component for graceful crash recovery
 - `sonner` 2.0.7 - Toast notification system (used in `App.tsx`)
 - `@aws-sdk/client-ses` 3.980.0 - Email sending in Lambda contact form
-- `embla-carousel-react` 8.6.0 - Carousel/slider component
-- `react-responsive-masonry` 2.7.1 - Masonry grid layout
-- `react-slick` 0.31.0 - Slider component
-- `react-resizable-panels` 4.5.8 - Resizable panel layout
-- `vaul` 1.1.2 - Drawer component
-- `cmdk` 1.1.1 - Command palette
 - `lucide-react` 0.563.0 - Icon library
-- `date-fns` 4.1.0 - Date formatting
-- `react-day-picker` 9.13.0 - Date picker component
-- `recharts` 3.7.0 - Charting library
-- `next-themes` 0.4.6 - Theme management
-- `react-dnd` 16.0.1 + `react-dnd-html5-backend` 16.0.1 - Drag and drop
 - `aws-cdk-lib` 2.236.0 - AWS CDK constructs
 - `aws-sdk-client-mock` 4.1.0 - AWS SDK mocking for tests
-- `eslint` 9.39.2 - Linting (runs in legacy flat config mode: `ESLINT_USE_FLAT_CONFIG=false`)
-- `@typescript-eslint/eslint-plugin` 8.54.0 + `@typescript-eslint/parser` 8.54.0
+- `eslint` 9.39.2 - Linting (flat config via `eslint.config.js`)
+- `@eslint/js` ^9.39.2 - ESLint core recommended rules
+- `typescript-eslint` ^8.58.0 - TypeScript ESLint integration (flat config)
+- `globals` ^17.4.0 - Global variable definitions for ESLint
 - `eslint-plugin-react` 7.37.5 + `eslint-plugin-react-hooks` 7.0.1
 - `eslint-plugin-security` 3.0.1 - Security-focused lint rules
 - `prettier` 3.8.1 - Code formatting
@@ -103,18 +91,17 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Config: `vite.config.ts`
 - Plugins: `@vitejs/plugin-react`, `@tailwindcss/vite`
 - Path alias: `@` resolves to `./src`
-- Config: `.eslintrc.json` (legacy JSON format, NOT flat config)
-- Runs with `ESLINT_USE_FLAT_CONFIG=false` environment variable
-- Extends: `eslint:recommended`, `@typescript-eslint/recommended`, `react/recommended`, `react-hooks/recommended`, `security/recommended-legacy`
-- Custom rules: `react/react-in-jsx-scope` off, `no-console` warn (except warn/error), unused vars with `_` prefix ignored
-- Ignores: `dist`, `build`, `node_modules`, `cdk.out`, `*.js`
+- Config: `eslint.config.js` (flat config format)
+- Base configs: `@eslint/js` recommended, `typescript-eslint` recommended, `eslint-plugin-react` flat recommended + jsx-runtime, `eslint-plugin-react-hooks` flat recommended, `eslint-plugin-security` recommended
+- Custom rules: `react/react-in-jsx-scope` off, `react/prop-types` off, `no-console` warn (except warn/error), unused vars with `^_` pattern ignored
+- Lambda files: additional `no-console` allow for `console.log` (CloudWatch logging), `@typescript-eslint/no-require-imports` off (CommonJS)
+- Ignores: `dist/`, `build/`, `node_modules/`, `cdk.out/`, `infra/cdk.out/`, `infra/dist/`, `infra/node_modules/`, `.claude/`
 - Config: `.prettierrc`
 - Settings: semicolons, single quotes, 2-space tabs, ES5 trailing commas, 100 char print width, LF line endings
 - Config: `commitlint.config.js`
 - Extends: `@commitlint/config-conventional`
 - Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert, security
 - Subject: lowercase required, max 72 characters
-- Config: `postcss.config.mjs` - Empty (Tailwind v4 via Vite plugin handles everything)
 - Entry: `src/styles/tailwind.css` - Uses `@import 'tailwindcss' source(none)` with `@source` directive
 - Animation: `tw-animate-css` imported
 - Theme: Custom theme in `src/styles/theme.css`
@@ -148,7 +135,6 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 
 ## npm Overrides
 
-- `pnpm.overrides.vite`: 6.3.5 (pnpm compatibility)
 - `fast-xml-parser`: 5.5.8 (security fix for transitive dependency)
 - `minimatch`: 10.2.4 (security fix for transitive dependency)
 <!-- GSD:stack-end -->
@@ -160,8 +146,6 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 ## Naming Patterns
 
 - PascalCase for React component files: `Hero.tsx`, `Navigation.tsx`, `Contact.tsx`
-- kebab-case for shadcn/ui primitive components: `alert-dialog.tsx`, `hover-card.tsx`, `input-otp.tsx`
-- kebab-case for hooks: `use-mobile.ts`
 - kebab-case for CSS files: `index.css`, `theme.css`, `fonts.css`
 - camelCase for config/data files: `videos.ts`
 - lowercase for utility files: `utils.ts`
@@ -172,8 +156,8 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - camelCase for all variables: `formData`, `isSubmitting`, `videoRef`, `isMobileMenuOpen`
 - SCREAMING_SNAKE_CASE for constants: `CONTACT_API_URL`, `CDN_BASE_URL`, `MOBILE_BREAKPOINT`, `ERROR_IMG_SRC`
 - Boolean state variables use `is`/`has`/`show` prefix: `isSubmitting`, `isPlaying`, `isMuted`, `showPhone`, `showControls`
-- PascalCase for interfaces: `HeroProps`, `ReelProps`, `FormData`
-- `Props` suffix for component prop interfaces: `HeroProps`, `ReelProps`
+- PascalCase for interfaces: `HeroProps`, `FormData`
+- `Props` suffix for component prop interfaces: `HeroProps`
 - Inline types used for simple cases; named interfaces for component props
 
 ## Code Style
@@ -187,9 +171,8 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Bracket spacing: enabled (`"bracketSpacing": true`)
 - Arrow parens: always (`"arrowParens": "always"`)
 - End of line: LF (`"endOfLine": "lf"`)
-- Config: `.eslintrc.json` (JSON format, legacy flat config mode)
-- Run with `ESLINT_USE_FLAT_CONFIG=false` flag
-- Extends: `eslint:recommended`, `@typescript-eslint/recommended`, `react/recommended`, `react-hooks/recommended`, `security/recommended-legacy`
+- Config: `eslint.config.js` (flat config format)
+- Base: `@eslint/js` recommended, `typescript-eslint` recommended, `eslint-plugin-react` flat, `eslint-plugin-react-hooks` flat, `eslint-plugin-security` recommended
 - `react/react-in-jsx-scope`: off (React 19 automatic JSX transform)
 - `react/prop-types`: off (TypeScript handles prop validation)
 - `@typescript-eslint/explicit-module-boundary-types`: off
@@ -215,17 +198,6 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Standard animation pattern:
 - Consistent section padding: `className="py-24 md:py-32"`
 - Max width container: `className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"`
-- Named function declarations (not arrow functions): `function Button({ ... }) { ... }`
-- Named exports at bottom of file: `export { Button, buttonVariants };`
-- Use `data-slot` attribute for component identification: `data-slot="button"`
-- Accept `className` prop and merge with `cn()` utility
-- Spread remaining props with `...props`
-- Wrap Radix UI primitives with styling
-- Use `class-variance-authority` (cva) for variant-based styling on complex components
-- Pattern:
-- Destructure props in function signature
-- Use `React.ComponentProps<"element">` for extending native HTML elements
-- Use `VariantProps<typeof variants>` for cva variant types
 - Optional props use `?` syntax: `videoSrc?: string`
 - Default prop values via destructuring: `title = 'Showreel'`
 - Local state with `useState` for all component state
@@ -237,10 +209,8 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 
 - `@/*` maps to `./src/*` (configured in both `tsconfig.json` and `vite.config.ts`)
 - Used sparingly; most imports use relative paths (`./`, `../`)
-- shadcn/ui components import utils with relative path: `import { cn } from "./utils"`
 - No barrel `index.ts` files
 - Each component file exports its own symbols directly
-- shadcn/ui components export multiple related symbols from a single file (e.g., `Card`, `CardHeader`, `CardContent` from `card.tsx`)
 
 ## Error Handling
 
@@ -278,7 +248,6 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 ## Module Design
 
 - Section components: single named export per file (`export function Hero`)
-- shadcn/ui components: multiple named exports per file (`export { Button, buttonVariants }`)
 - Config files: multiple named exports (`export const heroVideo`, `export const gridVideos`)
 - Utility files: single named export (`export function cn`)
 - App component: default export (`export default function App`)
@@ -300,11 +269,10 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Use `cinematic-*` prefix for project-specific colors: `bg-cinematic-black`, `text-cinematic-amber`, `bg-cinematic-dark`
 - Defined in `src/styles/theme.css` via `@theme inline` block
 - Colors: `cinematic-black` (#0a0a0a), `cinematic-dark` (#141414), `cinematic-gray` (#1f1f1f), `cinematic-amber` (#d4a853), `cinematic-amber-light` (#e6c17a)
-- Use `cn()` from `src/app/components/ui/utils.ts` (wraps `clsx` + `tailwind-merge`)
-- Required for shadcn/ui components that accept `className` prop
+- Use `cn()` from `src/lib/utils.ts` (wraps `clsx` + `tailwind-merge`)
 - Display: Space Grotesk (headings)
 - Body: Inter (body text)
-- Loaded via Google Fonts in `index.html`
+- Self-hosted via @fontsource-variable packages (imported in main.tsx)
 - CSS variables defined in `src/styles/fonts.css`
 - Mobile-first approach
 - Breakpoints: `md:` (768px), `lg:` (1024px), `sm:` (640px)
@@ -329,7 +297,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Purpose: Renders the portfolio website as a single-page application
 - Location: `src/`
 - Contains: React components, styles, configuration data
-- Depends on: React, Motion (framer-motion), Tailwind CSS, Radix UI, lucide-react
+- Depends on: React, Motion (framer-motion), Tailwind CSS, lucide-react
 - Used by: End users via browser
 - Purpose: Handles contact form submissions
 - Location: `infra/lambda/contact/index.js`
@@ -364,9 +332,9 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Purpose: Each represents a full-width page section in the SPA
 - Examples: `src/app/components/Hero.tsx`, `src/app/components/Portfolio.tsx`, `src/app/components/About.tsx`, `src/app/components/Services.tsx`, `src/app/components/Clients.tsx`, `src/app/components/Contact.tsx`, `src/app/components/Footer.tsx`
 - Pattern: Each is a named export function component with its own `<section>` root element, `id` attribute for scroll targeting, and self-contained local state
-- Purpose: Reusable, styled component primitives (mostly unused currently)
-- Examples: `src/app/components/ui/button.tsx`, `src/app/components/ui/dialog.tsx`, `src/app/components/ui/card.tsx`
-- Pattern: shadcn/ui pattern using Radix UI primitives + `class-variance-authority` (cva) + `cn()` utility from `src/app/components/ui/utils.ts`
+- Purpose: Utility components for error handling and UI state
+- Examples: `src/app/components/SectionErrorBoundary.tsx`, `src/app/components/ScrollProgress.tsx`, `src/app/components/Preloader.tsx`
+- Pattern: Named export function components, self-contained with local state
 - Purpose: Centralized video metadata and CDN URL construction
 - Examples: `src/app/config/videos.ts`
 - Pattern: Exports `videoProjects` array (read-only via `as const`), derives `featuredVideo`, `gridVideos`, and `heroVideo` from it. Uses `CDN_BASE_URL` constant for all media URLs.
@@ -393,7 +361,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 
 - Contact form: try/catch around `fetch()`, displays error via `toast.error()` from Sonner (`src/app/components/Contact.tsx`)
 - API URL missing: early return with warning toast if `VITE_CONTACT_API_URL` is not set
-- Image loading: `ImageWithFallback` component (`src/app/components/figma/ImageWithFallback.tsx`) catches `onError` and shows placeholder SVG
+- Section error boundaries: `SectionErrorBoundary` wraps each section in App.tsx via `react-error-boundary`, displays graceful fallback on component crash
 - Input validation returns `400` with specific error messages (missing body, missing fields, invalid email, length exceeded)
 - SES send failure returns `500` with generic user-facing message
 - All responses include CORS headers regardless of status code

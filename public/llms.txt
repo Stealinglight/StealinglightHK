@@ -32,3 +32,12 @@ Tencent, Intel, Netflix, DJI, Vogue, Toyota, Audi, Coach, Calvin Klein, Puma, Co
 
 - FAA Part 107 Certified Remote Pilot
 - Bilingual: English & Chinese
+
+## Site Technical Details
+
+- Built with: React 19 + Vite 7 + Tailwind CSS 4 + TypeScript
+- Hosting: AWS Amplify
+- Media delivery: AWS CloudFront CDN
+- Contact form: Serverless (AWS Lambda + API Gateway + SES)
+- Animations: Motion library (Framer Motion successor)
+- Last updated: 2026-04-05

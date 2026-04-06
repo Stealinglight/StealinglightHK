@@ -7,7 +7,7 @@ export function Preloader() {
     <motion.div
       key="preloader"
       className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-cinematic-black"
-      exit={{ opacity: 0, scale: 1.02 }}
+      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
       transition={{ duration: 0.5 }}
     >
       {/* Brand text with amber pulse */}

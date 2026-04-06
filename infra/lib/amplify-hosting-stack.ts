@@ -105,7 +105,7 @@ customHeaders:
       - key: Permissions-Policy
         value: 'camera=(), microphone=(), geolocation=(), payment=()'
       - key: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; media-src 'self' https://*.cloudfront.net; connect-src 'self' https://*.execute-api.us-west-2.amazonaws.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
 `,
 
       // Tags
