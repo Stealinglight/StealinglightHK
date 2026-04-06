@@ -50,6 +50,37 @@ Requirements for the site revamp. Each maps to roadmap phases.
 - [x] **QUAL-02**: Site passes basic accessibility audit — skip links, focus management in modal, alt text on images, reduced motion support via useReducedMotion
 - [x] **QUAL-03**: Unused application components removed (Reel.tsx, ImageWithFallback.tsx) and dead code cleaned up
 
+## v1.1 Requirements
+
+Requirements for the Documentation & Showcase milestone.
+
+### README Showcase
+
+- [ ] **READ-01**: GitHub README.md includes hero screenshot of the live site
+- [ ] **READ-02**: README includes tech stack badges (React, Vite, Tailwind, AWS, TypeScript)
+- [ ] **READ-03**: README includes feature highlights with section screenshots (portfolio, contact, etc.)
+- [ ] **READ-04**: README includes architecture overview (frontend SPA + serverless backend + media CDN)
+- [ ] **READ-05**: README includes setup/development instructions
+
+### Screenshots
+
+- [ ] **SHOT-01**: Capture full-page hero section screenshot from live/running site
+- [ ] **SHOT-02**: Capture portfolio grid section screenshot
+- [ ] **SHOT-03**: Capture contact form section screenshot
+
+### Documentation Audit
+
+- [ ] **DOCS-01**: CLAUDE.md reflects current codebase state (dependencies, patterns, conventions)
+- [ ] **DOCS-02**: package.json description, keywords, and metadata are accurate
+- [ ] **DOCS-03**: .env.example lists all required environment variables with descriptions
+- [ ] **DOCS-04**: humans.txt and llms.txt are current
+- [ ] **DOCS-05**: public/sitemap.xml and robots.txt are valid
+
+### Repository Hygiene
+
+- [ ] **REPO-01**: .gitignore excludes .planning/ directory
+- [ ] **REPO-02**: .planning/ files removed from git tracking (git rm --cached)
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -119,13 +150,30 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QUAL-02     | Phase 4 | Complete |
 | QUAL-03     | Phase 2 | Complete |
 
+| READ-01     | Phase 6 | Pending  |
+| READ-02     | Phase 6 | Pending  |
+| READ-03     | Phase 6 | Pending  |
+| READ-04     | Phase 6 | Pending  |
+| READ-05     | Phase 6 | Pending  |
+| SHOT-01     | Phase 6 | Pending  |
+| SHOT-02     | Phase 6 | Pending  |
+| SHOT-03     | Phase 6 | Pending  |
+| DOCS-01     | Phase 7 | Pending  |
+| DOCS-02     | Phase 7 | Pending  |
+| DOCS-03     | Phase 7 | Pending  |
+| DOCS-04     | Phase 7 | Pending  |
+| DOCS-05     | Phase 7 | Pending  |
+| REPO-01     | Phase 7 | Pending  |
+| REPO-02     | Phase 7 | Pending  |
+
 **Coverage:**
 
-- v1 requirements: 25 total
-- Mapped to phases: 25
-- Unmapped: 0
+- v1.0 requirements: 25 total (all complete)
+- v1.1 requirements: 15 total
+- Mapped to phases: 15
+- Unmapped: 0 ✓
 
 ---
 
 _Requirements defined: 2026-03-29_
-_Last updated: 2026-04-01 after gap closure phase creation (Phase 5: Tech Debt Sweep)_
+_Last updated: 2026-04-05 after v1.1 milestone requirements definition_
