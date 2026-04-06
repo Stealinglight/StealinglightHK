@@ -1,8 +1,20 @@
-// CloudFront CDN base URL for video assets
-export const CDN_BASE_URL = 'https://d2fc83sck42gx7.cloudfront.net';
+// CloudFront CDN base URL for video assets (configurable via env var, fallback for local dev)
+export const CDN_BASE_URL =
+  import.meta.env.VITE_CDN_BASE_URL || 'https://d2fc83sck42gx7.cloudfront.net';
+
+interface VideoProject {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  duration: string;
+  videoUrl: string;
+  posterUrl: string;
+  featured?: boolean;
+}
 
 // Video project data matching the Wix site portfolio
-export const videoProjects = [
+export const videoProjects: VideoProject[] = [
   {
     id: 1,
     title: 'BLNK Media (Shanghai) Reel',
@@ -175,7 +187,7 @@ export const videoProjects = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Tech/Huawei_See_the_Unseen.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/19-huawei.jpg`,
   },
-] as const;
+];
 
 // Hero background video (trimmed to 1:55 to remove end CTA)
 export const heroVideo = {
@@ -188,3 +200,5 @@ export const featuredVideo = videoProjects.find((v) => v.featured) ?? videoProje
 
 // Get non-featured videos for the grid
 export const gridVideos = videoProjects.filter((v) => !v.featured);
+
+export type { VideoProject };

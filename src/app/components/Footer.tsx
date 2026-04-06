@@ -1,12 +1,21 @@
+import { motion, useReducedMotion } from 'motion/react';
 import { Instagram, Film, Facebook, ExternalLink } from 'lucide-react';
+import { EASE_CINEMATIC } from '../constants/motion';
 
 export function Footer() {
+  const shouldReduceMotion = useReducedMotion();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-cinematic-dark py-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <motion.div
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: EASE_CINEMATIC }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12"
+        >
           {/* Brand */}
           <div className="md:col-span-1">
             <h3 className="text-white font-semibold tracking-wider mb-4">STEALINGLIGHT PRODUCTIONS</h3>
@@ -89,13 +98,19 @@ export function Footer() {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <motion.div
+          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
+          viewport={{ once: true }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.6, delay: 0.2, ease: EASE_CINEMATIC }}
+          className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4"
+        >
           <div className="text-white/30 text-sm">
-            © {currentYear} Stealinglight Productions. All Rights Reserved.
+            &copy; {currentYear} Stealinglight Productions. All Rights Reserved.
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

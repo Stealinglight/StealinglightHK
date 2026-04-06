@@ -1,8 +1,11 @@
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
+const { createHash } = require('node:crypto');
 
 const ses = new SESClient({ region: process.env.AWS_REGION });
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 // Sanitize user input to prevent HTML injection
 const escapeHtml = (str) => {
@@ -17,6 +20,27 @@ const escapeHtml = (str) => {
 // Strip newlines to prevent header injection
 const stripNewlines = (str) => {
   return str.replace(/[\r\n]/g, '');
+};
+
+// Verify Cloudflare Turnstile token server-side (D-04)
+const verifyTurnstileToken = async (token, remoteIp) => {
+  try {
+    const formData = new URLSearchParams({
+      secret: TURNSTILE_SECRET,
+      response: token,
+      remoteip: remoteIp,
+    });
+    const response = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString(),
+    });
+    const result = await response.json();
+    return result.success === true;
+  } catch (error) {
+    console.error('Turnstile verification error:', error);
+    return false;
+  }
 };
 
 exports.handler = async (event) => {
@@ -52,10 +76,14 @@ exports.handler = async (event) => {
   // This provides reliable, infrastructure-level protection that works across Lambda instances
 
   try {
-    const body = JSON.parse(event.body || '{}');
+    const rawBody = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64').toString('utf-8')
+      : (event.body || '{}');
+    const body = JSON.parse(rawBody);
     const { name, email, message, subject } = body;
 
-    if (!name || !email || !message) {
+    // Cheap validation first — reject malformed requests before any network calls
+    if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return {
         statusCode: 400,
         headers,
@@ -64,7 +92,6 @@ exports.handler = async (event) => {
     }
 
     // Email validation: Check format and prevent header injection
-    // Strip any newlines to prevent email header injection attacks
     const sanitizedEmail = stripNewlines(email.trim());
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(sanitizedEmail)) {
@@ -79,10 +106,13 @@ exports.handler = async (event) => {
     const MAX_SUBJECT_LENGTH = 200;
     const MAX_MESSAGE_LENGTH = 5000;
 
+    const trimmedName = name.trim();
+    const trimmedMessage = message.trim();
+
     const lengthErrors = [];
-    if (name.length > MAX_NAME_LENGTH) lengthErrors.push(`name (max ${MAX_NAME_LENGTH} chars)`);
-    if (message.length > MAX_MESSAGE_LENGTH) lengthErrors.push(`message (max ${MAX_MESSAGE_LENGTH} chars)`);
-    if (subject && subject.length > MAX_SUBJECT_LENGTH) lengthErrors.push(`subject (max ${MAX_SUBJECT_LENGTH} chars)`);
+    if (trimmedName.length > MAX_NAME_LENGTH) lengthErrors.push(`name (max ${MAX_NAME_LENGTH} chars)`);
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) lengthErrors.push(`message (max ${MAX_MESSAGE_LENGTH} chars)`);
+    if (subject && subject.trim().length > MAX_SUBJECT_LENGTH) lengthErrors.push(`subject (max ${MAX_SUBJECT_LENGTH} chars)`);
     if (lengthErrors.length > 0) {
       return {
         statusCode: 400,
@@ -91,13 +121,36 @@ exports.handler = async (event) => {
       };
     }
 
-    // Sanitize inputs for email subject and HTML body
-    const safeName = escapeHtml(name.trim());
-    const safeEmail = escapeHtml(sanitizedEmail);
-    const safeMessage = escapeHtml(message.trim());
-    const safeSubject = subject ? stripNewlines(escapeHtml(subject.trim())) : null;
+    // Verify Turnstile token after cheap validation (D-04)
+    // Skip verification if TURNSTILE_SECRET is not configured (development/staging)
+    if (TURNSTILE_SECRET) {
+      const turnstileToken = body['cf-turnstile-response'];
+      if (!turnstileToken) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification token missing' }),
+        };
+      }
 
-    const emailSubject = safeSubject || `Contact Form: ${safeName}`;
+      const isHuman = await verifyTurnstileToken(turnstileToken, sourceIp);
+      if (!isHuman) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'Verification failed' }),
+        };
+      }
+    }
+
+    // Sanitize inputs — HTML-escape for email body only, plain text for subject
+    const safeName = escapeHtml(trimmedName);
+    const safeEmail = escapeHtml(sanitizedEmail);
+    const safeMessage = escapeHtml(trimmedMessage);
+
+    // Email subjects are plain text — use newline-stripped values, not HTML-escaped
+    const plainSubject = subject ? stripNewlines(subject.trim()) : null;
+    const emailSubject = plainSubject || `Contact Form: ${stripNewlines(trimmedName)}`;
 
     await ses.send(new SendEmailCommand({
       Source: CONTACT_EMAIL,
@@ -107,7 +160,7 @@ exports.handler = async (event) => {
         Subject: { Data: emailSubject },
         Body: {
           Text: {
-            Data: `Name: ${safeName}\nEmail: ${safeEmail}\n\nMessage:\n${safeMessage}`,
+            Data: `Name: ${trimmedName}\nEmail: ${sanitizedEmail}\n\nMessage:\n${trimmedMessage}`,
           },
           Html: {
             Data: `
@@ -122,11 +175,11 @@ exports.handler = async (event) => {
       },
     }));
 
-    // Log successful submission for monitoring
+    // Log successful submission for monitoring (no PII — hash email for correlation)
     console.log(JSON.stringify({
       event: 'contact_form_submission',
       sourceIp,
-      replyToEmail: sanitizedEmail,
+      emailHash: createHash('sha256').update(sanitizedEmail).digest('hex').slice(0, 12),
       timestamp: new Date().toISOString(),
     }));
 

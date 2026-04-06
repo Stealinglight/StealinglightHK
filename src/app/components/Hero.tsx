@@ -1,13 +1,54 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { ChevronDown, Play } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { EASE_CINEMATIC } from '../constants/motion';
+
+// Variant definitions with explicit per-element delays (D-02 non-uniform timeline)
+
+const trackingFade: Variants = {
+  hidden: { opacity: 0, letterSpacing: '0.5em' },
+  visible: {
+    opacity: 1,
+    letterSpacing: '0.3em',
+    transition: { duration: 1.5, delay: 0.3, ease: EASE_CINEMATIC },
+  },
+};
+
+const fadeUpBlur: (delay: number) => Variants = (delay) => ({
+  hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, delay, ease: EASE_CINEMATIC },
+  },
+});
+
+const fadeIn: (delay: number) => Variants = (delay) => ({
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 1, delay, ease: EASE_CINEMATIC },
+  },
+});
+
+const fadeUp: (delay: number) => Variants = (delay) => ({
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay, ease: EASE_CINEMATIC },
+  },
+});
 
 interface HeroProps {
   videoSrc?: string;
   posterSrc?: string;
+  onVideoReady?: () => void;
 }
 
-export function Hero({ videoSrc, posterSrc }: HeroProps) {
+export function Hero({ videoSrc, posterSrc, onVideoReady }: HeroProps) {
+  const shouldReduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -27,10 +68,11 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
               muted
               loop
               playsInline
-              poster={posterSrc}
-              onLoadedData={() => setVideoLoaded(true)}
-              className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+              onCanPlay={() => {
+                setVideoLoaded(true);
+                onVideoReady?.();
+              }}
+              className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
             >
               <source src={videoSrc} type="video/mp4" />
             </video>
@@ -44,11 +86,7 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
             )}
           </>
         ) : (
-          <img
-            src={posterSrc}
-            alt=""
-            className="w-full h-full object-cover"
-          />
+          <img src={posterSrc} alt="" className="w-full h-full object-cover" />
         )}
 
         {/* Cinematic gradient overlay */}
@@ -59,78 +97,83 @@ export function Hero({ videoSrc, posterSrc }: HeroProps) {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+        {/* Name - 0.3s delay */}
+        <motion.p
+          variants={shouldReduceMotion ? undefined : trackingFade}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
+          className="text-sm md:text-base font-semibold text-white/70 mb-6 tracking-[0.3em]"
         >
-          {/* Name */}
-          <motion.p
-            initial={{ opacity: 0, letterSpacing: '0.5em' }}
-            animate={{ opacity: 1, letterSpacing: '0.3em' }}
-            transition={{ duration: 1.5, delay: 0.3 }}
-            className="text-sm md:text-base font-medium text-white/70 mb-6 tracking-[0.3em]"
+          CHRIS MCMILLON
+        </motion.p>
+
+        {/* Headline - 0.6s delay */}
+        <motion.h1
+          variants={shouldReduceMotion ? undefined : fadeUpBlur(0.6)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
+          className="text-white mb-8"
+          style={{ willChange: 'filter' }}
+        >
+          <span className="block">Cinematographer</span>
+          <span className="block text-cinematic-amber">&#183; Aerial Specialist</span>
+        </motion.h1>
+
+        {/* Subtitle - 0.9s delay */}
+        <motion.p
+          variants={shouldReduceMotion ? undefined : fadeUpBlur(0.9)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
+          className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
+          style={{ willChange: 'filter' }}
+        >
+          Aerial photographer with more than 8 years of commercial cinematography across Asia.
+          Specialized in aerial platforms, dynamic camera movement, and immersive formats for brands
+          including Intel, Tencent, Toyota, and Volkswagen.
+        </motion.p>
+
+        {/* CTAs - 1.6s delay */}
+        <motion.div
+          variants={shouldReduceMotion ? undefined : fadeUp(1.6)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          animate={shouldReduceMotion ? undefined : 'visible'}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          {/* Watch Reel button - amber filled */}
+          <motion.button
+            onClick={scrollToWork}
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-cinematic-amber text-cinematic-black font-semibold hover:bg-cinematic-amber-light transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            CHRIS MCMILLON
-          </motion.p>
+            <Play className="w-5 h-5 transition-transform group-hover:scale-110" />
+            Watch Reel
+          </motion.button>
 
-          {/* Main headline */}
-          <h1 className="text-white mb-8">
-            <span className="block">Cinematographer</span>
-            <span className="block text-cinematic-amber">· Aerial Specialist</span>
-          </h1>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
+          {/* View Work button - outlined */}
+          <motion.button
+            onClick={scrollToWork}
+            className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white hover:border-white/40 hover:bg-white/5 transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            Aerial photographer with more than 8 years of commercial cinematography across Asia. Specialized in aerial platforms, dynamic camera movement, and immersive formats for brands including Intel, Tencent, Toyota, and Volkswagen.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <motion.button
-              onClick={scrollToWork}
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-cinematic-amber text-cinematic-black font-semibold hover:bg-cinematic-amber-light transition-all duration-300"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Play className="w-5 h-5 transition-transform group-hover:scale-110" />
-              Watch Reel
-            </motion.button>
-
-            <motion.button
-              onClick={scrollToWork}
-              className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white hover:border-white/40 hover:bg-white/5 transition-all duration-300"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View Work
-            </motion.button>
-          </motion.div>
+            View Work
+          </motion.button>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - 2.0s delay */}
       <motion.button
         onClick={scrollToWork}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
+        variants={shouldReduceMotion ? undefined : fadeIn(2.0)}
+        initial={shouldReduceMotion ? undefined : 'hidden'}
+        animate={shouldReduceMotion ? undefined : 'visible'}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 hover:text-white/80 transition-colors z-10"
         aria-label="Scroll to content"
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={shouldReduceMotion ? undefined : { y: [0, 8, 0] }}
+          transition={shouldReduceMotion ? undefined : { duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ChevronDown className="w-8 h-8" />
         </motion.div>

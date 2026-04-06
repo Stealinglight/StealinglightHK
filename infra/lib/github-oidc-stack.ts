@@ -132,7 +132,7 @@ export class GithubOidcStack extends cdk.Stack {
 
     // Add scoped permissions for CDK deployments
     // These permissions allow CDK to manage CloudFormation stacks and related resources
-    this.addCdkDeploymentPermissions();
+    this.addCdkDeploymentPermissions(repositoryName);
 
     // Outputs
     new cdk.CfnOutput(this, 'GithubActionsRoleArn', {
@@ -159,8 +159,11 @@ export class GithubOidcStack extends cdk.Stack {
    * Permissions are scoped to specific services and resources where possible
    * to follow the principle of least privilege.
    */
-  private addCdkDeploymentPermissions(): void {
+  private addCdkDeploymentPermissions(repositoryName: string): void {
     // CloudFormation - required for CDK stack operations
+    // resources: ['*'] is a conscious trade-off: CDK needs to create/update/delete any stack
+    // (ARNs are not known until deploy time). Mitigated by short-lived OIDC tokens scoped
+    // to a specific GitHub repository/branch in the trust policy.
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'CloudFormationFullAccess',
@@ -220,7 +223,30 @@ export class GithubOidcStack extends cdk.Stack {
       })
     );
 
-    // IAM - required for creating roles for Lambda, Amplify, etc.
+    // IAM PassRole - scoped to specific services to prevent privilege escalation
+    this.deploymentRole.addToPolicy(
+      new iam.PolicyStatement({
+        sid: 'IAMPassRoleScoped',
+        effect: iam.Effect.ALLOW,
+        actions: ['iam:PassRole'],
+        resources: [
+          `arn:aws:iam::${this.account}:role/${repositoryName}-*`,
+          `arn:aws:iam::${this.account}:role/cdk-*`,
+        ],
+        conditions: {
+          StringEquals: {
+            'iam:PassedToService': [
+              'lambda.amazonaws.com',
+              'amplify.amazonaws.com',
+              'cloudformation.amazonaws.com',
+            ],
+          },
+        },
+      })
+    );
+
+    // IAM role management - write operations scoped to project roles only
+    // PutRolePolicy excluded from cdk-* to prevent inline policy injection on bootstrap roles
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'IAMRoleManagement',
@@ -230,7 +256,6 @@ export class GithubOidcStack extends cdk.Stack {
           'iam:DeleteRole',
           'iam:GetRole',
           'iam:UpdateRole',
-          'iam:PassRole',
           'iam:AttachRolePolicy',
           'iam:DetachRolePolicy',
           'iam:PutRolePolicy',
@@ -240,6 +265,44 @@ export class GithubOidcStack extends cdk.Stack {
           'iam:ListAttachedRolePolicies',
           'iam:TagRole',
           'iam:UntagRole',
+        ],
+        resources: [
+          `arn:aws:iam::${this.account}:role/${repositoryName}-*`,
+        ],
+      })
+    );
+
+    // IAM CDK bootstrap role access - read-only plus managed policy attachment
+    // No PutRolePolicy to prevent inline policy injection on privileged bootstrap roles
+    // Accepted risk: AttachRolePolicy on cdk-* is required for CDK deploy to attach execution
+    // policies to bootstrap roles. CDK synth/deploy fails without it. Mitigated by OIDC trust
+    // policy restricting assumption to a single GitHub repo/branch with short-lived tokens.
+    this.deploymentRole.addToPolicy(
+      new iam.PolicyStatement({
+        sid: 'IAMCdkRoleReadAndAttach',
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'iam:GetRole',
+          'iam:AttachRolePolicy',
+          'iam:DetachRolePolicy',
+          'iam:GetRolePolicy',
+          'iam:ListRolePolicies',
+          'iam:ListAttachedRolePolicies',
+          'iam:TagRole',
+          'iam:UntagRole',
+        ],
+        resources: [
+          `arn:aws:iam::${this.account}:role/cdk-*`,
+        ],
+      })
+    );
+
+    // IAM policy management - scoped to project policies
+    this.deploymentRole.addToPolicy(
+      new iam.PolicyStatement({
+        sid: 'IAMPolicyManagement',
+        effect: iam.Effect.ALLOW,
+        actions: [
           'iam:CreatePolicy',
           'iam:DeletePolicy',
           'iam:GetPolicy',
@@ -247,9 +310,32 @@ export class GithubOidcStack extends cdk.Stack {
           'iam:ListPolicyVersions',
           'iam:CreatePolicyVersion',
           'iam:DeletePolicyVersion',
-          'iam:CreateServiceLinkedRole',
         ],
+        resources: [
+          `arn:aws:iam::${this.account}:policy/${repositoryName}-*`,
+          `arn:aws:iam::${this.account}:policy/cdk-*`,
+        ],
+      })
+    );
+
+    // IAM service-linked roles - scoped to known services used by this project
+    this.deploymentRole.addToPolicy(
+      new iam.PolicyStatement({
+        sid: 'IAMServiceLinkedRole',
+        effect: iam.Effect.ALLOW,
+        actions: ['iam:CreateServiceLinkedRole'],
         resources: ['*'],
+        conditions: {
+          StringLike: {
+            'iam:AWSServiceName': [
+              'lambda.amazonaws.com',
+              'amplify.amazonaws.com',
+              'cloudfront.amazonaws.com',
+              'apigateway.amazonaws.com',
+              'logs.amazonaws.com',
+            ],
+          },
+        },
       })
     );
 

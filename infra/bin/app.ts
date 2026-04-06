@@ -19,6 +19,8 @@ const domainName = app.node.tryGetContext('domainName');
 
 // Contact email from environment variable
 const contactEmail = process.env.CONTACT_EMAIL;
+const notificationEmail = app.node.tryGetContext('notificationEmail');
+const turnstileSecret = process.env.TURNSTILE_SECRET;
 if (!contactEmail) {
   console.warn('Warning: CONTACT_EMAIL environment variable not set. Contact form will not work.');
 }
@@ -44,6 +46,8 @@ const contactStack = new ContactStack(app, `${appName}-contact`, {
   appName,
   contactEmail: contactEmail || 'noreply@example.com',
   environment,
+  notificationEmail,
+  turnstileSecret,
   // Add Amplify default domain to allowed origins after first deployment
   // allowedOrigins: ['http://localhost:5173', 'https://stealinglight.hk', 'https://main.xxx.amplifyapp.com'],
 });

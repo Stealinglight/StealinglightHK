@@ -1,10 +1,12 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Phone, MapPin, Loader2 } from 'lucide-react';
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useState, useRef, useEffect, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { toast } from 'sonner';
+import { EASE_CINEMATIC } from '../constants/motion';
 
 // API endpoint - will be set after CDK deployment
 const CONTACT_API_URL = import.meta.env.VITE_CONTACT_API_URL || '';
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 interface FormData {
   name: string;
@@ -20,10 +22,102 @@ const initialFormData: FormData = {
   message: '',
 };
 
+// Lazy-load Turnstile script when needed (D-02)
+function loadTurnstileScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (window.turnstile) {
+      resolve();
+      return;
+    }
+    const existing = document.querySelector('script[src*="turnstile"]');
+    if (existing) {
+      // Script already loaded — window.turnstile check above missed, re-check
+      if (window.turnstile) {
+        resolve();
+      } else {
+        existing.addEventListener('load', () => resolve());
+      }
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Failed to load Turnstile'));
+    document.head.appendChild(script);
+  });
+}
+
 export function Contact() {
+  const shouldReduceMotion = useReducedMotion();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileWidgetId = useRef<string | null>(null);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileLoaded = useRef(false);
+
+  const resetTurnstile = useCallback(() => {
+    setTurnstileToken('');
+    if (turnstileWidgetId.current) {
+      window.turnstile?.reset(turnstileWidgetId.current);
+    }
+  }, []);
+
+  // D-02: Lazy-load Turnstile when contact section enters viewport
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || turnstileLoaded.current) return;
+
+    const container = turnstileContainerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          turnstileLoaded.current = true;
+
+          loadTurnstileScript()
+            .then(() => {
+              if (!window.turnstile || !turnstileContainerRef.current) return;
+              turnstileWidgetId.current = window.turnstile.render(
+                turnstileContainerRef.current,
+                {
+                  sitekey: TURNSTILE_SITE_KEY,
+                  callback: (token: string) => setTurnstileToken(token),
+                  'error-callback': () => {
+                    toast.error('Verification failed, please try again');
+                    resetTurnstile();
+                  },
+                  'expired-callback': () => {
+                    resetTurnstile();
+                  },
+                  theme: 'dark',
+                  appearance: 'interaction-only',
+                }
+              );
+            })
+            .catch(() => {
+              console.warn('Turnstile script failed to load');
+            });
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [resetTurnstile]);
+
+  // Cleanup Turnstile widget on unmount
+  useEffect(() => {
+    return () => {
+      if (turnstileWidgetId.current && window.turnstile) {
+        window.turnstile.remove(turnstileWidgetId.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -46,6 +140,20 @@ export function Contact() {
       return;
     }
 
+    // Check Turnstile token (skip if site key not configured -- development)
+    if (TURNSTILE_SITE_KEY) {
+      // Pitfall 1: Check for expired token before submitting
+      if (turnstileWidgetId.current && window.turnstile?.isExpired(turnstileWidgetId.current)) {
+        resetTurnstile();
+        toast.error('Verification expired, please wait a moment and try again');
+        return;
+      }
+      if (!turnstileToken) {
+        toast.error('Please wait for verification to complete');
+        return;
+      }
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -54,7 +162,10 @@ export function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          'cf-turnstile-response': turnstileToken,
+        }),
       });
 
       const data = await response.json();
@@ -65,9 +176,11 @@ export function Contact() {
 
       toast.success('Message sent successfully!');
       setFormData(initialFormData);
+      resetTurnstile();
     } catch (error) {
       console.error('Contact form error:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to send message');
+      resetTurnstile();
     } finally {
       setIsSubmitting(false);
     }
@@ -77,10 +190,10 @@ export function Contact() {
     <section id="contact" className="py-24 md:py-32 bg-cinematic-black">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
           className="text-center mb-16"
         >
           <h2 className="text-white mb-4">{"Let's"} Work Together</h2>
@@ -90,10 +203,10 @@ export function Contact() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.2, ease: EASE_CINEMATIC }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
         >
           <div className="text-center p-6 group">
@@ -130,10 +243,10 @@ export function Contact() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.4, ease: EASE_CINEMATIC }}
           className="bg-cinematic-dark border border-white/5 rounded-lg p-8 md:p-12"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -197,6 +310,9 @@ export function Contact() {
                 placeholder="Tell me about your project..."
               />
             </div>
+
+            {/* Turnstile invisible widget container (D-01) */}
+            {TURNSTILE_SITE_KEY && <div ref={turnstileContainerRef} id="turnstile-container" />}
 
             <motion.button
               type="submit"

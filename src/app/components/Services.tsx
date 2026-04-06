@@ -1,5 +1,6 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Plane, Focus, Globe, WandSparkles } from 'lucide-react';
+import { EASE_CINEMATIC } from '../constants/motion';
 
 const services = [
   {
@@ -29,14 +30,16 @@ const services = [
 ];
 
 export function Services() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="services" className="py-24 md:py-32 bg-cinematic-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
           className="mb-16 text-center"
         >
           <h2 className="text-white mb-4">Services</h2>
@@ -51,10 +54,10 @@ export function Services() {
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+                whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={shouldReduceMotion ? undefined : { duration: 0.6, delay: index * 0.1, ease: EASE_CINEMATIC }}
                 className="p-8 bg-cinematic-black/50 border border-white/5 hover:border-cinematic-amber/30 transition-all duration-500 group rounded-lg"
               >
                 <div className="w-14 h-14 rounded-lg bg-cinematic-amber/10 flex items-center justify-center mb-6 group-hover:bg-cinematic-amber/20 transition-colors duration-500">

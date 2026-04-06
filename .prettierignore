@@ -1,0 +1,3 @@
+# Planning documents contain shell commands with glob patterns
+# that prettier mangles (converts * to _ as emphasis normalization)
+.planning/**/*.md

@@ -20,6 +20,7 @@
     "repositoryName": "stealinglightHK",
     "branch": "main",
     "environment": "production",
+    "notificationEmail": "",
     "existingOidcProviderArn": "arn:aws:iam::383579119744:oidc-provider/token.actions.githubusercontent.com",
     "githubRepositoryName": "StealinglightHK",
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
