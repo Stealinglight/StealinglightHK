@@ -18,6 +18,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Visual Overhaul** - Deliver the cinematic experience section by section using Phase 2 infrastructure (completed 2026-03-31)
 - [x] **Phase 4: Quality & Protection** - Add accessibility, bot protection, and monitoring to the finished site (completed 2026-04-01)
 - [x] **Phase 5: Tech Debt Sweep** - Close audit gaps: fix tsc errors, dead code, broken animation, stale docs (completed 2026-04-02)
+- [ ] **Phase 6: README & Screenshots** - Polished GitHub README with live site screenshots, tech badges, architecture
+- [ ] **Phase 7: Docs Audit & Repo Hygiene** - Full docs audit and .planning/ exclusion from GitHub
 
 ## Phase Details
 
@@ -122,10 +124,36 @@ Plans:
 - [x] 05-01-PLAN.md -- Code fixes: tsc type errors, Navigation AnimatePresence, Preloader dead prop removal
 - [x] 05-02-PLAN.md -- Documentation fixes: .env.example, CLAUDE.md, SUMMARY.md frontmatter population
 
+### Phase 6: README & Screenshots
+
+**Goal**: Create a polished GitHub README.md with live site screenshots, tech badges, architecture overview, and dev setup instructions
+**Depends on**: Phase 5
+**Requirements**: READ-01, READ-02, READ-03, READ-04, READ-05, SHOT-01, SHOT-02, SHOT-03
+**Success Criteria** (what must be TRUE):
+
+1. README.md renders on GitHub with hero screenshot, tech badges, and architecture section
+2. Screenshots directory contains captures of hero, portfolio grid, and contact sections
+3. README includes working local dev setup instructions
+
+Plans: TBD (planned via `/gsd-plan-phase 6`)
+
+### Phase 7: Docs Audit & Repo Hygiene
+
+**Goal**: Ensure all project documentation is accurate and .planning/ is excluded from the repository
+**Depends on**: Phase 6
+**Requirements**: DOCS-01, DOCS-02, DOCS-03, DOCS-04, DOCS-05, REPO-01, REPO-02
+**Success Criteria** (what must be TRUE):
+
+1. CLAUDE.md accurately reflects current dependencies, conventions, and architecture
+2. package.json, .env.example, humans.txt, llms.txt, sitemap.xml, robots.txt are all current
+3. .planning/ directory is gitignored and untracked
+
+Plans: TBD (planned via `/gsd-plan-phase 7`)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase                          | Plans Complete | Status   | Completed  |
 | ------------------------------ | -------------- | -------- | ---------- |
@@ -134,3 +162,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Visual Overhaul             | 3/3            | Complete | 2026-03-31 |
 | 4. Quality & Protection        | 3/3            | Complete | 2026-04-01 |
 | 5. Tech Debt Sweep             | 2/2            | Complete | 2026-04-02 |
+| 6. README & Screenshots        | 0/?            | Pending  | —          |
+| 7. Docs Audit & Repo Hygiene   | 0/?            | Pending  | —          |
