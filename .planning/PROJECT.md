@@ -59,6 +59,13 @@ Visitors experience the cinematography work in a contemporary, cinematic, artist
 
 ### Active
 
+- [ ] Polished README.md with live screenshots, tech badges, architecture overview
+- [ ] Live browser screenshots of deployed site sections
+- [ ] Full documentation audit (CLAUDE.md, package.json, .env.example, humans.txt, llms.txt)
+- [ ] Exclude .planning/ from GitHub via .gitignore
+
+### Deferred
+
 - [ ] E2E tests passing in CI
 - [ ] Performance optimization (Core Web Vitals)
 
@@ -125,4 +132,16 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-04-02 after Phase 5 (Tech Debt Sweep) completion — all v1.0 phases complete_
+## Current Milestone: v1.1 Documentation & Showcase
+
+**Goal:** Create a polished GitHub README showcasing the site with live screenshots, and ensure all project documentation is accurate and current.
+
+**Target features:**
+- Polished README.md with live site screenshots, tech badges, architecture overview, feature highlights
+- Live browser screenshots captured from the deployed site
+- Full documentation audit (CLAUDE.md, package.json, .env.example, humans.txt, llms.txt)
+- Exclude .planning/ directory from GitHub via .gitignore
+
+---
+
+_Last updated: 2026-04-05 after v1.1 milestone start_
