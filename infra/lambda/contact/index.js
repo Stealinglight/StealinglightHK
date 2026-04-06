@@ -76,7 +76,10 @@ exports.handler = async (event) => {
   // This provides reliable, infrastructure-level protection that works across Lambda instances
 
   try {
-    const body = JSON.parse(event.body || '{}');
+    const rawBody = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64').toString('utf-8')
+      : (event.body || '{}');
+    const body = JSON.parse(rawBody);
     const { name, email, message, subject } = body;
 
     // Cheap validation first — reject malformed requests before any network calls

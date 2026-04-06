@@ -161,6 +161,9 @@ export class GithubOidcStack extends cdk.Stack {
    */
   private addCdkDeploymentPermissions(repositoryName: string): void {
     // CloudFormation - required for CDK stack operations
+    // resources: ['*'] is a conscious trade-off: CDK needs to create/update/delete any stack
+    // (ARNs are not known until deploy time). Mitigated by short-lived OIDC tokens scoped
+    // to a specific GitHub repository/branch in the trust policy.
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'CloudFormationFullAccess',
