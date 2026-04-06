@@ -31,7 +31,12 @@ function loadTurnstileScript(): Promise<void> {
     }
     const existing = document.querySelector('script[src*="turnstile"]');
     if (existing) {
-      existing.addEventListener('load', () => resolve());
+      // Script already loaded — window.turnstile check above missed, re-check
+      if (window.turnstile) {
+        resolve();
+      } else {
+        existing.addEventListener('load', () => resolve());
+      }
       return;
     }
     const script = document.createElement('script');

@@ -300,7 +300,9 @@ export function Portfolio() {
             loop
             playsInline
             preload="none"
-            onMouseEnter={(e) => e.currentTarget.play()}
+            onMouseEnter={(e) => {
+              e.currentTarget.play().catch(() => {});
+            }}
             onMouseLeave={(e) => {
               e.currentTarget.pause();
               e.currentTarget.currentTime = 0;

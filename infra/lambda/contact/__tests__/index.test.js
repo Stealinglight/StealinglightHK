@@ -323,7 +323,7 @@ describe('Contact Form Lambda Handler', () => {
       expect(emailParams.Message.Body.Html).toBeDefined();
     });
 
-    it('should use sanitized values in text body', async () => {
+    it('should use plain-text values in text body and HTML-escaped in HTML body', async () => {
       const event = createEvent({
         body: JSON.stringify({
           name: 'Test <User>',
@@ -337,10 +337,15 @@ describe('Contact Form Lambda Handler', () => {
 
       const sendEmailCall = sesMock.commandCalls(SendEmailCommand)[0];
       const textBody = sendEmailCall.args[0].input.Message.Body.Text.Data;
+      const htmlBody = sendEmailCall.args[0].input.Message.Body.Html.Data;
 
-      // Text body should use sanitized values
-      expect(textBody).toContain('Test &lt;User&gt;');
-      expect(textBody).toContain('Test &lt;message&gt;');
+      // Text body uses trimmed (not HTML-escaped) values
+      expect(textBody).toContain('Test <User>');
+      expect(textBody).toContain('Test <message>');
+
+      // HTML body uses HTML-escaped values
+      expect(htmlBody).toContain('Test &lt;User&gt;');
+      expect(htmlBody).toContain('Test &lt;message&gt;');
     });
 
     it('should handle SES errors gracefully', async () => {

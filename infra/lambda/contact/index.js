@@ -160,7 +160,7 @@ exports.handler = async (event) => {
         Subject: { Data: emailSubject },
         Body: {
           Text: {
-            Data: `Name: ${safeName}\nEmail: ${safeEmail}\n\nMessage:\n${safeMessage}`,
+            Data: `Name: ${trimmedName}\nEmail: ${sanitizedEmail}\n\nMessage:\n${trimmedMessage}`,
           },
           Html: {
             Data: `
