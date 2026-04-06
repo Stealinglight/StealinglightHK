@@ -28,9 +28,9 @@ export function Preloader() {
       <div className="mt-8 w-48 md:w-64 h-0.5 bg-white/10 overflow-hidden rounded-full">
         <motion.div
           className="h-full bg-cinematic-amber"
-          initial={{ scaleX: 0 }}
+          initial={shouldReduceMotion ? undefined : { scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: 'easeOut' }}
           style={{ transformOrigin: 'left' }}
         />
       </div>

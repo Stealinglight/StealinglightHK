@@ -48,7 +48,6 @@ export function Clients() {
         >
           <div
             className="flex gap-12 animate-marquee hover:[animation-play-state:paused]"
-            role="marquee"
             aria-label="Client logos"
           >
             {marqueeLogos.map((client, i) => (

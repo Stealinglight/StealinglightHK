@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { Phone, MapPin, Loader2 } from 'lucide-react';
-import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from 'react';
+import { useState, useRef, useEffect, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { EASE_CINEMATIC } from '../constants/motion';
 
@@ -53,12 +53,12 @@ export function Contact() {
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const turnstileLoaded = useRef(false);
 
-  const resetTurnstile = () => {
+  const resetTurnstile = useCallback(() => {
     setTurnstileToken('');
     if (turnstileWidgetId.current) {
       window.turnstile?.reset(turnstileWidgetId.current);
     }
-  };
+  }, []);
 
   // D-02: Lazy-load Turnstile when contact section enters viewport
   useEffect(() => {
@@ -103,7 +103,7 @@ export function Contact() {
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, []);
+  }, [resetTurnstile]);
 
   // Cleanup Turnstile widget on unmount
   useEffect(() => {

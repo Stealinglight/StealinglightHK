@@ -387,7 +387,8 @@ describe('Contact Form Lambda Handler', () => {
       const loggedData = JSON.parse(consoleSpy.mock.calls[0][0]);
       expect(loggedData.event).toBe('contact_form_submission');
       expect(loggedData.sourceIp).toBe('192.168.1.1');
-      expect(loggedData.replyToEmail).toBe('test@example.com');
+      expect(loggedData.emailHash).toBeDefined();
+      expect(typeof loggedData.emailHash).toBe('string');
 
       consoleSpy.mockRestore();
     });
@@ -456,9 +457,9 @@ describe('Contact Form Lambda Handler', () => {
       await handler(event);
 
       const fetchCall = mockFetch.mock.calls[0];
-      const fetchBody = JSON.parse(fetchCall[1].body);
-      expect(fetchBody.remoteip).toBe('192.168.1.1');
-      expect(fetchBody.secret).toBe('test-secret-key');
+      const fetchBody = new URLSearchParams(fetchCall[1].body);
+      expect(fetchBody.get('remoteip')).toBe('192.168.1.1');
+      expect(fetchBody.get('secret')).toBe('test-secret-key');
     });
 
     it('should handle Turnstile API errors gracefully', async () => {

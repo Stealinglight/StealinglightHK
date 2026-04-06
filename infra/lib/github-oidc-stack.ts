@@ -242,7 +242,8 @@ export class GithubOidcStack extends cdk.Stack {
       })
     );
 
-    // IAM role management - scoped to project and CDK roles
+    // IAM role management - write operations scoped to project roles only
+    // PutRolePolicy excluded from cdk-* to prevent inline policy injection on bootstrap roles
     this.deploymentRole.addToPolicy(
       new iam.PolicyStatement({
         sid: 'IAMRoleManagement',
@@ -264,6 +265,27 @@ export class GithubOidcStack extends cdk.Stack {
         ],
         resources: [
           `arn:aws:iam::${this.account}:role/${repositoryName}-*`,
+        ],
+      })
+    );
+
+    // IAM CDK bootstrap role access - read-only plus managed policy attachment
+    // No PutRolePolicy to prevent inline policy injection on privileged bootstrap roles
+    this.deploymentRole.addToPolicy(
+      new iam.PolicyStatement({
+        sid: 'IAMCdkRoleReadAndAttach',
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'iam:GetRole',
+          'iam:AttachRolePolicy',
+          'iam:DetachRolePolicy',
+          'iam:GetRolePolicy',
+          'iam:ListRolePolicies',
+          'iam:ListAttachedRolePolicies',
+          'iam:TagRole',
+          'iam:UntagRole',
+        ],
+        resources: [
           `arn:aws:iam::${this.account}:role/cdk-*`,
         ],
       })

@@ -24,14 +24,15 @@ const stripNewlines = (str) => {
 // Verify Cloudflare Turnstile token server-side (D-04)
 const verifyTurnstileToken = async (token, remoteIp) => {
   try {
+    const formData = new URLSearchParams({
+      secret: TURNSTILE_SECRET,
+      response: token,
+      remoteip: remoteIp,
+    });
     const response = await fetch(TURNSTILE_VERIFY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        secret: TURNSTILE_SECRET,
-        response: token,
-        remoteip: remoteIp,
-      }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString(),
     });
     const result = await response.json();
     return result.success === true;
@@ -101,10 +102,13 @@ exports.handler = async (event) => {
     const MAX_SUBJECT_LENGTH = 200;
     const MAX_MESSAGE_LENGTH = 5000;
 
+    const trimmedName = name.trim();
+    const trimmedMessage = message.trim();
+
     const lengthErrors = [];
-    if (name.length > MAX_NAME_LENGTH) lengthErrors.push(`name (max ${MAX_NAME_LENGTH} chars)`);
-    if (message.length > MAX_MESSAGE_LENGTH) lengthErrors.push(`message (max ${MAX_MESSAGE_LENGTH} chars)`);
-    if (subject && subject.length > MAX_SUBJECT_LENGTH) lengthErrors.push(`subject (max ${MAX_SUBJECT_LENGTH} chars)`);
+    if (trimmedName.length > MAX_NAME_LENGTH) lengthErrors.push(`name (max ${MAX_NAME_LENGTH} chars)`);
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) lengthErrors.push(`message (max ${MAX_MESSAGE_LENGTH} chars)`);
+    if (subject && subject.trim().length > MAX_SUBJECT_LENGTH) lengthErrors.push(`subject (max ${MAX_SUBJECT_LENGTH} chars)`);
     if (lengthErrors.length > 0) {
       return {
         statusCode: 400,
@@ -136,8 +140,6 @@ exports.handler = async (event) => {
     }
 
     // Sanitize inputs — HTML-escape for email body only, plain text for subject
-    const trimmedName = name.trim();
-    const trimmedMessage = message.trim();
     const safeName = escapeHtml(trimmedName);
     const safeEmail = escapeHtml(sanitizedEmail);
     const safeMessage = escapeHtml(trimmedMessage);
@@ -169,11 +171,12 @@ exports.handler = async (event) => {
       },
     }));
 
-    // Log successful submission for monitoring
+    // Log successful submission for monitoring (no PII — hash email for correlation)
+    const crypto = require('crypto');
     console.log(JSON.stringify({
       event: 'contact_form_submission',
       sourceIp,
-      replyToEmail: sanitizedEmail,
+      emailHash: crypto.createHash('sha256').update(sanitizedEmail).digest('hex').slice(0, 12),
       timestamp: new Date().toISOString(),
     }));
 

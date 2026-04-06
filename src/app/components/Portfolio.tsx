@@ -67,9 +67,18 @@ function LazyVideo({
   return (
     <div
       data-video-card
+      role="button"
+      tabIndex={0}
+      aria-label={`Preview ${project.title}`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
       className="group relative overflow-hidden cursor-pointer aspect-video rounded-lg"
     >
       <div ref={ref} className="absolute inset-0">
