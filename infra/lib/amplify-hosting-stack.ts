@@ -9,6 +9,7 @@ export interface AmplifyHostingStackProps extends cdk.StackProps {
   branch: string;
   environment: string;
   contactApiUrl?: string;
+  cdnBaseUrl: string;
   domainName?: string;
 }
 
@@ -57,7 +58,7 @@ frontend:
         },
         {
           name: 'VITE_CDN_BASE_URL',
-          value: 'https://d2fc83sck42gx7.cloudfront.net',
+          value: props.cdnBaseUrl, // Populated via cross-stack reference from MediaStack
         },
         {
           name: 'VITE_TURNSTILE_SITE_KEY',

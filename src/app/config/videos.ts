@@ -1,6 +1,6 @@
 // CloudFront CDN base URL for video assets (configurable via env var, fallback for local dev)
 export const CDN_BASE_URL =
-  import.meta.env.VITE_CDN_BASE_URL || 'https://d2fc83sck42gx7.cloudfront.net';
+  import.meta.env.VITE_CDN_BASE_URL || 'https://dvah6thz8csbd.cloudfront.net';
 
 interface VideoProject {
   id: number;

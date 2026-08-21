@@ -33,7 +33,7 @@ const stackProps: cdk.StackProps = {
   },
 };
 
-// Create Media Stack (independent - can be deployed first)
+// Create Media Stack first (Amplify depends on its CloudFront domain)
 const mediaStack = new MediaStack(app, `${appName}-media`, {
   ...stackProps,
   appName,
@@ -61,11 +61,15 @@ const amplifyStack = new AmplifyHostingStack(app, `${appName}-amplify`, {
   branch,
   environment,
   contactApiUrl: `${contactStack.apiUrl}contact`,
+  cdnBaseUrl: `https://${mediaStack.distributionDomain}`,
   domainName,
 });
 
 // Ensure Amplify stack deploys after ContactStack
 amplifyStack.addDependency(contactStack);
+
+// Ensure Amplify stack deploys after MediaStack (consumes its CloudFront domain)
+amplifyStack.addDependency(mediaStack);
 
 // Apply tag compliance to all stacks
 const requiredTags = {

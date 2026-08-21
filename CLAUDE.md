@@ -314,7 +314,7 @@ A cinematography portfolio website for stealinglight.hk — a single-page React 
 - Contains: SVG logos, `robots.txt`, `sitemap.xml`, `humans.txt`, `llms.txt`
 - Used by: Browser at runtime (served from Amplify CDN)
 - Purpose: Delivers video content and images via CloudFront
-- Location: External (S3 bucket + CloudFront distribution at `d2fc83sck42gx7.cloudfront.net`)
+- Location: External (S3 bucket + CloudFront distribution at `dvah6thz8csbd.cloudfront.net`)
 - Contains: Video files (MP4, MOV), thumbnails (JPG), profile images
 - Used by: Portfolio, Hero, and About components
 
