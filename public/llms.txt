@@ -1,6 +1,6 @@
 # Chris McMillon - Cinematographer
 
-> Seattle-based cinematographer and FAA-certified drone operator available for projects across the US and Asia.
+> Los Angeles-based cinematographer and FAA-certified drone operator available for projects across the US and Asia.
 
 ## About
 
@@ -15,7 +15,7 @@ Chris McMillon is a director of photography and aerial cinematographer with over
 
 ## Location
 
-Based in Seattle, Washington. Available for travel throughout the US and Asia.
+Based in Los Angeles, California. Available for travel throughout the US and Asia.
 
 ## Notable Clients
 
@@ -40,4 +40,4 @@ Tencent, Intel, Netflix, DJI, Vogue, Toyota, Audi, Coach, Calvin Klein, Puma, Co
 - Media delivery: AWS CloudFront CDN
 - Contact form: Serverless (AWS Lambda + API Gateway + SES)
 - Animations: Motion library (Framer Motion successor)
-- Last updated: 2026-04-05
+- Last updated: 2026-08-21
