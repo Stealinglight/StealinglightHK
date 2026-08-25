@@ -303,7 +303,7 @@ test.describe('Stealinglight Portfolio', () => {
     expect(pageContent).not.toContain('2027098696');
 
     // 2. Find the reveal button
-    const revealButton = page.locator('button:has-text("Click to reveal")');
+    const revealButton = page.locator('button:has-text("Reveal number")');
     await expect(revealButton).toBeVisible({ timeout: 5000 });
 
     // Verify button has proper accessibility attributes
