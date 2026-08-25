@@ -56,6 +56,15 @@ export default function App() {
     checkDismiss();
   }, [checkDismiss]);
 
+  // Direct hash entry (/#contact etc.): the browser's native fragment scroll fires
+  // before the sections mount, so re-run it once the preloader clears
+  useEffect(() => {
+    if (isLoading) return;
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    document.getElementById(id)?.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }, [isLoading]);
+
   return (
     <div className="size-full bg-cinematic-black">
       <SkipLink />
