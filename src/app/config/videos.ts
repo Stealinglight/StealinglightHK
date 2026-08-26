@@ -85,10 +85,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Automotive/BOSCH_DirectorsCut_VIMEO2K.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/03-bosch-b.jpg`,
     previewStart: 24,
-    // Withheld round 10: the neon-stage frame blooms out, the dancer's head is lost into
-    // the sign behind her and no detail survives in the haze. Needs a better frame, not a
-    // different crop -- the whole sequence is bloom-heavy.
-    hideFromGrid: true,
   },
   {
     id: 4,
@@ -111,15 +107,9 @@ export const videoProjects: VideoProject[] = [
       'A narrative documentary following boxer Thun Visuttirattanaporn, shot in Phuket,Thailand',
     duration: '5:32',
     videoUrl: `${CDN_BASE_URL}/Documentaries/Team%2018%20-%20The%20Fighter_Web.mp4`,
-    posterUrl: `${CDN_BASE_URL}/thumbnails/v2/05-the-fighter-b.jpg`,
-    previewStart: 75,
-    // Back in the grid as a frame contributor: its own poster stays withheld, but the mined
-    // t=269 frame -- the highest-scoring frame in the whole pool -- was approved.
-    //
-    // The film's other approved frame (t=178, the window profile) is deliberately NOT here.
-    // It holds up at 1280 but its subject is a low-contrast silhouette that disappears at the
-    // ~404px a tile actually renders at, where it reads as a blank grey rectangle.
-    extraStills: [`${CDN_BASE_URL}/thumbnails/v3/05-fighter-punch.jpg`],
+    // Poster is the mined t=269 frame -- the highest-scoring frame in the whole pool.
+    posterUrl: `${CDN_BASE_URL}/thumbnails/v3/05-fighter-punch.jpg`,
+    previewStart: 269,
   },
   {
     id: 6,
@@ -130,7 +120,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Events/Shanghai%20SpinExpo.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/06-spinexpo-b.jpg`,
     previewStart: 65,
-    hideFromGrid: true,
   },
   {
     id: 7,
@@ -185,10 +174,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Beverage/Gin%20Mare%20-%20Trailer%20HD.mov`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/10-gin-mare-b.jpg`,
     previewStart: 20,
-    // Withheld round 10: its only frame is the bar-bottle pour -- no motivated source, a
-    // milky blown background and out-of-focus bystanders. The project can return the moment
-    // it has a frame that carries light.
-    hideFromGrid: true,
   },
   {
     id: 11,
@@ -199,7 +184,6 @@ export const videoProjects: VideoProject[] = [
     duration: '6:59',
     videoUrl: `${CDN_BASE_URL}/Events/CMPC%202019.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/11-cmpc-e.jpg`,
-    hideFromGrid: true,
     previewStart: 140,
   },
   {
@@ -212,7 +196,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Automotive/NIU%20eScooters%20-%20All%20New%20NGT%20and%20M%2B.mov`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/12-niu-c.jpg`,
     previewStart: 92,
-    hideFromGrid: true,
   },
   {
     id: 13,
@@ -236,7 +219,6 @@ export const videoProjects: VideoProject[] = [
     duration: '6:33',
     videoUrl: `${CDN_BASE_URL}/Short_Films/48HFP/TALES_FROM_THE_PENN_FINAL_BLNK.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/14-48hfp-2017.jpg`,
-    hideFromGrid: true,
     previewStart: 340,
   },
   {
@@ -248,7 +230,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Short_Films/Narrative/Zhen%20Ai%20-%20Insta2.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/15-zhen-ai-b.jpg`,
     previewStart: 26,
-    hideFromGrid: true,
   },
   {
     id: 16,
@@ -277,9 +258,6 @@ export const videoProjects: VideoProject[] = [
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/17-drone-reel-e.jpg`,
     previewStart: 42,
     extraStills: [`${CDN_BASE_URL}/thumbnails/v2/frames/17-drone-reel-3.jpg`],
-    // Withheld round 10: every surviving plate is a flat hazy landscape. Aerial coverage
-    // reads as stock next to lit work, however clean the exposure measures.
-    hideFromGrid: true,
   },
   {
     id: 18,
@@ -290,7 +268,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Food_Beverage/Jimmer_FinalV2.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/18-jimmer-c.jpg`,
     previewStart: 70,
-    hideFromGrid: true,
   },
   {
     id: 19,
@@ -301,7 +278,6 @@ export const videoProjects: VideoProject[] = [
     videoUrl: `${CDN_BASE_URL}/Commercials/Tech/Huawei_See_the_Unseen.mp4`,
     posterUrl: `${CDN_BASE_URL}/thumbnails/v2/19-huawei-c.jpg`,
     previewStart: 10,
-    hideFromGrid: true,
   },
 ];
 
@@ -321,39 +297,34 @@ export const featuredVideo = videoProjects.find((v) => v.featured) ?? videoProje
 
 /**
  * The mosaic, in render order: [projectId, stillIndex] where 0 is the project's own
- * posterUrl and 1..n index into its extraStills. The grid is a mosaic of FRAMES rather
- * than one tile per project, which decouples depth from project count: every tile can
- * hold the same standard without a thin project being included for density.
+ * posterUrl and 1..n index into its extraStills. Several tiles CAN resolve to one
+ * project, but by the owner's direction the grid is one tile per project, in the
+ * original portfolio order: the BLNK reel leads as the featured highlight, then the
+ * projects run down the list in the order that reflects the owner's DP credit and
+ * stake. Each tile shows that project's best vetted frame (its posterUrl).
  *
- * Render order fills the column beside the featured first, then subsequent rows three at
- * a time, so index 0 is the opening tile and the last index is the terminal tile. On
- * mobile the render order IS the visual order. (Tile count + 4 must divide by 3 for full
- * desktop rows; a 2-col tablet orphan is accepted when the count forces the tradeoff.)
- *
- * Nothing here may repeat the hero fold (eye-on-palm still, Coach runway shaft, Wuhan
- * neon dancer, plus the montage's yellow-silk portrait and Citic workshop passages).
- *
- * Membership is the survivors of eleven blind judging rounds: only frames that no judge
- * has ever failed. Frames approved by one reviewer but killed by another (the Botta vault,
- * the mural silhouette, the amber-blur profile) are withheld — the standard is universal,
- * not average. Five tiles + the featured 2x2 = 9 cells = 3 exactly full desktop rows.
- *
- * Ordering invariants, all checked against the rendered layout:
- *  - Opens on the top-scoring frame (the rim-lit boxer) and terminates on the warm low-key
- *    fur-hood frame.
- *  - The first two tiles are the two top-scoring frames, because on mobile they are the first
- *    two full-bleed slabs a phone visitor sees.
- *  - No film appears at two consecutive indices, so nothing repeats itself down the mobile
- *    stack either.
- *  - Adjacent tiles never share a dominant palette: the sequence runs black/red -> teal ->
- *    cool night -> warm yellow -> warm low-key.
+ * Render order fills the column beside the featured first, then subsequent rows three
+ * at a time. On mobile the render order IS the visual order.
  */
 const GRID_MOSAIC: ReadonlyArray<readonly [number, number]> = [
-  [9, 1], // citic, 4K night-car profile -- chiaroscuro + red bokeh, opens the grid
-  [8, 1], // phorm, yellow-fabric beauty
-  [16, 1], // dp reel, teal profile
-  [5, 1], // fighter, rim-lit punch
-  [7, 0], // coach, fur hood under top light -- warm low-key, terminates the grid
+  [2, 0], // mario botta
+  [3, 0], // bosch tvc
+  [4, 0], // the millennial gentleman
+  [5, 0], // the fighter
+  [6, 0], // shanghai spinexpo
+  [7, 0], // coach pre fall 2019
+  [8, 0], // phorm x wancaoyi
+  [9, 0], // china citic bank
+  [10, 0], // gin mare
+  [11, 0], // cmpc 2019
+  [12, 0], // niu escooters
+  [13, 0], // 48hfp 2018
+  [14, 0], // 48hfp 2017
+  [15, 0], // zhen ai
+  [16, 0], // dp reel
+  [17, 0], // aerial reel
+  [18, 0], // jimmer fredette
+  [19, 0], // huawei
 ];
 
 /** One tile of the mosaic. Several tiles can resolve to the same project. */

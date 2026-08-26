@@ -462,15 +462,17 @@ export function Portfolio() {
             SEAM
           )}
         >
-          {/* Featured project -- a 2x2 span in the same mosaic, always visible
-              regardless of the active filter */}
+          {/* Featured project -- a full-width cinematic band leading the mosaic, always
+              visible regardless of the active filter. Full-row placement keeps the
+              18-project grid at exactly full rows on every breakpoint (6x3 desktop,
+              9x2 tablet, 1-col mobile). */}
           <motion.div
             initial={shouldReduceMotion ? undefined : { opacity: 0 }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? undefined : { duration: 1, ease: EASE_CINEMATIC }}
             className={cn(
-              'relative aspect-video border-b sm:col-span-2 sm:row-span-2 sm:border-r',
+              'relative aspect-video border-b sm:col-span-2 lg:col-span-3 lg:aspect-[21/9]',
               SEAM
             )}
           >
