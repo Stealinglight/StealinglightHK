@@ -28,37 +28,25 @@ interface HeroProps {
 }
 
 // Stills are deterministic: a screenshot can land on any instant of the reel, but it can
-// never catch these wrong. Each was checked at 1:1 (sharp) and measured for real contrast.
-const EYE_STILL = {
-  src: `${CDN_BASE_URL}/thumbnails/v2/01-blnk-reel-2020.jpg`,
-  alt: 'Portrait behind a raised palm painted with an eye, daylight — BLNK Media reel',
-};
-
-// The 390px fold, unchanged — this sequence won its comparison (mid-tone interior in the
-// reel, then the high-chroma teal frame). bosch YAVG 112, gin mare YAVG 122.
-const MOBILE_STILLS = [
+// never catch these wrong. This exact set and order is the OWNER'S pick (Aug 2026):
+// colour-key stage, rim-lit action, teal narrative profile.
+const DESKTOP_STILLS = [
   {
     src: `${CDN_BASE_URL}/thumbnails/v2/03-bosch-b.jpg`,
     alt: 'Performer under green neon on a night stage — BOSCH television commercial',
   },
   {
-    src: `${CDN_BASE_URL}/thumbnails/v2/10-gin-mare-b.jpg`,
-    alt: 'Hands pouring over ice in vapour, lit tabletop — Gin Mare trailer',
+    src: `${CDN_BASE_URL}/thumbnails/v3/05-fighter-punch.jpg`,
+    alt: 'Boxer mid-punch, hard rim light against a near-black ring — The Fighter',
+  },
+  {
+    src: `${CDN_BASE_URL}/thumbnails/v3/16-dpreel-profile.jpg`,
+    alt: 'Profile close-up under teal key light with red practical detail — DP reel',
   },
 ];
 
-// The desktop fold: lead portrait, then a hard-light night frame, then a colour-key stage.
-// Measured YAVG 98 / 34 / 112, YMIN 0 / 0 / 12 — three lighting problems, no weak frame.
-// The middle tile carries no readable signage: a previous candidate's practical neon read
-// as a burned-in logo to a blind judge, and here the raking light IS the subject.
-const DESKTOP_STILLS = [
-  EYE_STILL,
-  {
-    src: `${CDN_BASE_URL}/thumbnails/v2/07-coach.jpg`,
-    alt: 'Hard raking light across a night runway, walkers in silhouette past a vintage car — Coach Pre Fall 2019',
-  },
-  MOBILE_STILLS[0],
-];
+// The 390px fold shows the first two of the same owner-picked set.
+const MOBILE_STILLS = [DESKTOP_STILLS[0], DESKTOP_STILLS[1]];
 
 // The frame is never cropped into a portrait. Mobile sizes the reel as a full-width 16:9
 // block (a 25% trim off 2.39:1 that every segment was checked against); desktop fills.

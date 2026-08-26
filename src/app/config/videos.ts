@@ -281,15 +281,15 @@ export const videoProjects: VideoProject[] = [
   },
 ];
 
-// Hero showreel: 6.0s micro-montage, 1920x804 at 5.2 Mbps (crf 17). Three segments, hard
-// cuts, every one a lit human subject: opens on the yellow-silk portrait (BLNK reel,
-// 17.9 Mbps master, tack sharp at 1:1), then the watchmakers' bench (China Citic Bank).
-// Measured YAVG 82-118, YMAX 243-255 across the loop. The eye-on-palm frame deliberately
-// is NOT in this cut — it is the lead STILL in the hero's evidence row, where a screenshot
-// cannot miss it, and having it in both places would show the same picture twice.
+// Hero showreel: 36s all-killer aerial micro-montage cut from the Drone Reel master
+// (317MB source) at crf 21 / 5.2 Mbps — owner-selected source (Aerial Reel = the
+// "Aerial Specialist" signature). Passages: golden-hour Hong Kong skyline + forest
+// switchbacks -> teal dam + pinwheel roundabout -> coastal village + desert convoy ->
+// canyon car chase + cloud lake -> ocean sun-glint close. End cards excluded. Poster
+// is the in-point frame (HK skyline, t=9.5 of the source).
 export const heroVideo = {
-  src: `${CDN_BASE_URL}/hero/v9/hero.mp4`,
-  poster: `${CDN_BASE_URL}/hero/v9/poster.jpg`,
+  src: `${CDN_BASE_URL}/hero/v10/hero.mp4`,
+  poster: `${CDN_BASE_URL}/hero/v10/poster.jpg`,
 };
 
 // Get featured video for the portfolio section
