@@ -47,3 +47,6 @@ ASSETS.md
 
 # GSD planning artifacts (local only)
 .planning/
+
+# gauntlet run artifacts (screenshots, blind-judge verdicts)
+.gauntlet/

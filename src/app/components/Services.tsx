@@ -1,74 +1,81 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { Plane, Focus, Globe, WandSparkles } from 'lucide-react';
 import { EASE_CINEMATIC } from '../constants/motion';
 
-const services = [
+// Written as what lands on screen, not as a gear or software inventory
+const SERVICES = [
   {
-    icon: Plane,
-    title: 'Aerial Drone Cinematography',
-    description:
-      'Professional aerial cinematography for commercials, documentaries, and film productions with CAAC and FAA Part 107 certification',
+    title: 'Aerial & Drone',
+    outcome:
+      'Altitude, scale and moves no ground rig can reach — cleared to fly commercially in both the US and China.',
   },
   {
-    icon: Focus,
-    title: 'Gimbal & Steadycam',
-    description:
-      'Expert camera operation with Ronin and MōVI Pro gimbal systems for fluid tracking shots and dynamic movement',
+    title: 'Camera Movement',
+    outcome:
+      'Shots that travel: fluid tracking, sustained handheld, and movement that stays invisible at speed.',
   },
   {
-    icon: Globe,
-    title: 'Specialty Techniques',
-    description:
-      'Cutting-edge creative solutions including bullet time, 360° video, projection mapping, and immersive VR experiences',
+    title: 'Specialty Capture',
+    outcome:
+      'Bullet time, full-sphere 360°, projection-mapped environments and immersive VR pieces.',
   },
   {
-    icon: WandSparkles,
-    title: 'VFX & Post-Production',
-    description:
-      'Advanced visual effects, color grading with DaVinci Resolve, and compositing with After Effects and Nuke',
+    title: 'Post & Finishing',
+    outcome: 'Look development, color grade and effects work that never announces itself.',
   },
 ];
 
 export function Services() {
   const shouldReduceMotion = useReducedMotion();
 
+  const reveal = (delay = 0) => ({
+    initial: shouldReduceMotion ? undefined : { opacity: 0, y: 24 },
+    whileInView: shouldReduceMotion ? undefined : { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: shouldReduceMotion ? undefined : { duration: 0.9, delay, ease: EASE_CINEMATIC },
+  });
+
   return (
-    <section id="services" className="py-24 md:py-32 bg-cinematic-dark">
+    <section
+      id="services"
+      aria-labelledby="services-label"
+      className="py-24 md:py-32 bg-cinematic-dark"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
-          className="mb-16 text-center"
-        >
-          <h2 className="text-white mb-4">Services</h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
-            Comprehensive filmmaking and cinematography services tailored to your vision
-          </p>
+        <motion.div {...reveal()} className="flex items-center gap-4">
+          <span className="h-px w-10 bg-cinematic-amber/70" aria-hidden="true" />
+          <h2
+            id="services-label"
+            className="text-[0.7rem] font-normal uppercase tracking-[0.3em] text-white/40"
+          >
+            Services
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
-                whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={shouldReduceMotion ? undefined : { duration: 0.6, delay: index * 0.1, ease: EASE_CINEMATIC }}
-                className="p-8 bg-cinematic-black/50 border border-white/5 hover:border-cinematic-amber/30 transition-all duration-500 group rounded-lg"
+        {/* Numbered index rather than cards — hairlines carry the structure */}
+        <ul className="mt-10 md:mt-16">
+          {SERVICES.map((service, index) => (
+            <motion.li
+              key={service.title}
+              {...reveal(index * 0.08)}
+              className="group grid grid-cols-1 items-baseline gap-x-8 gap-y-3 border-t border-white/10 py-8 md:grid-cols-12 md:py-10"
+            >
+              <span
+                aria-hidden="true"
+                className="text-[0.55rem] tracking-[0.3em] text-cinematic-amber/60 md:col-span-1"
               >
-                <div className="w-14 h-14 rounded-lg bg-cinematic-amber/10 flex items-center justify-center mb-6 group-hover:bg-cinematic-amber/20 transition-colors duration-500">
-                  <Icon className="w-7 h-7 text-cinematic-amber" />
-                </div>
-                <h3 className="text-white mb-4 text-xl">{service.title}</h3>
-                <p className="text-white/50 leading-relaxed">{service.description}</p>
-              </motion.div>
-            );
-          })}
-        </div>
+                0{index + 1}
+              </span>
+              {/* h3 inherits --font-display (Space Grotesk) from fonts.css, keeping the
+                  title in the same tracked-uppercase system as the eyebrow and numerals */}
+              <h3 className="text-sm font-normal uppercase tracking-[0.2em] text-white/90 transition-colors duration-500 group-hover:text-white md:col-span-5 md:text-base">
+                {service.title}
+              </h3>
+              <p className="max-w-xl text-sm leading-relaxed text-white/50 md:col-span-6">
+                {service.outcome}
+              </p>
+            </motion.li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { Phone, MapPin, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { EASE_CINEMATIC } from '../constants/motion';
@@ -21,6 +21,19 @@ const initialFormData: FormData = {
   subject: '',
   message: '',
 };
+
+// Understated underline fields — amber on focus, no chrome (presentation only)
+const FIELD_CLASS =
+  'w-full bg-transparent border-b border-white/15 px-0 py-3 text-white ' +
+  'placeholder:text-white/25 hover:border-white/30 focus:border-cinematic-amber ' +
+  'focus:border-b-2 focus:pb-[11px] focus:outline-none transition-colors duration-300 ' +
+  'disabled:opacity-40 disabled:cursor-not-allowed';
+
+const LABEL_CLASS =
+  'block text-[10px] tracking-[0.25em] uppercase text-white/40 mb-3 ' +
+  'transition-colors duration-300 group-focus-within:text-cinematic-amber/80';
+
+const META_TERM_CLASS = 'text-[10px] tracking-[0.25em] uppercase text-white/40 pt-0.5';
 
 // Lazy-load Turnstile script when needed (D-02)
 function loadTurnstileScript(): Promise<void> {
@@ -187,151 +200,179 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-cinematic-black">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: EASE_CINEMATIC }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-white mb-4">{"Let's"} Work Together</h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
-            Have a project in mind? Whether {"it's"} a commercial shoot, documentary, or something that requires getting the camera somewhere impossible... {"let's"} talk.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.2, ease: EASE_CINEMATIC }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
-        >
-          <div className="text-center p-6 group">
-            <div className="w-12 h-12 rounded-full bg-cinematic-amber/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-cinematic-amber/20 transition-colors">
-              <Phone className="w-5 h-5 text-cinematic-amber" />
+    <section id="contact" className="py-24 md:py-32 bg-cinematic-black border-t border-white/5">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-16">
+          {/* Statement + standing details */}
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 24 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.9, ease: EASE_CINEMATIC }}
+            className="lg:col-span-5"
+          >
+            <div className="flex items-center gap-4">
+              <span className="h-px w-10 bg-cinematic-amber/60" aria-hidden="true" />
+              <span className="text-[11px] tracking-[0.3em] uppercase text-white/40">Contact</span>
             </div>
-            <h3 className="text-sm tracking-wider text-white/40 mb-2">PHONE</h3>
-            {showPhone ? (
-              <a
-                href="tel:+12027098696"
-                className="text-white/70 hover:text-cinematic-amber transition-colors"
-              >
-                +1 (202) 709-8696
-              </a>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setShowPhone(true)}
-                className="text-white/70 hover:text-cinematic-amber transition-colors underline underline-offset-2"
-                aria-label="Reveal phone number"
-              >
-                Click to reveal
-              </button>
-            )}
-          </div>
 
-          <div className="text-center p-6 group">
-            <div className="w-12 h-12 rounded-full bg-cinematic-amber/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-cinematic-amber/20 transition-colors">
-              <MapPin className="w-5 h-5 text-cinematic-amber" />
-            </div>
-            <h3 className="text-sm tracking-wider text-white/40 mb-2">LOCATION</h3>
-            <p className="text-white/70">Seattle, Washington</p>
-          </div>
-        </motion.div>
+            <h2 className="mt-8 text-3xl md:text-4xl lg:text-[2.75rem] font-normal leading-[1.12] text-white">
+              Not every project.
+              <span className="block text-white/40">The right ones.</span>
+            </h2>
 
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? undefined : { duration: 0.8, delay: 0.4, ease: EASE_CINEMATIC }}
-          className="bg-cinematic-dark border border-white/5 rounded-lg p-8 md:p-12"
-        >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm tracking-wider text-white/40 mb-2">
-                  NAME
+            <p className="mt-8 max-w-md text-white/55 leading-relaxed">
+              I shoot a short list of jobs a year now — commercial, documentary, aerial unit. If
+              you&rsquo;ve got dates, a location that fights back, and a shot that has to work, tell
+              me about it.
+            </p>
+
+            <dl className="mt-12 border-t border-white/10">
+              <div className="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-white/10 py-5 sm:grid-cols-[7rem_1fr]">
+                <dt className={META_TERM_CLASS}>Phone</dt>
+                <dd className="text-sm text-white/70">
+                  {showPhone ? (
+                    <a
+                      href="tel:+12027098696"
+                      className="border-b border-white/20 pb-0.5 transition-colors hover:border-cinematic-amber/60 hover:text-cinematic-amber"
+                    >
+                      +1 (202) 709-8696
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setShowPhone(true)}
+                      className="border-b border-white/20 pb-0.5 text-white/45 transition-colors hover:border-cinematic-amber/60 hover:text-cinematic-amber"
+                      aria-label="Reveal phone number"
+                    >
+                      Reveal number
+                    </button>
+                  )}
+                </dd>
+              </div>
+
+              <div className="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-white/10 py-5 sm:grid-cols-[7rem_1fr]">
+                <dt className={META_TERM_CLASS}>Location</dt>
+                <dd className="text-sm text-white/70">Los Angeles, California</dd>
+              </div>
+
+              <div className="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-white/10 py-5 sm:grid-cols-[7rem_1fr]">
+                <dt className={META_TERM_CLASS}>Scope</dt>
+                <dd className="text-sm text-white/70">
+                  Commercial, documentary, adventure — worldwide
+                </dd>
+              </div>
+            </dl>
+          </motion.div>
+
+          {/* Form */}
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 24 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={
+              shouldReduceMotion ? undefined : { duration: 0.9, delay: 0.15, ease: EASE_CINEMATIC }
+            }
+            className="lg:col-span-7 lg:border-l lg:border-white/10 lg:pl-16"
+          >
+            <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                <div className="group">
+                  <label htmlFor="name" className={LABEL_CLASS}>
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    autoComplete="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className={FIELD_CLASS}
+                    placeholder="Your name"
+                  />
+                </div>
+                <div className="group">
+                  <label htmlFor="email" className={LABEL_CLASS}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className={FIELD_CLASS}
+                    placeholder="name@studio.com"
+                  />
+                </div>
+              </div>
+
+              <div className="group">
+                <label htmlFor="subject" className={LABEL_CLASS}>
+                  Project
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  value={formData.name}
+                  id="subject"
+                  value={formData.subject}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full px-4 py-3 bg-cinematic-black/50 border border-white/10 text-white placeholder-white/30 focus:border-cinematic-amber/50 focus:outline-none transition-colors rounded disabled:opacity-50"
-                  placeholder="Your name"
+                  className={FIELD_CLASS}
+                  placeholder="Commercial · Documentary · Aerial unit"
                 />
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm tracking-wider text-white/40 mb-2">
-                  EMAIL
+
+              <div className="group">
+                <label htmlFor="message" className={LABEL_CLASS}>
+                  Details
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
+                <textarea
+                  id="message"
+                  rows={3}
+                  value={formData.message}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full px-4 py-3 bg-cinematic-black/50 border border-white/10 text-white placeholder-white/30 focus:border-cinematic-amber/50 focus:outline-none transition-colors rounded disabled:opacity-50"
-                  placeholder="your@email.com"
+                  className={`${FIELD_CLASS} resize-none`}
+                  placeholder="Dates, location, format — and what the shot needs to do."
                 />
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="subject" className="block text-sm tracking-wider text-white/40 mb-2">
-                SUBJECT
-              </label>
-              <input
-                type="text"
-                id="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-4 py-3 bg-cinematic-black/50 border border-white/10 text-white placeholder-white/30 focus:border-cinematic-amber/50 focus:outline-none transition-colors rounded disabled:opacity-50"
-                placeholder="Project inquiry"
-              />
-            </div>
+              {/* Turnstile invisible widget container (D-01) */}
+              {TURNSTILE_SITE_KEY && <div ref={turnstileContainerRef} id="turnstile-container" />}
 
-            <div>
-              <label htmlFor="message" className="block text-sm tracking-wider text-white/40 mb-2">
-                MESSAGE
-              </label>
-              <textarea
-                id="message"
-                rows={6}
-                value={formData.message}
-                onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-4 py-3 bg-cinematic-black/50 border border-white/10 text-white placeholder-white/30 focus:border-cinematic-amber/50 focus:outline-none transition-colors resize-none rounded disabled:opacity-50"
-                placeholder="Tell me about your project..."
-              />
-            </div>
+              <div className="flex flex-col-reverse gap-8 pt-2 sm:flex-row-reverse sm:items-center sm:justify-between">
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileTap={shouldReduceMotion || isSubmitting ? undefined : { scale: 0.99 }}
+                  className="group inline-flex w-full shrink-0 items-center justify-center gap-2.5 whitespace-nowrap border border-cinematic-amber/50 px-8 py-4 sm:px-10 text-[11px] tracking-[0.25em] text-cinematic-amber transition-colors duration-300 hover:bg-cinematic-amber hover:text-cinematic-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cinematic-amber disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-cinematic-amber sm:w-auto"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      SENDING...
+                    </>
+                  ) : (
+                    <>
+                      SEND MESSAGE
+                      <ArrowRight
+                        className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+                        aria-hidden="true"
+                      />
+                    </>
+                  )}
+                </motion.button>
 
-            {/* Turnstile invisible widget container (D-01) */}
-            {TURNSTILE_SITE_KEY && <div ref={turnstileContainerRef} id="turnstile-container" />}
-
-            <motion.button
-              type="submit"
-              disabled={isSubmitting}
-              whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-              whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-              className="w-full bg-cinematic-amber text-cinematic-black py-4 font-semibold hover:bg-cinematic-amber-light transition-colors tracking-wider rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  SENDING...
-                </>
-              ) : (
-                'SEND MESSAGE'
-              )}
-            </motion.button>
-          </form>
-        </motion.div>
+                <p className="max-w-xs text-[11px] leading-relaxed text-white/45">
+                  Messages come straight to me — no agency, no list. If it&rsquo;s a fit,
+                  you&rsquo;ll hear back inside a day or two.
+                </p>
+              </div>
+            </form>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
